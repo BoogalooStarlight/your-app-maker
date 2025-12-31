@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+// Updated for futuristic dark theme
+
 interface LungVisualizationProps {
   healthPercentage: number; // 0-100
   className?: string;
