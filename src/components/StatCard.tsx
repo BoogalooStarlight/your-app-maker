@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+// Updated for futuristic dark theme with glow effects
+
 interface StatCardProps {
   icon: ReactNode;
   label: string;
