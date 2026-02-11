@@ -147,11 +147,10 @@ const Home = () => {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {categories.map((category, index) => (
+              {categories.map((category) => (
                 <CategoryCard
                   key={category.title}
                   {...category}
-                  delay={100 + index * 100}
                 />
               ))}
             </div>
@@ -163,7 +162,7 @@ const Home = () => {
           <div className="rounded-2xl glass-light p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-success" />
                 <span className="text-sm text-muted-foreground">Système actif</span>
               </div>
               <div className="w-px h-4 bg-border" />
