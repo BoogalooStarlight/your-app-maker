@@ -39,7 +39,7 @@ const ComingSoon = () => {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container flex h-16 items-center">
-          <Link to="/">
+          <Link to="/app">
             <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -64,7 +64,7 @@ const ComingSoon = () => {
           </p>
           
           <div className="pt-4">
-            <Link to="/">
+            <Link to="/app">
               <Button variant="outline" className="border-border/50 hover:border-primary/50">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour à l'accueil
