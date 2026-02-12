@@ -1,14 +1,11 @@
 import { Cigarette, Wine, Brain, Zap, Settings } from "lucide-react";
-import { HumanBodyMatrix } from "@/components/HumanBodyMatrix";
 import { CategoryCard } from "@/components/CategoryCard";
 import { Button } from "@/components/ui/button";
 
 const Home = () => {
-  // Get tracker states from localStorage
   const smokingData = localStorage.getItem("smokingTrackerData");
   const hasSmokingTracker = !!smokingData;
 
-  // Calculate lung health if smoking tracker is active
   let lungHealth = 0;
   if (smokingData) {
     try {
@@ -60,7 +57,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-3">
@@ -82,61 +78,44 @@ const Home = () => {
       </header>
 
       <main className="pt-20 pb-12">
-        {/* Hero Section with Human Body */}
         <section className="container py-8">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            {/* Left: Body visualization */}
-            <div className="relative rounded-3xl overflow-hidden border border-border/30 bg-card/30 backdrop-blur-sm min-h-[500px]">
-              <HumanBodyMatrix
-                activeOrgans={{
-                  lungs: lungHealth,
-                  heart: 100,
-                  liver: 100,
-                  brain: 100,
-                }}
-              />
+          <div className="space-y-8 max-w-3xl">
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+                Votre corps.
+                <br />
+                <span className="text-gradient">Votre contrôle.</span>
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-md">
+                Visualisez en temps réel l'impact de vos choix sur votre santé.
+                Chaque décision compte, chaque progrès est mesuré.
+              </p>
             </div>
 
-            {/* Right: Welcome text and stats */}
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                  Votre corps.
-                  <br />
-                  <span className="text-gradient">Votre contrôle.</span>
-                </h1>
-                <p className="text-lg text-muted-foreground max-w-md">
-                  Visualisez en temps réel l'impact de vos choix sur votre santé. 
-                  Chaque décision compte, chaque progrès est mesuré.
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 rounded-2xl glass-light">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">Programmes actifs</p>
+                <p className="text-3xl font-bold text-gradient mt-1">{hasSmokingTracker ? 1 : 0}</p>
+              </div>
+              <div className="p-4 rounded-2xl glass-light">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">Santé globale</p>
+                <p className="text-3xl font-bold text-success mt-1">
+                  {hasSmokingTracker ? `${Math.round((lungHealth + 300) / 4)}%` : "—"}
                 </p>
               </div>
+            </div>
 
-              {/* Quick stats */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl glass-light">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Programmes actifs</p>
-                  <p className="text-3xl font-bold text-gradient mt-1">{hasSmokingTracker ? 1 : 0}</p>
-                </div>
-                <div className="p-4 rounded-2xl glass-light">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Santé globale</p>
-                  <p className="text-3xl font-bold text-success mt-1">{hasSmokingTracker ? `${Math.round((lungHealth + 300) / 4)}%` : "—"}</p>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="flex gap-3">
-                <Button className="gradient-cyber text-background font-semibold px-6 shadow-cyber hover:opacity-90 transition-opacity">
-                  Commencer maintenant
-                </Button>
-                <Button variant="outline" className="border-border/50 hover:border-primary/50 hover:text-primary">
-                  En savoir plus
-                </Button>
-              </div>
+            <div className="flex gap-3">
+              <Button className="gradient-cyber text-background font-semibold px-6 shadow-cyber hover:opacity-90 transition-opacity">
+                Commencer maintenant
+              </Button>
+              <Button variant="outline" className="border-border/50 hover:border-primary/50 hover:text-primary">
+                En savoir plus
+              </Button>
             </div>
           </div>
         </section>
 
-        {/* Categories Section */}
         <section className="container py-12">
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -148,16 +127,12 @@ const Home = () => {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {categories.map((category) => (
-                <CategoryCard
-                  key={category.title}
-                  {...category}
-                />
+                <CategoryCard key={category.title} {...category} />
               ))}
             </div>
           </div>
         </section>
 
-        {/* Status bar at bottom */}
         <section className="container">
           <div className="rounded-2xl glass-light p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -170,9 +145,7 @@ const Home = () => {
                 Dernière mise à jour : <span className="text-foreground">maintenant</span>
               </span>
             </div>
-            <div className="text-xs text-muted-foreground font-mono">
-              v1.0.0
-            </div>
+            <div className="text-xs text-muted-foreground font-mono">v1.0.0</div>
           </div>
         </section>
       </main>

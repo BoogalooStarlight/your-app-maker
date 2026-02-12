@@ -1,41 +1,40 @@
 import { useMemo } from "react";
+import { Activity, HeartPulse, LucideIcon, Wind } from "lucide-react";
 import { Link } from "react-router-dom";
 
 type WelcomeSlide = {
-  organ: string;
+  title: string;
   route: string;
-  image: string;
   description: string;
+  icon: LucideIcon;
+  colorClass: string;
+  glowClass: string;
 };
 
 const welcomeSlides: WelcomeSlide[] = [
   {
-    organ: "Poumons",
+    title: "Poumons",
     route: "/smoking",
-    image:
-      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1920&q=80",
-    description: "Suivi de la récupération pulmonaire et des progrès anti-tabac.",
+    description: "Suivi de votre récupération pulmonaire et de votre souffle.",
+    icon: Wind,
+    colorClass: "text-cyan-300",
+    glowClass: "shadow-[0_0_60px_rgba(34,211,238,0.35)]",
   },
   {
-    organ: "Cœur",
-    route: "/heart",
-    image:
-      "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1920&q=80",
-    description: "Améliorations cardio et objectifs de santé cardiaque.",
+    title: "Tabac",
+    route: "/smoking",
+    description: "Progression anti-tabac, cigarettes évitées et argent économisé.",
+    icon: HeartPulse,
+    colorClass: "text-orange-300",
+    glowClass: "shadow-[0_0_60px_rgba(251,146,60,0.35)]",
   },
   {
-    organ: "Foie",
+    title: "Alcool",
     route: "/alcohol",
-    image:
-      "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1920&q=80",
-    description: "Réduction de l'alcool et suivi de la récupération hépatique.",
-  },
-  {
-    organ: "Cerveau",
-    route: "/mental",
-    image:
-      "https://images.unsplash.com/photo-1518152006812-edab29b069ac?auto=format&fit=crop&w=1920&q=80",
-    description: "Bien-être mental, concentration et gestion du stress.",
+    description: "Réduction de la consommation et amélioration de votre santé globale.",
+    icon: Activity,
+    colorClass: "text-amber-300",
+    glowClass: "shadow-[0_0_60px_rgba(252,211,77,0.35)]",
   },
 ];
 
@@ -45,28 +44,28 @@ const Welcome = () => {
     return welcomeSlides[slideIndex];
   }, []);
 
-  const formattedDate = new Date().toLocaleDateString("fr-FR", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
+  const CurrentIcon = selectedSlide.icon;
 
   return (
     <Link
       to={selectedSlide.route}
-      className="relative block min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: `url(${selectedSlide.image})` }}
-      aria-label={`Ouvrir la rubrique ${selectedSlide.organ}`}
+      className="relative block min-h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
+      aria-label={`Ouvrir la rubrique ${selectedSlide.title}`}
     >
-      <div className="absolute inset-0 bg-black/55" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.08),transparent_35%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.06),transparent_35%)]" />
 
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center p-6 text-center text-white">
-        <p className="text-sm uppercase tracking-[0.25em] text-white/80">VITALIS</p>
-        <h1 className="mt-4 text-5xl font-bold md:text-7xl">{selectedSlide.organ}</h1>
-        <p className="mt-3 text-lg text-white/90 md:text-xl">{formattedDate}</p>
-        <p className="mt-8 max-w-xl text-white/85">{selectedSlide.description}</p>
-        <p className="mt-10 text-sm uppercase tracking-[0.2em] text-white/80">
-          Touchez l&apos;écran pour ouvrir cette rubrique
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center text-white">
+        <p className="text-xs uppercase tracking-[0.3em] text-white/70">VITALIS</p>
+
+        <div className={`mt-10 rounded-full border border-white/20 bg-white/5 p-10 backdrop-blur ${selectedSlide.glowClass}`}>
+          <CurrentIcon className={`h-24 w-24 ${selectedSlide.colorClass} animate-pulse`} />
+        </div>
+
+        <h1 className="mt-8 text-5xl font-bold md:text-7xl">{selectedSlide.title}</h1>
+        <p className="mt-4 max-w-xl text-white/80">{selectedSlide.description}</p>
+
+        <p className="mt-8 text-sm uppercase tracking-[0.2em] text-white/70">
+          Rubrique aléatoire sélectionnée au lancement — touchez l&apos;écran
         </p>
       </main>
     </Link>
