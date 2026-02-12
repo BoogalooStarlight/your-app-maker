@@ -9,7 +9,6 @@ interface CategoryCardProps {
   color: "primary" | "success" | "warning" | "accent" | "destructive";
   isActive?: boolean;
   stats?: string;
-  delay?: number;
 }
 
 const colorClasses = {
@@ -53,7 +52,6 @@ export const CategoryCard = ({
   color,
   isActive,
   stats,
-  delay = 0,
 }: CategoryCardProps) => {
   const colors = colorClasses[color];
 
@@ -65,9 +63,7 @@ export const CategoryCard = ({
         transition-all duration-500 ease-out
         ${colors.border} ${colors.glow}
         bg-card/50
-        animate-fade-in-up
       `}
-      style={{ animationDelay: `${delay}ms` }}
     >
       {/* Background gradient on hover */}
       <div className={`absolute inset-0 rounded-2xl ${colors.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -94,7 +90,7 @@ export const CategoryCard = ({
           <div className="flex items-center gap-2">
             {isActive !== undefined && (
               <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${isActive ? "text-success" : "text-muted-foreground"}`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-success animate-pulse" : "bg-muted-foreground"}`} />
+                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-success" : "bg-muted-foreground"}`} />
                 {isActive ? "Actif" : "Non configuré"}
               </span>
             )}
