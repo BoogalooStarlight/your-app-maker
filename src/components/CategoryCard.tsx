@@ -12,36 +12,11 @@ interface CategoryCardProps {
 }
 
 const colorClasses = {
-  primary: {
-    bg: "bg-primary/10",
-    border: "border-primary/30 hover:border-primary/60",
-    text: "text-primary",
-    glow: "hover:shadow-[0_0_30px_hsl(210_100%_60%/0.3)]",
-  },
-  success: {
-    bg: "bg-success/10",
-    border: "border-success/30 hover:border-success/60",
-    text: "text-success",
-    glow: "hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)]",
-  },
-  warning: {
-    bg: "bg-warning/10",
-    border: "border-warning/30 hover:border-warning/60",
-    text: "text-warning",
-    glow: "hover:shadow-[0_0_30px_hsl(38_100%_55%/0.3)]",
-  },
-  accent: {
-    bg: "bg-accent/10",
-    border: "border-accent/30 hover:border-accent/60",
-    text: "text-accent",
-    glow: "hover:shadow-[0_0_30px_hsl(170_100%_50%/0.3)]",
-  },
-  destructive: {
-    bg: "bg-destructive/10",
-    border: "border-destructive/30 hover:border-destructive/60",
-    text: "text-destructive",
-    glow: "hover:shadow-[0_0_30px_hsl(0_85%_55%/0.3)]",
-  },
+  primary: "text-sky-300",
+  success: "text-emerald-300",
+  warning: "text-amber-300",
+  accent: "text-teal-300",
+  destructive: "text-rose-300",
 };
 
 export const CategoryCard = ({
@@ -53,61 +28,32 @@ export const CategoryCard = ({
   isActive,
   stats,
 }: CategoryCardProps) => {
-  const colors = colorClasses[color];
-
   return (
     <Link
       to={href}
-      className={`
-        group relative block p-6 rounded-2xl border backdrop-blur-sm
-        transition-all duration-500 ease-out
-        ${colors.border} ${colors.glow}
-        bg-card/50
-      `}
+      className="group block rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl transition-colors hover:bg-white/[0.07]"
     >
-      {/* Background gradient on hover */}
-      <div className={`absolute inset-0 rounded-2xl ${colors.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-      {/* Content */}
-      <div className="relative z-10 space-y-4">
-        {/* Icon */}
-        <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${colors.bg} ${colors.text} transition-transform duration-300 group-hover:scale-110`}>
-          <Icon className="w-6 h-6" />
+      <div className="space-y-4">
+        <div className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 ${colorClasses[color]}`}>
+          <Icon className="h-5 w-5" />
         </div>
 
-        {/* Text */}
         <div>
-          <h3 className="text-lg font-semibold text-foreground group-hover:text-gradient transition-all duration-300">
-            {title}
-          </h3>
-          <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-            {description}
-          </p>
+          <h3 className="text-lg font-medium text-white">{title}</h3>
+          <p className="mt-1 text-sm text-white/60 line-clamp-2">{description}</p>
         </div>
 
-        {/* Stats or status */}
         {(stats || isActive !== undefined) && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-xs">
             {isActive !== undefined && (
-              <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${isActive ? "text-success" : "text-muted-foreground"}`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-success" : "bg-muted-foreground"}`} />
+              <span className={`inline-flex items-center gap-1.5 ${isActive ? "text-emerald-300" : "text-white/50"}`}>
+                <span className={`h-1.5 w-1.5 rounded-full ${isActive ? "bg-emerald-300" : "bg-white/40"}`} />
                 {isActive ? "Actif" : "Non configuré"}
               </span>
             )}
-            {stats && (
-              <span className={`text-xs font-medium ${colors.text}`}>
-                {stats}
-              </span>
-            )}
+            {stats && <span className={`${colorClasses[color]} font-medium`}>{stats}</span>}
           </div>
         )}
-      </div>
-
-      {/* Arrow indicator */}
-      <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1">
-        <svg className={`w-5 h-5 ${colors.text}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
       </div>
     </Link>
   );
