@@ -1,4 +1,4 @@
-import { Brain, Cigarette, HeartPulse, Moon, TrendingUp, Wine } from "lucide-react";
+import { Atom, Brain, Cigarette, HeartPulse, Moon, TrendingUp, Wine } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -111,6 +111,10 @@ const Home = () => {
               </Link>
               <Link to="/energy" className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2 text-sm hover:bg-white/[0.06]">
                 <span className="inline-flex items-center gap-2"><Moon className="h-4 w-4 text-sky-300" /> Énergie & Sommeil</span>
+                <span className="text-white/60">ouvrir</span>
+              </Link>
+              <Link to="/balloons" className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2 text-sm hover:bg-white/[0.06]">
+                <span className="inline-flex items-center gap-2"><Atom className="h-4 w-4 text-amber-300" /> Anti-Ballons</span>
                 <span className="text-white/60">ouvrir</span>
               </Link>
             </div>

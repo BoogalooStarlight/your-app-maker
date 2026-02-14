@@ -27,6 +27,7 @@ const App = () => (
           <Route path="/mental" element={<ComingSoon />} />
           <Route path="/energy" element={<ComingSoon />} />
           <Route path="/heart" element={<ComingSoon />} />
+          <Route path="/balloons" element={<ComingSoon />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
