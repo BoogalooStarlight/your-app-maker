@@ -1,182 +1,147 @@
-import { Cigarette, Wine, Brain, Zap, Settings } from "lucide-react";
-import { HumanBodyMatrix } from "@/components/HumanBodyMatrix";
-import { CategoryCard } from "@/components/CategoryCard";
-import { Button } from "@/components/ui/button";
+import { Atom, Brain, ChevronRight, Cigarette, HeartPulse, Moon, Wine } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-  // Get tracker states from localStorage
   const smokingData = localStorage.getItem("smokingTrackerData");
   const hasSmokingTracker = !!smokingData;
 
-  // Calculate lung health if smoking tracker is active
-  let lungHealth = 0;
+  let totalDays = 0;
+  let cigarettesAvoided = 0;
+  let moneySaved = 0;
+  let lungHealth = 5;
+
   if (smokingData) {
     try {
       const data = JSON.parse(smokingData);
       const quitDate = new Date(data.quitDate);
       const totalMinutes = Math.floor((Date.now() - quitDate.getTime()) / (1000 * 60));
-      const totalDays = totalMinutes / (60 * 24);
-      lungHealth = Math.min(100, Math.round((totalDays / 365) * 100));
-    } catch (e) {
-      lungHealth = 0;
+      totalDays = Math.max(0, Math.floor(totalMinutes / (60 * 24)));
+
+      const cigarettesPerDay = Number(data.cigarettesPerDay) || 0;
+      const packPrice = Number(data.packPrice) || 0;
+
+      cigarettesAvoided = Math.floor((totalMinutes / (60 * 24)) * cigarettesPerDay);
+      moneySaved = (cigarettesAvoided / 20) * packPrice;
+      lungHealth = Math.min(100, Math.max(5, Math.round((totalDays / 365) * 100)));
+    } catch {
+      totalDays = 0;
+      cigarettesAvoided = 0;
+      moneySaved = 0;
+      lungHealth = 5;
     }
   }
 
-  const categories = [
-    {
-      title: "Anti-Tabac",
-      description: "Suivez votre progression, visualisez la récupération de vos poumons et célébrez chaque victoire.",
-      icon: Cigarette,
-      href: "/smoking",
-      color: "warning" as const,
-      isActive: hasSmokingTracker,
-      stats: hasSmokingTracker ? `${lungHealth}% récupéré` : undefined,
-    },
-    {
-      title: "Anti-Alcool",
-      description: "Surveillez votre consommation, suivez vos jours de sobriété et améliorez votre santé hépatique.",
-      icon: Wine,
-      href: "/alcohol",
-      color: "destructive" as const,
-      isActive: false,
-    },
-    {
-      title: "Santé Mentale",
-      description: "Méditation, gestion du stress et suivi de votre bien-être émotionnel au quotidien.",
-      icon: Brain,
-      href: "/mental",
-      color: "accent" as const,
-      isActive: false,
-    },
-    {
-      title: "Énergie & Sommeil",
-      description: "Optimisez votre sommeil et boostez votre énergie pour des journées plus productives.",
-      icon: Zap,
-      href: "/energy",
-      color: "primary" as const,
-      isActive: false,
-    },
+  const moduleLinks = [
+    { label: "Anti-Tabac", href: "/smoking", icon: Cigarette, color: "text-amber-300" },
+    { label: "Anti-Alcool", href: "/alcohol", icon: Wine, color: "text-rose-300" },
+    { label: "Santé mentale", href: "/mental", icon: Brain, color: "text-teal-300" },
+    { label: "Énergie & Sommeil", href: "/energy", icon: Moon, color: "text-sky-300" },
+    { label: "Anti-Ballons", href: "/balloons", icon: Atom, color: "text-violet-300" },
   ];
 
+  const ringOffset = 314 - (314 * lungHealth) / 100;
+
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-cyber">
-                <Zap className="h-5 w-5 text-background" />
-              </div>
-              <div className="absolute inset-0 rounded-xl gradient-cyber blur-lg opacity-50" />
-            </div>
-            <div>
-              <span className="font-bold text-lg text-gradient">VITALIS</span>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Life Optimizer</p>
-            </div>
+    <div className="min-h-screen bg-[#000000] px-4 py-6 text-white md:px-8 md:py-8">
+      <div className="mx-auto w-full max-w-6xl">
+        <header className="mb-6 flex items-start justify-between">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.2em] text-[#8E8E93]">Vitalis</p>
+            <h1 className="mt-2 text-3xl font-semibold md:text-4xl">Dashboard</h1>
           </div>
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-            <Settings className="h-5 w-5" />
-          </Button>
-        </div>
-      </header>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
+            Aujourd&apos;hui
+          </div>
+        </header>
 
-      <main className="pt-20 pb-12">
-        {/* Hero Section with Human Body */}
-        <section className="container py-8">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            {/* Left: Body visualization */}
-            <div className="relative rounded-3xl overflow-hidden border border-border/30 bg-card/30 backdrop-blur-sm min-h-[500px]">
-              <HumanBodyMatrix
-                activeOrgans={{
-                  lungs: lungHealth,
-                  heart: 100,
-                  liver: 100,
-                  brain: 100,
-                }}
-              />
+        <section className="grid gap-5 lg:grid-cols-3">
+          <article className="rounded-[28px] border border-[rgba(255,255,255,0.1)] bg-[#1C1C1E] p-6 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#8E8E93]">Smoke-Free</p>
+            <div className="mt-4 flex items-end gap-2">
+              <p className="text-7xl font-extrabold leading-none">{totalDays}</p>
+              <p className="pb-2 text-sm uppercase tracking-wider text-[#8E8E93]">jours</p>
             </div>
 
-            {/* Right: Welcome text and stats */}
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                  Votre corps.
-                  <br />
-                  <span className="text-gradient">Votre contrôle.</span>
-                </h1>
-                <p className="text-lg text-muted-foreground max-w-md">
-                  Visualisez en temps réel l'impact de vos choix sur votre santé. 
-                  Chaque décision compte, chaque progrès est mesuré.
-                </p>
+            <div className="mt-6 grid grid-cols-3 gap-2">
+              <div className="rounded-2xl bg-black/30 p-3 text-center backdrop-blur-md">
+                <p className="text-2xl font-extrabold leading-none">{Math.round(moneySaved)}€</p>
+                <p className="mt-1 text-[10px] uppercase tracking-wider text-[#8E8E93]">économisés</p>
               </div>
+              <div className="rounded-2xl bg-black/30 p-3 text-center backdrop-blur-md">
+                <p className="text-2xl font-extrabold leading-none">{cigarettesAvoided}</p>
+                <p className="mt-1 text-[10px] uppercase tracking-wider text-[#8E8E93]">évitées</p>
+              </div>
+              <div className="rounded-2xl bg-black/30 p-3 text-center backdrop-blur-md">
+                <p className="text-2xl font-extrabold leading-none">{Math.max(0, Math.floor(totalDays / 2))}</p>
+                <p className="mt-1 text-[10px] uppercase tracking-wider text-[#8E8E93]">jours vie</p>
+              </div>
+            </div>
+          </article>
 
-              {/* Quick stats */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl glass-light">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Programmes actifs</p>
-                  <p className="text-3xl font-bold text-gradient mt-1">{hasSmokingTracker ? 1 : 0}</p>
+          <article className="rounded-[28px] border border-[rgba(255,255,255,0.1)] bg-[#1C1C1E] p-6 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#8E8E93]">Modules</p>
+            <h2 className="mt-3 text-2xl font-semibold">Progression</h2>
+
+            <div className="mt-5 space-y-2">
+              {moduleLinks.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.label}
+                    to={item.href}
+                    className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/25 px-3 py-3 transition-all duration-300 hover:bg-black/40"
+                  >
+                    <span className="inline-flex items-center gap-2.5 text-sm">
+                      <Icon className={`h-4 w-4 ${item.color}`} />
+                      {item.label}
+                    </span>
+                    <ChevronRight className="h-4 w-4 text-[#8E8E93]" />
+                  </Link>
+                );
+              })}
+            </div>
+          </article>
+
+          <article className="rounded-[28px] border border-[rgba(255,255,255,0.1)] bg-[#1C1C1E] p-6 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#8E8E93]">Santé pulmonaire</p>
+
+            <div className="mt-5 flex items-center justify-center">
+              <div className="relative h-48 w-48">
+                <svg className="h-48 w-48 -rotate-90" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="lungGradient" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#6EE7F9" />
+                      <stop offset="1" stopColor="#34D399" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="60" cy="60" r="50" stroke="rgba(255,255,255,0.12)" strokeWidth="6" />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    stroke="url(#lungGradient)"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                    strokeDasharray="314"
+                    strokeDashoffset={ringOffset}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-black/15 backdrop-blur-sm">
+                  <HeartPulse className="h-7 w-7 text-emerald-300" />
+                  <p className="mt-2 text-4xl font-extrabold leading-none">{lungHealth}%</p>
                 </div>
-                <div className="p-4 rounded-2xl glass-light">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Santé globale</p>
-                  <p className="text-3xl font-bold text-success mt-1">{hasSmokingTracker ? `${Math.round((lungHealth + 300) / 4)}%` : "—"}</p>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="flex gap-3">
-                <Button className="gradient-cyber text-background font-semibold px-6 shadow-cyber hover:opacity-90 transition-opacity">
-                  Commencer maintenant
-                </Button>
-                <Button variant="outline" className="border-border/50 hover:border-primary/50 hover:text-primary">
-                  En savoir plus
-                </Button>
               </div>
             </div>
-          </div>
+
+            <div className="mt-5 rounded-2xl border border-white/10 bg-black/25 p-3 text-sm text-white/80 backdrop-blur-md">
+              {hasSmokingTracker
+                ? "Votre récupération pulmonaire progresse, continuez sur ce rythme."
+                : "Configurez Anti-Tabac pour activer le suivi détaillé de récupération."}
+            </div>
+          </article>
         </section>
-
-        {/* Categories Section */}
-        <section className="container py-12">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">Programmes de santé</h2>
-                <p className="text-sm text-muted-foreground mt-1">Choisissez un domaine à améliorer</p>
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {categories.map((category, index) => (
-                <CategoryCard
-                  key={category.title}
-                  {...category}
-                  delay={100 + index * 100}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Status bar at bottom */}
-        <section className="container">
-          <div className="rounded-2xl glass-light p-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-                <span className="text-sm text-muted-foreground">Système actif</span>
-              </div>
-              <div className="w-px h-4 bg-border" />
-              <span className="text-sm text-muted-foreground">
-                Dernière mise à jour : <span className="text-foreground">maintenant</span>
-              </span>
-            </div>
-            <div className="text-xs text-muted-foreground font-mono">
-              v1.0.0
-            </div>
-          </div>
-        </section>
-      </main>
+      </div>
     </div>
   );
 };
