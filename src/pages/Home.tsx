@@ -136,6 +136,8 @@ const Home = () => {
     }, 250);
   };
 
+  const ringOffset = 314 - (314 * lungHealth) / 100;
+
   return (
     <div className="min-h-screen bg-[#000000] text-white">
       {showOnboarding && (
