@@ -8,7 +8,6 @@ import {
   Coins,
   HeartPulse,
   Moon,
-  Sparkles,
   Wine,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -143,8 +142,8 @@ const Home = () => {
       body: "Une expérience claire, premium et apaisante pour suivre vos progrès santé.",
       content: (
         <div className="flex flex-col items-center text-center">
-          <div className="rounded-[28px] border border-white/10 bg-[#1C1C1E] p-8 backdrop-blur-xl">
-            <Sparkles className="h-12 w-12 text-white" />
+          <div className="rounded-[28px] border border-white/10 bg-[#1C1C1E] px-10 py-8 backdrop-blur-xl">
+            <p className="text-6xl font-light tracking-[-2px] text-white">RV</p>
           </div>
         </div>
       ),
