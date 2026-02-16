@@ -12,6 +12,33 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const RiveMonogram = ({ compact = false }: { compact?: boolean }) => (
+  <div className={`flex items-center justify-center ${compact ? "p-1" : "p-10"}`}>
+    <svg
+      width={compact ? "64" : "120"}
+      height={compact ? "64" : "120"}
+      viewBox="0 0 120 120"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Monogramme logo"
+    >
+      <rect x="8" y="8" width="104" height="104" rx="24" fill="black" />
+      <text
+        x="60"
+        y="74"
+        fill="white"
+        fontSize="64"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontWeight="400"
+        textAnchor="middle"
+        letterSpacing="-2"
+      >
+        Rv
+      </text>
+    </svg>
+  </div>
+);
+
 const useCountUp = (target: number, animate: boolean, duration = 900) => {
   const [value, setValue] = useState(target);
 
@@ -141,8 +168,8 @@ const Home = () => {
       title: "Bienvenue dans votre nouvelle trajectoire.",
       body: "Une expérience claire, premium et apaisante pour suivre vos progrès santé.",
       content: (
-        <div className="flex flex-col items-center text-center">
-          <p className="text-[72px] font-light leading-none tracking-[-2px] text-white">RV</p>
+        <div className="logo-container flex w-full items-center justify-center text-center">
+          <RiveMonogram />
         </div>
       ),
     },
@@ -216,13 +243,15 @@ const Home = () => {
         <div className="flex min-h-screen items-center justify-center px-4 py-8">
           <div className="w-full max-w-2xl rounded-[28px] border border-white/10 bg-black p-8">
             <div className={`space-y-8 transition-opacity duration-300 ${isFading ? "opacity-0" : "opacity-100"}`}>
-              <div className="space-y-3 text-center">
-                <p className="text-[11px] uppercase tracking-[0.2em] text-[#8E8E93]">Onboarding</p>
-                <h1 className="text-3xl font-semibold md:text-4xl">{onboardingSteps[step].title}</h1>
-                <p className="text-sm text-[#8E8E93]">{onboardingSteps[step].body}</p>
-              </div>
+              {step > 0 && (
+                <div className="space-y-3 text-center">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-[#8E8E93]">Onboarding</p>
+                  <h1 className="text-3xl font-semibold md:text-4xl">{onboardingSteps[step].title}</h1>
+                  <p className="text-sm text-[#8E8E93]">{onboardingSteps[step].body}</p>
+                </div>
+              )}
 
-              <div className="flex items-center justify-center">{onboardingSteps[step].content}</div>
+              <div className={`flex items-center justify-center ${step === 0 ? "min-h-[320px]" : ""}`}>{onboardingSteps[step].content}</div>
 
               {step < onboardingSteps.length - 1 && (
                 <div className="flex justify-center">
@@ -258,9 +287,9 @@ const Home = () => {
           }`}
         >
           <div className="mx-auto w-full max-w-6xl">
-            <header className="mb-6 flex items-start justify-between">
-              <div>
-                <h1 className="text-3xl font-semibold md:text-4xl">Dashboard</h1>
+            <header className="relative mb-6 flex min-h-[50px] items-center justify-end">
+              <div className="logo-container absolute left-1/2 flex -translate-x-1/2 items-center justify-center gap-3">
+                <RiveMonogram compact />
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
                 Aujourd&apos;hui

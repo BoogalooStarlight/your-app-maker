@@ -57,7 +57,7 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
                 value={quitDate}
                 onChange={(e) => setQuitDate(e.target.value)}
                 max={new Date().toISOString().split('T')[0]}
-                className="w-full rounded-xl border border-white/15 bg-[#1C1C1E] px-4 py-3 text-white [color-scheme:dark] focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full border-0 border-b border-white/25 bg-transparent px-0 py-3 text-white [color-scheme:dark] focus:border-primary focus:outline-none"
               />
               <p className="text-sm text-muted-foreground">
                 Si vous n'avez pas encore arrêté, sélectionnez aujourd'hui
