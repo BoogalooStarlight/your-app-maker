@@ -142,9 +142,7 @@ const Home = () => {
       body: "Une expérience claire, premium et apaisante pour suivre vos progrès santé.",
       content: (
         <div className="flex flex-col items-center text-center">
-          <div className="rounded-[28px] border border-white/10 bg-[#1C1C1E] px-10 py-8 backdrop-blur-xl">
-            <p className="text-6xl font-light tracking-[-2px] text-white">RV</p>
-          </div>
+          <p className="text-[72px] font-light leading-none tracking-[-2px] text-white">RV</p>
         </div>
       ),
     },
@@ -262,10 +260,7 @@ const Home = () => {
           <div className="mx-auto w-full max-w-6xl">
             <header className="mb-6 flex items-start justify-between">
               <div>
-                <p className={`text-[30px] font-extrabold leading-none tracking-[-1px] text-white transition-all duration-500 ${dashboardVisible ? "blur-0 opacity-100" : "blur-sm opacity-80"}`}>
-                  RIVE
-                </p>
-                <h1 className="mt-2 text-3xl font-semibold md:text-4xl">Dashboard</h1>
+                <h1 className="text-3xl font-semibold md:text-4xl">Dashboard</h1>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
                 Aujourd&apos;hui
