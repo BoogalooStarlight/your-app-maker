@@ -226,7 +226,7 @@ const Home = () => {
     },
   ] as const;
 
-  const ringOffset = 314 - (314 * lungHealthDisplay) / 100;
+  const lungRingOffset = 314 - (314 * lungHealthDisplay) / 100;
   const nextMilestone = MILESTONES.find((m) => totalMinutes < m.minutes) ?? null;
 
   useEffect(() => {
@@ -411,7 +411,7 @@ const Home = () => {
                             strokeWidth="6"
                             strokeLinecap="round"
                             strokeDasharray="314"
-                            strokeDashoffset={ringOffset}
+                            strokeDashoffset={lungRingOffset}
                           />
                         </svg>
                         <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-black/15 backdrop-blur-sm">
