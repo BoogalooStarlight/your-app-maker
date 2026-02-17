@@ -22,18 +22,29 @@ const RiveMonogram = ({ compact = false }: { compact?: boolean }) => (
       xmlns="http://www.w3.org/2000/svg"
       aria-label="Monogramme logo"
     >
-      <rect x="8" y="8" width="104" height="104" rx="24" fill="black" />
+      <rect x="8" y="8" width="104" height="104" rx="22" fill="black" />
       <text
-        x="60"
-        y="74"
+        x="50"
+        y="76"
         fill="white"
-        fontSize="64"
+        fontSize={compact ? "50" : "56"}
         fontFamily="Inter, system-ui, sans-serif"
         fontWeight="400"
         textAnchor="middle"
-        letterSpacing="-2"
       >
-        Rv
+        R
+      </text>
+      <path d="M58 62L68 84" stroke="white" strokeWidth="6" strokeLinecap="round" />
+      <text
+        x="73"
+        y="76"
+        fill="white"
+        fontSize={compact ? "50" : "56"}
+        fontFamily="Inter, system-ui, sans-serif"
+        fontWeight="400"
+        textAnchor="middle"
+      >
+        V
       </text>
     </svg>
   </div>
