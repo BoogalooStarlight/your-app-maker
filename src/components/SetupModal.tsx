@@ -48,7 +48,7 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
         <div className="p-6 space-y-6">
           {step === 1 && (
             <div className="space-y-4 animate-fade-in">
-              <div className="flex items-center gap-3 text-foreground">
+              <div className="flex items-center gap-3 text-white">
                 <Calendar className="h-5 w-5 text-primary" />
                 <span className="font-medium">Quand avez-vous arrêté de fumer ?</span>
               </div>
@@ -57,7 +57,7 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
                 value={quitDate}
                 onChange={(e) => setQuitDate(e.target.value)}
                 max={new Date().toISOString().split('T')[0]}
-                className="w-full rounded-xl border border-input bg-background px-4 py-3 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full border-0 border-b border-white/25 bg-transparent px-0 py-3 text-white [color-scheme:dark] focus:border-primary focus:outline-none"
               />
               <p className="text-sm text-muted-foreground">
                 Si vous n'avez pas encore arrêté, sélectionnez aujourd'hui
@@ -67,7 +67,7 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
 
           {step === 2 && (
             <div className="space-y-4 animate-fade-in">
-              <div className="flex items-center gap-3 text-foreground">
+              <div className="flex items-center gap-3 text-white">
                 <Cigarette className="h-5 w-5 text-warning" />
                 <span className="font-medium">Combien de cigarettes fumiez-vous par jour ?</span>
               </div>
@@ -90,7 +90,7 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
 
           {step === 3 && (
             <div className="space-y-4 animate-fade-in">
-              <div className="flex items-center gap-3 text-foreground">
+              <div className="flex items-center gap-3 text-white">
                 <DollarSign className="h-5 w-5 text-success" />
                 <span className="font-medium">Prix d'un paquet de cigarettes (€)</span>
               </div>
