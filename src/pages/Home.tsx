@@ -315,7 +315,7 @@ const Home = () => {
 
               <div className="flex justify-end">
                 <span className="rounded-2xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
-                  Aujourd’hui
+                  Aujourd'hui
                 </span>
               </div>
             </header>
