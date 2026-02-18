@@ -307,16 +307,16 @@ const Home = () => {
             </header>
 
               <div className="flex items-center justify-center">
-                <div className="rounded-full border border-white/10 bg-white/[0.03] p-2 backdrop-blur-md">
+                <span className="rounded-full border border-white/10 bg-white/5 p-2 backdrop-blur-md">
                   <Activity className="h-4 w-4 text-white/60 animate-pulse" />
-                </div>
+                </span>
               </div>
             </header>
 
               <div className="flex justify-end">
-                <div className="rounded-2xl border-[0.5px] border-white/10 bg-[rgba(255,255,255,0.05)] px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
-                  Aujourd&apos;hui
-                </div>
+                <span className="rounded-2xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
+                  Aujourd’hui
+                </span>
               </div>
             </header>
 
