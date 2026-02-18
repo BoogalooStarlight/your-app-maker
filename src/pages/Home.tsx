@@ -304,12 +304,14 @@ const Home = () => {
                 <span className="font-['Inter'] text-[18px] font-bold tracking-[0.02em] text-white">RIVE</span>
                 <span className="inline-block h-2 w-2 rounded-full bg-[#34C759]" aria-hidden="true" />
               </div>
+            </header>
 
               <div className="flex items-center justify-center">
                 <span className="rounded-full border border-white/10 bg-white/5 p-2 backdrop-blur-md">
                   <Activity className="h-4 w-4 text-white/60 animate-pulse" />
                 </span>
               </div>
+            </header>
 
               <div className="flex justify-end">
                 <span className="rounded-2xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
