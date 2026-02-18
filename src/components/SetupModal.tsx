@@ -24,12 +24,12 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/20 backdrop-blur-sm p-4">
       <div className="w-full max-w-md overflow-hidden rounded-3xl bg-card shadow-2xl animate-scale-in">
         {/* Header */}
-        <div className="gradient-fresh p-8 text-center text-primary-foreground">
+        <div className="gradient-fresh p-8 text-center text-white">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-foreground/20 backdrop-blur-sm">
             <Cigarette className="h-8 w-8" />
           </div>
           <h2 className="text-2xl font-bold">Commençons votre parcours</h2>
-          <p className="mt-2 text-primary-foreground/80">Quelques informations pour personnaliser votre suivi</p>
+          <p className="mt-2 text-white/80">Quelques informations pour personnaliser votre suivi</p>
         </div>
 
         {/* Steps indicator */}
@@ -59,7 +59,7 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
                 max={new Date().toISOString().split('T')[0]}
                 className="w-full border-0 border-b border-white/25 bg-transparent px-0 py-3 text-white [color-scheme:dark] focus:border-primary focus:outline-none"
               />
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/70">
                 Si vous n'avez pas encore arrêté, sélectionnez aujourd'hui
               </p>
             </div>
@@ -80,9 +80,9 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
                   onChange={(e) => setCigarettesPerDay(Number(e.target.value))}
                   className="flex-1 h-2 rounded-full bg-muted appearance-none cursor-pointer accent-primary"
                 />
-                <span className="w-16 text-center text-xl font-bold text-foreground">{cigarettesPerDay}</span>
+                <span className="w-16 text-center text-xl font-bold text-white">{cigarettesPerDay}</span>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/70">
                 {cigarettesPerDay <= 10 ? "Fumeur léger" : cigarettesPerDay <= 20 ? "Fumeur modéré" : "Gros fumeur"}
               </p>
             </div>
@@ -104,9 +104,9 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
                   onChange={(e) => setPricePerPack(Number(e.target.value))}
                   className="flex-1 h-2 rounded-full bg-muted appearance-none cursor-pointer accent-primary"
                 />
-                <span className="w-16 text-center text-xl font-bold text-foreground">{pricePerPack}€</span>
+                <span className="w-16 text-center text-xl font-bold text-white">{pricePerPack}€</span>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/70">
                 Prix moyen en France : ~12€
               </p>
             </div>
@@ -116,14 +116,14 @@ export const SetupModal = ({ onComplete }: SetupModalProps) => {
         {/* Actions */}
         <div className="flex gap-3 p-6 pt-0">
           {step > 1 && (
-            <Button variant="outline" onClick={() => setStep(step - 1)} className="flex-1">
+            <Button variant="outline" onClick={() => setStep(step - 1)} className="flex-1 border-white/20 bg-white/5 text-white hover:bg-white/10">
               Retour
             </Button>
           )}
           <Button
             variant="gradient"
             onClick={() => (step < 3 ? setStep(step + 1) : handleComplete())}
-            className="flex-1"
+            className="flex-1 text-white"
           >
             {step < 3 ? "Continuer" : "Commencer"}
           </Button>
