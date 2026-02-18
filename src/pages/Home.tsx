@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  Activity,
   Atom,
   Brain,
   ChevronRight,
@@ -293,17 +294,31 @@ const Home = () => {
 
       {!showOnboarding && (
         <div
-          className={`px-4 py-6 transition-all duration-300 md:px-8 md:py-8 ${
+          className={`px-4 py-4 transition-all duration-300 md:px-8 md:py-6 ${
             dashboardVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
           }`}
         >
           <div className="mx-auto w-full max-w-6xl">
-            <header className="relative mb-6 flex min-h-[50px] items-center justify-end">
-              <div className="logo-container absolute left-1/2 flex -translate-x-1/2 items-center justify-center gap-3">
-                <RiveMonogram compact />
+            <header className="mb-3 grid min-h-[50px] grid-cols-[1fr_auto_1fr] items-center">
+              <div className="flex items-center gap-1.5">
+                <span className="font-['Inter'] text-[18px] font-bold tracking-[0.02em] text-white">RIVE</span>
+                <span className="inline-block h-2 w-2 rounded-full bg-[#34C759]" aria-hidden="true" />
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
                 Aujourd&apos;hui
+              </div>
+            </header>
+
+              <div className="flex items-center justify-center">
+                <div className="rounded-full border border-white/10 bg-white/[0.03] p-2 backdrop-blur-md">
+                  <Activity className="h-4 w-4 text-white/60 animate-[pulse_2.2s_ease-in-out_infinite]" />
+                </div>
+              </article>
+
+              <div className="flex justify-end">
+                <div className="rounded-2xl border-[0.5px] border-white/10 bg-[rgba(255,255,255,0.05)] px-3 py-1.5 text-xs uppercase tracking-[0.16em] text-[#8E8E93] backdrop-blur-xl">
+                  Aujourd&apos;hui
+                </div>
               </div>
             </header>
 
