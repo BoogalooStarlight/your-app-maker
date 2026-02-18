@@ -11,11 +11,10 @@ const Home = () => {
   const ringValue = 565 - (565 * metrics.progressPercent) / 100;
 
   return (
-    <div className="min-h-screen bg-[#000000] px-4 py-6 text-white md:px-8">
+    <div className="min-h-screen bg-[#000000] px-4 py-6 pb-28 text-white md:px-8">
       <div className="mx-auto w-full max-w-6xl space-y-6">
-        <header className="flex flex-wrap items-center justify-between gap-3">
+        <header className="flex items-center justify-between gap-3">
           <h1 className="text-[18px] font-bold tracking-[0.04em]">RIVE</h1>
-          <AppNavigation />
         </header>
 
         <section className={`${cardClass} flex flex-col items-center text-center`}>
@@ -77,6 +76,7 @@ const Home = () => {
           </span>
         </article>
       </div>
+      <AppNavigation />
     </div>
   );
 };

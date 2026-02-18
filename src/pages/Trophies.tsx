@@ -21,11 +21,10 @@ const Trophies = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#000000] px-4 py-6 text-white md:px-8">
+    <div className="min-h-screen bg-[#000000] px-4 py-6 pb-28 text-white md:px-8">
       <div className="mx-auto w-full max-w-6xl space-y-6">
-        <header className="flex flex-wrap items-center justify-between gap-3">
+        <header className="flex items-center justify-between gap-3">
           <h1 className="text-[18px] font-bold tracking-[0.04em]">RIVE</h1>
-          <AppNavigation />
         </header>
 
         <section className={`${cardClass} space-y-4`}>
@@ -48,6 +47,7 @@ const Trophies = () => {
           </div>
         </section>
       </div>
+      <AppNavigation />
     </div>
   );
 };
