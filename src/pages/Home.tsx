@@ -3,7 +3,7 @@ import { Activity, Coins, HeartPulse, Shield } from "lucide-react";
 import { AppNavigation } from "@/components/AppNavigation";
 import { getSmokingMetrics } from "@/lib/smokingMetrics";
 
-const cardClass = "rounded-[28px] border border-white/10 bg-[#1C1C1E] p-5";
+const cardClass = "rounded-[24px] border border-white/10 bg-transparent p-4";
 
 const Home = () => {
   const metrics = useMemo(() => getSmokingMetrics(), []);
@@ -11,13 +11,9 @@ const Home = () => {
   const ringValue = 565 - (565 * metrics.progressPercent) / 100;
 
   return (
-    <div className="min-h-screen bg-[#000000] px-4 py-6 pb-28 text-white md:px-8">
+    <div className="min-h-screen bg-[#000000] px-4 py-6 pb-24 text-white md:px-8">
       <div className="mx-auto w-full max-w-6xl space-y-6">
-        <header className="flex items-center justify-between gap-3">
-          <h1 className="text-[18px] font-bold tracking-[0.04em]">RIVE</h1>
-        </header>
-
-        <section className={`${cardClass} flex flex-col items-center text-center`}>
+                <section className={`${cardClass} flex flex-col items-center text-center`}>
           <p className="text-[11px] uppercase tracking-[0.18em] text-white/60">Temps de sevrage total</p>
 
           <div className="relative mt-6 h-52 w-52">

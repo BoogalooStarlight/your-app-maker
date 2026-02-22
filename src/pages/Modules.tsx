@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { AppNavigation } from "@/components/AppNavigation";
 import { getSmokingMetrics } from "@/lib/smokingMetrics";
 
-const cardClass = "rounded-[28px] border border-white/10 bg-[#1C1C1E] p-5";
+const cardClass = "rounded-[24px] border border-white/10 bg-transparent p-4";
 
 const Modules = () => {
   const metrics = useMemo(() => getSmokingMetrics(), []);
@@ -18,13 +18,9 @@ const Modules = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#000000] px-4 py-6 pb-28 text-white md:px-8">
+    <div className="min-h-screen bg-[#000000] px-4 py-6 pb-24 text-white md:px-8">
       <div className="mx-auto w-full max-w-6xl space-y-6">
-        <header className="flex items-center justify-between gap-3">
-          <h1 className="text-[18px] font-bold tracking-[0.04em]">RIVE</h1>
-        </header>
-
-        <section className={`${cardClass} space-y-4`}>
+                <section className={`${cardClass} space-y-4`}>
           <p className="text-[11px] uppercase tracking-[0.18em] text-white/60">Modules addictions</p>
 
           {modules.map((item) => {
@@ -33,7 +29,7 @@ const Modules = () => {
               <Link
                 to={item.href}
                 key={item.label}
-                className="block rounded-2xl border border-white/10 bg-black/40 p-4 transition-all duration-300 hover:bg-white/5"
+                className="block rounded-2xl border border-white/10 bg-transparent p-4 transition-all duration-300 hover:bg-white/[0.03]"
               >
                 <div className="flex items-center justify-between">
                   <span className="inline-flex items-center gap-3 text-sm text-white/90">
