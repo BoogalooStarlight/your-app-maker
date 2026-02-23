@@ -15,10 +15,6 @@ import Behavioral from "./pages/Behavioral";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
-import Alcohol from "./pages/Alcohol";
-import Drugs from "./pages/Drugs";
-import Balloons from "./pages/Balloons";
-import Behavioral from "./pages/Behavioral";
 
 const queryClient = new QueryClient();
 
