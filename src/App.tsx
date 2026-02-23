@@ -14,8 +14,14 @@ import Balloons from "./pages/Balloons";
 import Behavioral from "./pages/Behavioral";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import Alcohol from "./pages/Alcohol";
+import Drugs from "./pages/Drugs";
+import Balloons from "./pages/Balloons";
+import Behavioral from "./pages/Behavioral";
 
 const queryClient = new QueryClient();
+
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -31,8 +37,8 @@ const App = () => (
           <Route path="/modules" element={<Modules />} />
           <Route path="/trophees" element={<Trophies />} />
           <Route path="/smoking" element={<Smoking />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/alcohol" element={<ComingSoon />} />
-          <Route path="/app/smoking" element={<Smoking />} />
           <Route path="/app/alcohol" element={<Alcohol />} />
           <Route path="/app/drugs" element={<Drugs />} />
           <Route path="/app/balloons" element={<Balloons />} />
