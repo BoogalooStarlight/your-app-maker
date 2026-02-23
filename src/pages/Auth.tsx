@@ -1,7 +1,11 @@
 import { FormEvent, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 
+const GUEST_MODE_KEY = "isGuest";
+
 const Auth = () => {
+  const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,10 +23,21 @@ const Auth = () => {
 
     try {
       if (mode === "signin") {
-        await supabase.auth.signInWithPassword({ email, password });
-        setMessage("Connexion réussie.");
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (signInError) {
+          throw signInError;
+        }
+
+        localStorage.removeItem(GUEST_MODE_KEY);
+        navigate("/");
       } else {
-        await supabase.auth.signUp({ email, password });
+        const { error: signUpError } = await supabase.auth.signUp({ email, password });
+
+        if (signUpError) {
+          throw signUpError;
+        }
+
         setMessage("Inscription réussie. Vérifie ton email.");
       }
     } catch (submitError) {
@@ -31,6 +46,11 @@ const Auth = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGuestMode = () => {
+    localStorage.setItem(GUEST_MODE_KEY, "true");
+    navigate("/");
   };
 
   return (
@@ -88,6 +108,14 @@ const Auth = () => {
             {loading ? "Chargement..." : title}
           </button>
         </form>
+
+        <button
+          type="button"
+          onClick={handleGuestMode}
+          className="mt-3 w-full rounded-xl border border-white/20 bg-transparent py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+        >
+          Continuer en mode invité
+        </button>
 
         {message && <p className="mt-4 text-sm text-white/80">{message}</p>}
         {error && <p className="mt-4 text-sm text-red-300">{error}</p>}
