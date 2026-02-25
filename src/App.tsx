@@ -11,13 +11,13 @@ import Behavioral from "./pages/Behavioral";
 import ComingSoon from "./pages/ComingSoon";
 import Drugs from "./pages/Drugs";
 import Home from "./pages/Home";
+import Modules from "./pages/Modules";
 import NotFound from "./pages/NotFound";
 import Smoking from "./pages/Smoking";
+import Trophies from "./pages/Trophies";
 
 const queryClient = new QueryClient();
 
-const Modules = ComingSoon;
-const Trophies = ComingSoon;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
