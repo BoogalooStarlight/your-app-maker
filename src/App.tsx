@@ -16,6 +16,8 @@ import Smoking from "./pages/Smoking";
 
 const queryClient = new QueryClient();
 
+const Modules = ComingSoon;
+const Trophies = ComingSoon;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -30,6 +32,8 @@ const App = () => (
             <Route path="/" element={<Home />} />
             <Route path="/smoking" element={<Smoking />} />
             <Route path="/alcohol" element={<ComingSoon />} />
+            <Route path="/modules" element={<Modules />} />
+            <Route path="/trophees" element={<Trophies />} />
             <Route path="/app/alcohol" element={<Alcohol />} />
             <Route path="/app/drugs" element={<Drugs />} />
             <Route path="/app/balloons" element={<Balloons />} />
