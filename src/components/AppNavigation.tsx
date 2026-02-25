@@ -1,6 +1,6 @@
 import { NavLink } from "@/components/NavLink";
 
-const AppNavigation = () => {
+export const AppNavigation = () => {
   return (
     <nav className="flex items-center gap-4">
       <NavLink to="/modules" className="text-white/70" activeClassName="text-white">
@@ -12,5 +12,3 @@ const AppNavigation = () => {
     </nav>
   );
 };
-
-export default AppNavigation;
