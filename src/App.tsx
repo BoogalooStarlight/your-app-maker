@@ -16,6 +16,7 @@ import Smoking from "./pages/Smoking";
 
 const queryClient = new QueryClient();
 
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
