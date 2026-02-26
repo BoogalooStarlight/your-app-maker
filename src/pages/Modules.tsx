@@ -1,5 +1,6 @@
-import { Brain, Circle, Wind, Wine, Zap } from "lucide-react";
+import { Brain, Wind, Wine } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AppNavigation } from "@/components/AppNavigation";
 
 const modules = [
   { title: "Poumons", to: "/app/smoking-choice", icon: Wind },
@@ -12,7 +13,7 @@ const modules = [
 export default function Modules() {
   return (
     <div className="min-h-screen bg-black text-white">
-      <main className="mx-auto w-full max-w-[980px] px-4 pb-24 pt-6">
+      <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
         <h1 className="text-xl font-semibold">Modules addictions</h1>
 
         <section className="mt-4 space-y-3 rounded-3xl border border-white/10 bg-[#050506] p-3">
