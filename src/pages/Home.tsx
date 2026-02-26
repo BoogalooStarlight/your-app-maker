@@ -158,6 +158,24 @@ const Home = () => {
           </div>
         </section>
 
+
+        <section className="container py-2">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="rounded-2xl glass-light p-4">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Argent</p>
+              <p className="mt-2 text-3xl font-bold text-foreground">0€</p>
+            </div>
+            <div className="rounded-2xl glass-light p-4">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Évités</p>
+              <p className="mt-2 text-3xl font-bold text-foreground">0</p>
+            </div>
+            <div className="rounded-2xl glass-light p-4">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Santé</p>
+              <p className="mt-2 text-3xl font-bold text-foreground">0%</p>
+            </div>
+          </div>
+        </section>
+
         {/* Status bar at bottom */}
         <section className="container">
           <div className="rounded-2xl glass-light p-4 flex items-center justify-between">
