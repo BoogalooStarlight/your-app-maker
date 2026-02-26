@@ -6,6 +6,8 @@ const modules = [
   { title: "Poumons", to: "/app/smoking-choice", icon: Wind },
   { title: "Anti-Alcool", to: "/app/alcohol", icon: Wine },
   { title: "Santé mentale", to: "/mental", icon: Brain },
+  { title: "Énergie & Sommeil", to: "/energy", icon: Zap },
+  { title: "Anti-Ballons", to: "/app/balloons", icon: Circle },
 ];
 
 export default function Modules() {
@@ -30,7 +32,6 @@ export default function Modules() {
           ))}
         </section>
       </main>
-      <AppNavigation />
     </div>
   );
 }
