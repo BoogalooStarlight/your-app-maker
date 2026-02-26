@@ -24,7 +24,7 @@ const Smoking = () => {
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link to="/">
+            <Link to="/modules">
               <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
                 <ArrowLeft className="h-5 w-5" />
               </Button>
