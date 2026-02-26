@@ -60,6 +60,22 @@ const Home = () => {
               <p className="text-xs uppercase tracking-wider text-muted-foreground">Santé</p>
               <p className="mt-2 text-3xl font-bold text-foreground">0%</p>
             </div>
+            <p className="mt-3 text-4xl font-semibold leading-none">0</p>
+          </article>
+
+          <article className="rounded-3xl border border-white/10 bg-[#050506] px-4 py-4">
+            <div className="flex items-center justify-between">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-white/55">Santé</p>
+              <Heart className="h-5 w-5 text-white/60" />
+            </div>
+            <p className="mt-3 text-4xl font-semibold leading-none">0%</p>
+          </article>
+        </section>
+
+        <section className="mt-4 rounded-3xl border border-white/10 bg-[#050506] px-4 py-4">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-white/70" />
+            <span className="text-sm text-white/75">Système actif</span>
           </div>
         </section>
 
