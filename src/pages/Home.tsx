@@ -28,19 +28,37 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="mt-5 grid grid-cols-3 gap-3">
-          <article className="rounded-3xl border border-white/10 bg-[#050506] px-4 py-4">
-            <div className="flex items-center justify-between">
+        <section className="mt-5 grid gap-3">
+          <article className="flex items-center justify-between rounded-3xl border border-white/10 bg-[#050506] px-4 py-4">
+            <div>
               <p className="text-[11px] uppercase tracking-[0.18em] text-white/55">Argent</p>
-              <Coins className="h-5 w-5 text-white/60" />
+              <p className="mt-2 text-5xl font-semibold leading-none">0€</p>
             </div>
-            <p className="mt-3 text-4xl font-semibold leading-none">0€</p>
+            <Coins className="h-6 w-6 text-white/60" />
           </article>
 
-          <article className="rounded-3xl border border-white/10 bg-[#050506] px-4 py-4">
-            <div className="flex items-center justify-between">
+          <article className="flex items-center justify-between rounded-3xl border border-white/10 bg-[#050506] px-4 py-4">
+            <div>
               <p className="text-[11px] uppercase tracking-[0.18em] text-white/55">Évités</p>
-              <Activity className="h-5 w-5 text-white/60" />
+              <p className="mt-2 text-5xl font-semibold leading-none">0</p>
+            </div>
+            <Activity className="h-6 w-6 text-white/60" />
+          </article>
+
+
+        <section className="container py-2">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="rounded-2xl glass-light p-4">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Argent</p>
+              <p className="mt-2 text-3xl font-bold text-foreground">0€</p>
+            </div>
+            <div className="rounded-2xl glass-light p-4">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Évités</p>
+              <p className="mt-2 text-3xl font-bold text-foreground">0</p>
+            </div>
+            <div className="rounded-2xl glass-light p-4">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Santé</p>
+              <p className="mt-2 text-3xl font-bold text-foreground">0%</p>
             </div>
             <p className="mt-3 text-4xl font-semibold leading-none">0</p>
           </article>
@@ -59,6 +77,26 @@ const Home = () => {
             <span className="h-2 w-2 animate-pulse rounded-full bg-white/70" />
             <span className="text-sm text-white/75">Système actif</span>
           </div>
+        </section>
+
+        {/* Status bar at bottom */}
+        <section className="container">
+          <div className="rounded-2xl glass-light p-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                <span className="text-sm text-muted-foreground">Système actif</span>
+              </div>
+              <div className="w-px h-4 bg-border" />
+              <span className="text-sm text-muted-foreground">
+                Dernière mise à jour : <span className="text-foreground">maintenant</span>
+              </span>
+            </div>
+            <div className="text-xs text-muted-foreground font-mono">
+              v1.0.0
+            </div>
+            <Heart className="h-6 w-6 text-white/60" />
+          </article>
         </section>
 
         <section className="mt-4 flex items-center justify-between rounded-3xl border border-white/10 bg-[#050506] px-4 py-4">

@@ -2,17 +2,17 @@ import { Home, LayoutGrid, Trophy } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-const items = [
-  { to: "/", label: "Accueil", icon: Home },
-  { to: "/modules", label: "Modules", icon: LayoutGrid },
-  { to: "/trophees", label: "Trophées", icon: Trophy },
+const navItems = [
+  { to: "/", icon: Home, label: "Accueil" },
+  { to: "/modules", icon: LayoutGrid, label: "Modules" },
+  { to: "/trophees", icon: Trophy, label: "Trophées" },
 ];
 
 export const AppNavigation = () => {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-black/95 backdrop-blur-xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-[#070708]/95 backdrop-blur-xl">
       <div className="mx-auto flex h-16 w-full max-w-[430px] items-center justify-center gap-14 px-6">
-        {items.map(({ to, label, icon: Icon }) => (
+        {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
