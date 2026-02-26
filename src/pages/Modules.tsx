@@ -1,54 +1,36 @@
-import { useMemo } from "react";
-import { Atom, Brain, ChevronRight, Cigarette, Moon, Wine } from "lucide-react";
+import { Brain, Wind, Wine } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppNavigation } from "@/components/AppNavigation";
-import { getSmokingMetrics } from "@/lib/smokingMetrics";
 
-const cardClass = "rounded-[24px] border border-white/10 bg-transparent p-4";
+const modules = [
+  { title: "Poumons", to: "/app/smoking-choice", icon: Wind },
+  { title: "Anti-Alcool", to: "/app/alcohol", icon: Wine },
+  { title: "Santé mentale", to: "/mental", icon: Brain },
+];
 
-const Modules = () => {
-  const metrics = useMemo(() => getSmokingMetrics(), []);
-
-  const modules = [
-    { label: "Anti-Tabac", href: "/smoking", icon: Cigarette, progress: Math.max(8, metrics.progressPercent) },
-    { label: "Anti-Alcool", href: "/alcohol", icon: Wine, progress: 18 },
-    { label: "Santé mentale", href: "/mental", icon: Brain, progress: 12 },
-    { label: "Énergie & Sommeil", href: "/energy", icon: Moon, progress: 22 },
-    { label: "Anti-Ballons", href: "/balloons", icon: Atom, progress: 10 },
-  ];
-
+export default function Modules() {
   return (
-    <div className="min-h-screen bg-[#000000] px-4 py-6 pb-24 text-white md:px-8">
-      <div className="mx-auto w-full max-w-6xl space-y-6">
-                <section className={`${cardClass} space-y-4`}>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-white/60">Modules addictions</p>
+    <div className="min-h-screen bg-black text-white">
+      <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
+        <h1 className="text-xl font-semibold">Modules addictions</h1>
 
-          {modules.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                to={item.href}
-                key={item.label}
-                className="block rounded-2xl border border-white/10 bg-transparent p-4 transition-all duration-300 hover:bg-white/[0.03]"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-3 text-sm text-white/90">
-                    <Icon className="h-4 w-4 text-white/70" />
-                    {item.label}
-                  </span>
-                  <ChevronRight className="h-4 w-4 text-white/50" />
-                </div>
-                <div className="mt-3 h-1.5 w-full rounded-full bg-white/10">
-                  <div className="h-1.5 rounded-full bg-white/65" style={{ width: `${item.progress}%` }} />
-                </div>
-              </Link>
-            );
-          })}
+        <section className="mt-4 space-y-3 rounded-3xl border border-white/10 bg-[#050506] p-3">
+          {modules.map(({ title, to, icon: Icon }) => (
+            <Link
+              key={title}
+              to={to}
+              className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/60 px-4 py-4 transition hover:border-white/25"
+            >
+              <span className="flex items-center gap-3 text-base text-white/90">
+                <Icon className="h-5 w-5 text-white/70" />
+                {title}
+              </span>
+              <span className="text-white/40">›</span>
+            </Link>
+          ))}
         </section>
-      </div>
+      </main>
       <AppNavigation />
     </div>
   );
-};
-
-export default Modules;
+}
