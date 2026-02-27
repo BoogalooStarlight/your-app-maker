@@ -1,4 +1,4 @@
-import { Brain, Wind, Wine } from "lucide-react";
+import { Brain, Wind, Wine, Zap, Circle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppNavigation } from "@/components/AppNavigation";
 
