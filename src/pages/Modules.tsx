@@ -1,5 +1,6 @@
 import { Brain, Circle, Wind, Wine, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AppNavigation } from "@/components/AppNavigation";
 
 const modules = [
   { title: "Poumons", to: "/app/smoking-choice", icon: Wind },
@@ -36,6 +37,7 @@ export default function Modules() {
           ))}
         </section>
       </main>
+      <AppNavigation />
     </div>
   );
 }
