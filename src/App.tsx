@@ -2,13 +2,30 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import Home from "./pages/Home";
 import Smoking from "./pages/Smoking";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
+import Modules from "./pages/Modules";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
+
+const ProtectedApp = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div className="min-h-screen bg-black" />;
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  return <Outlet />;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -17,11 +34,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/smoking" element={<Smoking />} />
-          <Route path="/alcohol" element={<ComingSoon />} />
-          <Route path="/mental" element={<ComingSoon />} />
-          <Route path="/energy" element={<ComingSoon />} />
+          <Route path="/auth" element={<Auth />} />
+
+          <Route element={<ProtectedApp />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/modules" element={<Modules />} />
+            <Route path="/smoking" element={<Smoking />} />
+            <Route path="/alcohol" element={<ComingSoon />} />
+            <Route path="/mental" element={<ComingSoon />} />
+            <Route path="/energy" element={<ComingSoon />} />
+          </Route>
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
