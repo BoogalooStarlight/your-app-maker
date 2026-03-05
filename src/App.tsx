@@ -2,23 +2,30 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Alcohol from "./pages/Alcohol";
-import Auth from "./pages/Auth";
-import Balloons from "./pages/Balloons";
-import Behavioral from "./pages/Behavioral";
-import ComingSoon from "./pages/ComingSoon";
-import Drugs from "./pages/Drugs";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import Home from "./pages/Home";
+import Smoking from "./pages/Smoking";
 import Modules from "./pages/Modules";
 import NotFound from "./pages/NotFound";
-import Smoking from "./pages/Smoking";
-import SmokingChoice from "./pages/SmokingChoice";
-import Trophies from "./pages/Trophies";
+import Modules from "./pages/Modules";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
+const ProtectedApp = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div className="min-h-screen bg-black" />;
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  return <Outlet />;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

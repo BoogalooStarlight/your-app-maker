@@ -48,11 +48,6 @@ const Auth = () => {
     }
   };
 
-  const handleGuestMode = () => {
-    localStorage.setItem(GUEST_MODE_KEY, "true");
-    navigate("/");
-  };
-
   return (
     <div className="min-h-screen bg-black px-4 py-8 text-white">
       <div className="mx-auto w-full max-w-md rounded-[28px] border border-white/10 bg-[#1C1C1E] p-6">
@@ -108,14 +103,6 @@ const Auth = () => {
             {loading ? "Chargement..." : title}
           </button>
         </form>
-
-        <button
-          type="button"
-          onClick={handleGuestMode}
-          className="mt-3 w-full rounded-xl border border-white/20 bg-transparent py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
-        >
-          Continuer en mode invité
-        </button>
 
         {message && <p className="mt-4 text-sm text-white/80">{message}</p>}
         {error && <p className="mt-4 text-sm text-red-300">{error}</p>}
