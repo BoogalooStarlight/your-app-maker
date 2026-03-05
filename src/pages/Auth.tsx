@@ -1,6 +1,8 @@
 import { FormEvent, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import supabase from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
+
+const GUEST_MODE_KEY = "isGuest";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ const Auth = () => {
           throw signInError;
         }
 
+        localStorage.removeItem(GUEST_MODE_KEY);
         navigate("/");
       } else {
         const { error: signUpError } = await supabase.auth.signUp({ email, password });

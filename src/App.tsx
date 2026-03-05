@@ -6,7 +6,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 import { useAuth } from "@/hooks/useAuth";
 import Home from "./pages/Home";
 import Smoking from "./pages/Smoking";
-import ComingSoon from "./pages/ComingSoon";
+import Modules from "./pages/Modules";
 import NotFound from "./pages/NotFound";
 import Modules from "./pages/Modules";
 import Auth from "./pages/Auth";
@@ -36,11 +36,18 @@ const App = () => (
         <Routes>
           <Route path="/auth" element={<Auth />} />
 
-          <Route element={<ProtectedApp />}>
+          <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
-            <Route path="/modules" element={<Modules />} />
             <Route path="/smoking" element={<Smoking />} />
             <Route path="/alcohol" element={<ComingSoon />} />
+            <Route path="/modules" element={<Modules />} />
+            <Route path="/trophees" element={<Trophies />} />
+            <Route path="/app/smoking-choice" element={<SmokingChoice />} />
+            <Route path="/app/alcohol" element={<Alcohol />} />
+            <Route path="/app/puff" element={<ComingSoon />} />
+            <Route path="/app/drugs" element={<Drugs />} />
+            <Route path="/app/balloons" element={<Balloons />} />
+            <Route path="/app/behavioral" element={<Behavioral />} />
             <Route path="/mental" element={<ComingSoon />} />
             <Route path="/energy" element={<ComingSoon />} />
           </Route>
