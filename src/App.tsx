@@ -8,7 +8,6 @@ import Home from "./pages/Home";
 import Smoking from "./pages/Smoking";
 import Modules from "./pages/Modules";
 import NotFound from "./pages/NotFound";
-import Modules from "./pages/Modules";
 import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
