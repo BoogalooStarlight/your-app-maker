@@ -9,6 +9,7 @@ import Smoking from "./pages/Smoking";
 import Modules from "./pages/Modules";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import ComingSoon from "./pages/ComingSoon";
 
 const queryClient = new QueryClient();
 
