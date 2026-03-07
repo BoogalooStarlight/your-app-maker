@@ -35,7 +35,7 @@ const App = () => (
         <Routes>
           <Route path="/auth" element={<Auth />} />
 
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedApp />}>
             <Route path="/" element={<Home />} />
             <Route path="/smoking" element={<Smoking />} />
             <Route path="/alcohol" element={<ComingSoon />} />
