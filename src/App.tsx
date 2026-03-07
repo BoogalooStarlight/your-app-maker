@@ -1,6 +1,6 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@components/ui/toaster";
+import { Toaster as Sonner } from "@components/ui/sonner";
+import { TooltipProvider } from "@components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -9,6 +9,13 @@ import Smoking from "./pages/Smoking";
 import Modules from "./pages/Modules";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import ComingSoon from "./pages/ComingSoon";
+import Trophies from "./pages/Trophies";
+import SmokingChoice from "./pages/SmokingChoice";
+import Alcohol from "./pages/Alcohol";
+import Drugs from "./pages/Drugs";
+import Balloons from "./pages/Balloons";
+import Behavioral from "./pages/Behavioral";
 import ComingSoon from "./pages/ComingSoon";
 
 const queryClient = new QueryClient();
