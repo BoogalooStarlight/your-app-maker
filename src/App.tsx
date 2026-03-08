@@ -16,7 +16,6 @@ import Alcohol from "./pages/Alcohol";
 import Drugs from "./pages/Drugs";
 import Balloons from "./pages/Balloons";
 import Behavioral from "./pages/Behavioral";
-import ComingSoon from "./pages/ComingSoon";
 
 const queryClient = new QueryClient();
 
