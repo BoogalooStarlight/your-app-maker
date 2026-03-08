@@ -6,10 +6,16 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 import { useAuth } from "@/hooks/useAuth";
 import Home from "./pages/Home";
 import Smoking from "./pages/Smoking";
-import ComingSoon from "./pages/ComingSoon";
-import NotFound from "./pages/NotFound";
 import Modules from "./pages/Modules";
+import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import ComingSoon from "./pages/ComingSoon";
+import Trophies from "./pages/Trophies";
+import SmokingChoice from "./pages/SmokingChoice";
+import Alcohol from "./pages/Alcohol";
+import Drugs from "./pages/Drugs";
+import Balloons from "./pages/Balloons";
+import Behavioral from "./pages/Behavioral";
 
 const queryClient = new QueryClient();
 
@@ -38,9 +44,16 @@ const App = () => (
 
           <Route element={<ProtectedApp />}>
             <Route path="/" element={<Home />} />
-            <Route path="/modules" element={<Modules />} />
             <Route path="/smoking" element={<Smoking />} />
             <Route path="/alcohol" element={<ComingSoon />} />
+            <Route path="/modules" element={<Modules />} />
+            <Route path="/trophees" element={<Trophies />} />
+            <Route path="/app/smoking-choice" element={<SmokingChoice />} />
+            <Route path="/app/alcohol" element={<Alcohol />} />
+            <Route path="/app/puff" element={<ComingSoon />} />
+            <Route path="/app/drugs" element={<Drugs />} />
+            <Route path="/app/balloons" element={<Balloons />} />
+            <Route path="/app/behavioral" element={<Behavioral />} />
             <Route path="/mental" element={<ComingSoon />} />
             <Route path="/energy" element={<ComingSoon />} />
           </Route>

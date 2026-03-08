@@ -86,6 +86,7 @@ const Home = () => {
           </article>
         </section>
 
+
         <section className="mt-4 flex items-center justify-between rounded-3xl border border-white/10 bg-[#050506] px-4 py-5">
           <p className="text-lg text-white/85">Objectif annuel</p>
           <div className="flex items-center gap-2 text-white/75">
