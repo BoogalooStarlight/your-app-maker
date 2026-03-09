@@ -5,7 +5,6 @@ import supabase from "@/lib/supabaseClient";
 const Auth = () => {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,10 +34,6 @@ const Auth = () => {
         if (signUpError) {
           throw signUpError;
         }
-
-        await (supabase.auth as {
-          updateUser?: (input: { data: { pseudo: string } }) => Promise<{ error?: unknown }>;
-        }).updateUser?.({ data: { pseudo } });
 
         setMessage("Inscription réussie. Vérifie ton email.");
       }
@@ -74,19 +69,6 @@ const Auth = () => {
         <p className="mb-6 text-sm text-white/60">Accède à ton espace RIVE.</p>
 
         <form onSubmit={onSubmit} className="space-y-4">
-          {mode === "signup" && (
-            <div>
-              <label className="mb-1 block text-xs uppercase tracking-wider text-white/60">Pseudo</label>
-              <input
-                type="text"
-                value={pseudo}
-                onChange={(e) => setPseudo(e.target.value)}
-                required
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-white outline-none focus:border-white/40"
-              />
-            </div>
-          )}
-
           <div>
             <label className="mb-1 block text-xs uppercase tracking-wider text-white/60">Email</label>
             <input
