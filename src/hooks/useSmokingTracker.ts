@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import supabase from "@/lib/supabaseClient";
 
 interface TrackerData {
   quitDate: string;
@@ -39,12 +40,82 @@ export const useSmokingTracker = () => {
     lungHealthPercentage: 0,
   });
 
-  // Load data from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("smokingTrackerData");
-    if (saved) {
-      setData(JSON.parse(saved));
+  const getAccessToken = () => {
+    const rawSession = localStorage.getItem("rive.supabase.session");
+    if (!rawSession) {
+      return null;
     }
+
+    try {
+      const session = JSON.parse(rawSession) as { access_token?: string };
+      return session.access_token ?? null;
+    } catch {
+      return null;
+    }
+  };
+
+  const fetchModuleData = async (userId: string) => {
+    const accessToken = getAccessToken();
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+
+    if (!accessToken || !supabaseUrl || !supabaseAnonKey) {
+      return null;
+    }
+
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/user_modules?user_id=eq.${userId}&module_slug=eq.smoking&select=started_at,daily_quantity,daily_cost_euros&limit=1`,
+      {
+        headers: {
+          apikey: supabaseAnonKey,
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const rows = (await response.json()) as Array<{
+      started_at: string;
+      daily_quantity: number;
+      daily_cost_euros: number;
+    }>;
+
+    if (!rows.length) {
+      return null;
+    }
+
+    const row = rows[0];
+    return {
+      quitDate: row.started_at,
+      cigarettesPerDay: row.daily_quantity,
+      pricePerPack: row.daily_cost_euros,
+    } as TrackerData;
+  };
+
+  // Load data from Supabase (or localStorage fallback)
+  useEffect(() => {
+    const loadData = async () => {
+      const { data: authData } = await supabase.auth.getUser();
+
+      if (authData.user) {
+        const moduleData = await fetchModuleData(authData.user.id);
+        if (moduleData) {
+          setData(moduleData);
+          localStorage.setItem("smokingTrackerData", JSON.stringify(moduleData));
+          return;
+        }
+      }
+
+      const saved = localStorage.getItem("smokingTrackerData");
+      if (saved) {
+        setData(JSON.parse(saved));
+      }
+    };
+
+    void loadData();
   }, []);
 
   // Calculate stats
@@ -88,18 +159,64 @@ export const useSmokingTracker = () => {
   }, [calculateStats]);
 
   // Save data
-  const saveData = (newData: { quitDate: Date; cigarettesPerDay: number; pricePerPack: number }) => {
+  const saveData = async (newData: { quitDate: Date; cigarettesPerDay: number; pricePerPack: number }) => {
     const dataToSave: TrackerData = {
       quitDate: newData.quitDate.toISOString(),
       cigarettesPerDay: newData.cigarettesPerDay,
       pricePerPack: newData.pricePerPack,
     };
+
+    const { data: authData } = await supabase.auth.getUser();
+    if (authData.user) {
+      const accessToken = getAccessToken();
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+
+      if (accessToken && supabaseUrl && supabaseAnonKey) {
+        await fetch(`${supabaseUrl}/rest/v1/user_modules?on_conflict=user_id,module_slug`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: supabaseAnonKey,
+            Authorization: `Bearer ${accessToken}`,
+            Prefer: "resolution=merge-duplicates",
+          },
+          body: JSON.stringify({
+            user_id: authData.user.id,
+            module_slug: "smoking",
+            started_at: dataToSave.quitDate,
+            daily_quantity: dataToSave.cigarettesPerDay,
+            daily_cost_euros: dataToSave.pricePerPack,
+            is_active: true,
+          }),
+        });
+      }
+    }
+
     localStorage.setItem("smokingTrackerData", JSON.stringify(dataToSave));
     setData(dataToSave);
   };
 
   // Reset data
-  const resetData = () => {
+  const resetData = async () => {
+    const { data: authData } = await supabase.auth.getUser();
+
+    if (authData.user) {
+      const accessToken = getAccessToken();
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+
+      if (accessToken && supabaseUrl && supabaseAnonKey) {
+        await fetch(`${supabaseUrl}/rest/v1/user_modules?user_id=eq.${authData.user.id}&module_slug=eq.smoking`, {
+          method: "DELETE",
+          headers: {
+            apikey: supabaseAnonKey,
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+      }
+    }
+
     localStorage.removeItem("smokingTrackerData");
     setData(null);
   };
