@@ -40,75 +40,33 @@ export const useSmokingTracker = () => {
     lungHealthPercentage: 0,
   });
 
-  const getAccessToken = () => {
-    const rawSession = localStorage.getItem("rive.supabase.session");
-    if (!rawSession) {
-      return null;
-    }
-
-    try {
-      const session = JSON.parse(rawSession) as { access_token?: string };
-      return session.access_token ?? null;
-    } catch {
-      return null;
-    }
-  };
-
-  const fetchModuleData = async (userId: string) => {
-    const accessToken = getAccessToken();
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-
-    if (!accessToken || !supabaseUrl || !supabaseAnonKey) {
-      return null;
-    }
-
-    const response = await fetch(
-      `${supabaseUrl}/rest/v1/user_modules?user_id=eq.${userId}&module_slug=eq.smoking&select=started_at,daily_quantity,daily_cost_euros&limit=1`,
-      {
-        headers: {
-          apikey: supabaseAnonKey,
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const rows = (await response.json()) as Array<{
-      started_at: string;
-      daily_quantity: number;
-      daily_cost_euros: number;
-    }>;
-
-    if (!rows.length) {
-      return null;
-    }
-
-    const row = rows[0];
-    return {
-      quitDate: row.started_at,
-      cigarettesPerDay: row.daily_quantity,
-      pricePerPack: row.daily_cost_euros,
-    } as TrackerData;
-  };
-
   // Load data from Supabase (or localStorage fallback)
   useEffect(() => {
     const loadData = async () => {
       const { data: authData } = await supabase.auth.getUser();
 
       if (authData.user) {
-        const moduleData = await fetchModuleData(authData.user.id);
-        if (moduleData) {
+        const { data: rows, error } = await supabase
+          .from("user_modules")
+          .select("started_at, daily_quantity, daily_cost_euros")
+          .eq("user_id", authData.user.id)
+          .eq("module_slug", "smoking")
+          .limit(1)
+          .single();
+
+        if (!error && rows) {
+          const moduleData: TrackerData = {
+            quitDate: rows.started_at,
+            cigarettesPerDay: rows.daily_quantity,
+            pricePerPack: rows.daily_cost_euros,
+          };
           setData(moduleData);
           localStorage.setItem("smokingTrackerData", JSON.stringify(moduleData));
           return;
         }
       }
 
+      // Fallback localStorage
       const saved = localStorage.getItem("smokingTrackerData");
       if (saved) {
         setData(JSON.parse(saved));
@@ -129,26 +87,16 @@ export const useSmokingTracker = () => {
     const totalHours = Math.floor(totalMinutes / 60);
     const totalDays = Math.floor(totalHours / 24);
 
-    // Cigarettes per minute (assuming 16 waking hours)
     const cigarettesPerMinute = data.cigarettesPerDay / (16 * 60);
     const cigarettesAvoided = Math.floor(cigarettesPerMinute * totalMinutes);
 
-    // Money saved (20 cigarettes per pack)
     const pricePerCigarette = data.pricePerPack / 20;
     const moneySaved = cigarettesAvoided * pricePerCigarette;
 
-    // Lung health percentage (improves over time, max at 1 year)
-    const maxMinutesForFullRecovery = 525600; // 1 year
+    const maxMinutesForFullRecovery = 525600;
     const lungHealthPercentage = Math.min(100, (totalMinutes / maxMinutesForFullRecovery) * 100);
 
-    setStats({
-      totalMinutes,
-      totalHours,
-      totalDays,
-      cigarettesAvoided,
-      moneySaved,
-      lungHealthPercentage,
-    });
+    setStats({ totalMinutes, totalHours, totalDays, cigarettesAvoided, moneySaved, lungHealthPercentage });
   }, [data]);
 
   // Update stats every minute
@@ -167,29 +115,24 @@ export const useSmokingTracker = () => {
     };
 
     const { data: authData } = await supabase.auth.getUser();
-    if (authData.user) {
-      const accessToken = getAccessToken();
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
-      if (accessToken && supabaseUrl && supabaseAnonKey) {
-        await fetch(`${supabaseUrl}/rest/v1/user_modules?on_conflict=user_id,module_slug`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            apikey: supabaseAnonKey,
-            Authorization: `Bearer ${accessToken}`,
-            Prefer: "resolution=merge-duplicates",
-          },
-          body: JSON.stringify({
+    if (authData.user) {
+      const { error } = await supabase
+        .from("user_modules")
+        .upsert(
+          {
             user_id: authData.user.id,
             module_slug: "smoking",
             started_at: dataToSave.quitDate,
             daily_quantity: dataToSave.cigarettesPerDay,
             daily_cost_euros: dataToSave.pricePerPack,
             is_active: true,
-          }),
-        });
+          },
+          { onConflict: "user_id,module_slug" }
+        );
+
+      if (error) {
+        console.error("Erreur sauvegarde Supabase:", error.message);
       }
     }
 
@@ -202,18 +145,14 @@ export const useSmokingTracker = () => {
     const { data: authData } = await supabase.auth.getUser();
 
     if (authData.user) {
-      const accessToken = getAccessToken();
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+      const { error } = await supabase
+        .from("user_modules")
+        .delete()
+        .eq("user_id", authData.user.id)
+        .eq("module_slug", "smoking");
 
-      if (accessToken && supabaseUrl && supabaseAnonKey) {
-        await fetch(`${supabaseUrl}/rest/v1/user_modules?user_id=eq.${authData.user.id}&module_slug=eq.smoking`, {
-          method: "DELETE",
-          headers: {
-            apikey: supabaseAnonKey,
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+      if (error) {
+        console.error("Erreur suppression Supabase:", error.message);
       }
     }
 
@@ -221,7 +160,6 @@ export const useSmokingTracker = () => {
     setData(null);
   };
 
-  // Get achieved milestones
   const getMilestones = () => {
     return MILESTONES.map((milestone) => ({
       ...milestone,
@@ -229,7 +167,6 @@ export const useSmokingTracker = () => {
     }));
   };
 
-  // Format time display
   const getTimeDisplay = () => {
     const days = stats.totalDays;
     const hours = stats.totalHours % 24;
