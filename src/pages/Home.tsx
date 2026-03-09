@@ -1,11 +1,43 @@
-import { Activity, Coins, Heart, Shield, Target } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Activity, Coins, Heart, LogOut, Shield, Target } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { AppNavigation } from "@/components/AppNavigation";
+import supabase from "@/lib/supabaseClient";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [pseudo, setPseudo] = useState<string>("");
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      const value = (data.user as { user_metadata?: { pseudo?: string } } | null)?.user_metadata?.pseudo;
+      setPseudo(value ?? "");
+    };
+
+    loadUser();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
+        <section className="mb-4 flex items-center justify-between">
+          <p className="text-xl font-semibold text-white/90">Bonjour {pseudo || "vous"} 👋</p>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-3 py-2 text-sm text-white/80 transition hover:bg-white/10"
+          >
+            <LogOut className="h-4 w-4" />
+            Se déconnecter
+          </button>
+        </section>
+
         <section className="rounded-[22px] border border-white/10 bg-[#050506] px-4 py-8">
           <p className="text-center text-[11px] uppercase tracking-[0.22em] text-white/60">Temps de sevrage total</p>
 
