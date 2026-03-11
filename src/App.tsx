@@ -16,6 +16,11 @@ import Alcohol from "./pages/Alcohol";
 import Drugs from "./pages/Drugs";
 import Balloons from "./pages/Balloons";
 import Behavioral from "./pages/Behavioral";
+import Substances from "./pages/Substances";
+import Gambling from "./pages/Gambling";
+import Pornography from "./pages/Pornography";
+import Fornication from "./pages/Fornication";
+import Screentime from "./pages/Screentime";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +59,11 @@ const App = () => (
             <Route path="/app/drugs" element={<Drugs />} />
             <Route path="/app/balloons" element={<Balloons />} />
             <Route path="/app/behavioral" element={<Behavioral />} />
+            <Route path="/app/substances" element={<Substances />} />
+            <Route path="/app/gambling" element={<Gambling />} />
+            <Route path="/app/pornography" element={<Pornography />} />
+            <Route path="/app/fornication" element={<Fornication />} />
+            <Route path="/app/screentime" element={<Screentime />} />
             <Route path="/mental" element={<ComingSoon />} />
             <Route path="/energy" element={<ComingSoon />} />
           </Route>
