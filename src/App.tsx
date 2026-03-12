@@ -17,6 +17,7 @@ import Drugs from "./pages/Drugs";
 import Balloons from "./pages/Balloons";
 import Behavioral from "./pages/Behavioral";
 import Substances from "./pages/Substances";
+import SubstancesChoice from "./pages/SubstancesChoice";
 import Gambling from "./pages/Gambling";
 import Pornography from "./pages/Pornography";
 import Fornication from "./pages/Fornication";
@@ -59,7 +60,11 @@ const App = () => (
             <Route path="/app/drugs" element={<Drugs />} />
             <Route path="/app/balloons" element={<Balloons />} />
             <Route path="/app/behavioral" element={<Behavioral />} />
-            <Route path="/app/substances" element={<Substances />} />
+            <Route path="/app/substances" element={<SubstancesChoice />} />
+            <Route path="/app/substances/cannabis" element={<Substances slug="cannabis" />} />
+            <Route path="/app/substances/herbe" element={<Substances slug="herbe" />} />
+            <Route path="/app/substances/ballons" element={<Substances slug="ballons" />} />
+            <Route path="/app/substances/autre" element={<Substances slug="autre" />} />
             <Route path="/app/gambling" element={<Gambling />} />
             <Route path="/app/pornography" element={<Pornography />} />
             <Route path="/app/fornication" element={<Fornication />} />
