@@ -2,20 +2,26 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowLeft, CalendarDays, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import supabase from "@/lib/supabaseClient";
+import { GamblingSetupModal, type GamblingSetupData } from "@/components/GamblingSetupModal";
 
-interface ModuleData {
+interface GamblingModuleData {
   started_at: string;
   daily_cost_euros: number | null;
 }
 
 const Gambling = () => {
-  const [moduleData, setModuleData] = useState<ModuleData | null>(null);
+  const [moduleData, setModuleData] = useState<GamblingModuleData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmittingSetup, setIsSubmittingSetup] = useState(false);
 
   const loadModuleData = useCallback(async () => {
+    setIsLoading(true);
+
     const { data: authData } = await supabase.auth.getUser();
 
     if (!authData.user) {
       setModuleData(null);
+      setIsLoading(false);
       return;
     }
 
@@ -30,20 +36,55 @@ const Gambling = () => {
 
     if (error) {
       console.error("Erreur chargement module gambling:", error.message);
+      setIsLoading(false);
       return;
     }
 
     setModuleData(data);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
     void loadModuleData();
   }, [loadModuleData]);
 
+  const handleSetupComplete = async (data: GamblingSetupData) => {
+    setIsSubmittingSetup(true);
+
+    const { data: authData } = await supabase.auth.getUser();
+
+    if (!authData.user) {
+      setIsSubmittingSetup(false);
+      return;
+    }
+
+    const dailyCostEuros = data.weeklySpendEuros / 7;
+
+    const { error } = await supabase.from("user_modules").insert({
+      user_id: authData.user.id,
+      module_slug: "gambling",
+      started_at: new Date().toISOString(),
+      is_active: true,
+      daily_cost_euros: dailyCostEuros,
+      daily_quantity: 1,
+    });
+
+    if (error) {
+      console.error("Erreur création module gambling:", error.message);
+      setIsSubmittingSetup(false);
+      return;
+    }
+
+    await loadModuleData();
+    setIsSubmittingSetup(false);
+  };
+
   const totalDays = useMemo(() => {
     if (!moduleData?.started_at) return 0;
+
     const start = new Date(moduleData.started_at).getTime();
     if (Number.isNaN(start)) return 0;
+
     return Math.max(0, Math.floor((Date.now() - start) / (1000 * 60 * 60 * 24)));
   }, [moduleData]);
 
@@ -52,9 +93,15 @@ const Gambling = () => {
     return totalDays * moduleData.daily_cost_euros;
   }, [moduleData, totalDays]);
 
+  if (isLoading) {
+    return <div className="min-h-screen bg-black" />;
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-black/95 backdrop-blur">
+      {!moduleData && <GamblingSetupModal onComplete={handleSetupComplete} isSubmitting={isSubmittingSetup} />}
+
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/95 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-[980px] items-center justify-between px-4">
           <div className="flex items-center gap-3">
             <Link to="/modules" className="rounded-full p-2 text-white/80 transition hover:bg-white/10 hover:text-white">
