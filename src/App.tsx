@@ -21,7 +21,9 @@ import SubstancesChoice from "./pages/SubstancesChoice";
 import Gambling from "./pages/Gambling";
 import Pornography from "./pages/Pornography";
 import Fornication from "./pages/Fornication";
+import FornicationChoice from "./pages/FornicationChoice";
 import Screentime from "./pages/Screentime";
+import Food from "./pages/Food";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +58,7 @@ const App = () => (
             <Route path="/trophees" element={<Trophies />} />
             <Route path="/app/smoking-choice" element={<SmokingChoice />} />
             <Route path="/app/alcohol" element={<Alcohol />} />
+            <Route path="/app/food" element={<Food />} />
             <Route path="/app/puff" element={<ComingSoon />} />
             <Route path="/app/drugs" element={<Drugs />} />
             <Route path="/app/balloons" element={<Balloons />} />
@@ -68,7 +71,11 @@ const App = () => (
             <Route path="/app/substances/cafeine" element={<Substances slug="cafeine" />} />
             <Route path="/app/gambling" element={<Gambling />} />
             <Route path="/app/pornography" element={<Pornography />} />
-            <Route path="/app/fornication" element={<Fornication />} />
+            <Route path="/app/fornication" element={<FornicationChoice />} />
+            <Route path="/app/fornication/regard" element={<Fornication slug="fornication-regard" />} />
+            <Route path="/app/fornication/interactions" element={<Fornication slug="fornication-interactions" />} />
+            <Route path="/app/fornication/contact" element={<Fornication slug="fornication-contact" />} />
+            <Route path="/app/fornication/acte" element={<Fornication slug="fornication-acte" />} />
             <Route path="/app/screentime" element={<Screentime />} />
             <Route path="/mental" element={<ComingSoon />} />
             <Route path="/energy" element={<ComingSoon />} />

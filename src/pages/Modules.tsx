@@ -6,6 +6,7 @@ import supabase from "@/lib/supabaseClient";
 const modules = [
   { slug: "smoking", emoji: "🚬", label: "Tabac", to: "/app/smoking-choice" },
   { slug: "alcohol", emoji: "🍺", label: "Alcool", to: "/app/alcohol" },
+  { slug: "food", emoji: "🍔", label: "Nourriture", to: "/app/food" },
   { slug: "substances", emoji: "💊", label: "Substances", to: "/app/substances" },
   { slug: "gambling", emoji: "🎰", label: "Jeux d'argent", to: "/app/gambling" },
   { slug: "pornography", emoji: "🔞", label: "Pornographie", to: "/app/pornography" },
