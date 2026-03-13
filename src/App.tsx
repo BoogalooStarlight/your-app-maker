@@ -22,6 +22,7 @@ import Gambling from "./pages/Gambling";
 import Pornography from "./pages/Pornography";
 import Fornication from "./pages/Fornication";
 import Screentime from "./pages/Screentime";
+import Food from "./pages/Food";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/trophees" element={<Trophies />} />
             <Route path="/app/smoking-choice" element={<SmokingChoice />} />
             <Route path="/app/alcohol" element={<Alcohol />} />
+            <Route path="/app/food" element={<Food />} />
             <Route path="/app/puff" element={<ComingSoon />} />
             <Route path="/app/drugs" element={<Drugs />} />
             <Route path="/app/balloons" element={<Balloons />} />
