@@ -1,23 +1,22 @@
-import { useMemo } from "react";
 import { Award, Flame, Heart, Moon, Shield, Star, Wallet } from "lucide-react";
 import { AppNavigation } from "@/components/AppNavigation";
-import { getSmokingMetrics } from "@/lib/smokingMetrics";
+import { useStats } from "@/hooks/useStats";
 
 const cardClass = "rounded-[24px] border border-white/10 bg-transparent p-4";
 
 const Trophies = () => {
-  const metrics = useMemo(() => getSmokingMetrics(), []);
+  const stats = useStats();
 
   const badges = [
-    { label: "24h", icon: Star, unlocked: metrics.totalDays >= 1 },
-    { label: "3 jours", icon: Flame, unlocked: metrics.totalDays >= 3 },
-    { label: "7 jours", icon: Award, unlocked: metrics.totalDays >= 7 },
-    { label: "14 jours", icon: Shield, unlocked: metrics.totalDays >= 14 },
-    { label: "30 jours", icon: Heart, unlocked: metrics.totalDays >= 30 },
-    { label: "100€", icon: Wallet, unlocked: metrics.moneySaved >= 100 },
-    { label: "200 évités", icon: Flame, unlocked: metrics.cigarettesAvoided >= 200 },
-    { label: "Santé 30%", icon: Heart, unlocked: metrics.lungHealth >= 30 },
-    { label: "Sommeil stable", icon: Moon, unlocked: metrics.totalDays >= 10 },
+    { label: "24h", icon: Star, unlocked: stats.daysClean >= 1 },
+    { label: "3 jours", icon: Flame, unlocked: stats.daysClean >= 3 },
+    { label: "7 jours", icon: Award, unlocked: stats.daysClean >= 7 },
+    { label: "14 jours", icon: Shield, unlocked: stats.daysClean >= 14 },
+    { label: "30 jours", icon: Heart, unlocked: stats.daysClean >= 30 },
+    { label: "100€", icon: Wallet, unlocked: stats.moneySaved >= 100 },
+    { label: "200 évités", icon: Flame, unlocked: stats.avoided >= 200 },
+    { label: "Santé 30%", icon: Heart, unlocked: stats.health >= 30 },
+    { label: "Sommeil stable", icon: Moon, unlocked: stats.daysClean >= 10 },
   ];
 
   return (
