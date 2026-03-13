@@ -68,6 +68,7 @@ const App = () => (
             <Route path="/app/substances/herbe" element={<Substances slug="herbe" />} />
             <Route path="/app/substances/ballons" element={<Substances slug="ballons" />} />
             <Route path="/app/substances/autre" element={<Substances slug="autre" />} />
+            <Route path="/app/substances/cafeine" element={<Substances slug="cafeine" />} />
             <Route path="/app/gambling" element={<Gambling />} />
             <Route path="/app/pornography" element={<Pornography />} />
             <Route path="/app/fornication" element={<FornicationChoice />} />

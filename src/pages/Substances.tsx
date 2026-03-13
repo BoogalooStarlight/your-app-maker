@@ -11,7 +11,7 @@ interface ModuleData {
 }
 
 interface SubstancesProps {
-  slug: "cannabis" | "herbe" | "ballons" | "autre";
+  slug: "cannabis" | "herbe" | "ballons" | "autre" | "cafeine";
 }
 
 const slugLabel: Record<SubstancesProps["slug"], string> = {
@@ -19,6 +19,7 @@ const slugLabel: Record<SubstancesProps["slug"], string> = {
   herbe: "Herbe",
   ballons: "Ballons",
   autre: "Autre",
+  cafeine: "☕ Caféine",
 };
 
 const Substances = ({ slug }: SubstancesProps) => {

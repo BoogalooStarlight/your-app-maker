@@ -56,6 +56,18 @@ const SubstancesChoice = () => {
             </span>
             <span className="text-white/40">›</span>
           </Link>
+
+
+          <Link
+            to="/app/substances/cafeine"
+            className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#050506] px-4 py-4 transition hover:border-white/25"
+          >
+            <span className="flex items-center gap-3 text-white/90">
+              <Pill className="h-5 w-5 text-white/70" />
+              ☕ Caféine
+            </span>
+            <span className="text-white/40">›</span>
+          </Link>
         </section>
       </main>
     </div>
