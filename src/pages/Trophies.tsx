@@ -36,10 +36,10 @@ const Trophies = () => {
 
   if (stats.loading) {
     return (
-      <div className="min-h-screen bg-black text-white">
-        <div className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6 space-y-4">
+      <div className="min-h-screen bg-[#08080F] text-white">
+        <div className="mx-auto w-full max-w-[430px] space-y-4 px-4 pb-24 pt-6">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-24 rounded-[22px] bg-white/5 animate-pulse" />
+            <div key={i} className="h-24 animate-pulse rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)]" />
           ))}
         </div>
         <AppNavigation />
@@ -48,26 +48,26 @@ const Trophies = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#08080F] text-white">
       <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
 
         <div className="mb-6">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-white/50 mb-1">Progression</p>
+          <p className="mb-1 text-[9px] uppercase tracking-[0.22em] text-white/50">PROGRESSION</p>
           <h1 className="text-2xl font-semibold">Trophées</h1>
         </div>
 
         <div className="grid grid-cols-3 gap-3 mb-5">
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-center">
-            <p className="text-2xl font-semibold leading-none">{unlockedCount}</p>
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
+            <p className="text-2xl font-semibold leading-none text-[#9D87FF]">{unlockedCount}</p>
             <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Obtenus</p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-center">
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
             <p className="text-2xl font-semibold leading-none">{badges.length - unlockedCount}</p>
             <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Restants</p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-center">
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
             <p className="text-2xl font-semibold leading-none">{progressPct}%</p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Complété</p>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">% Complété</p>
           </div>
         </div>
 
@@ -81,11 +81,11 @@ const Trophies = () => {
         </div>
 
         {nextBadge && nextDayBadge && (
-          <div className="mb-6 rounded-[22px] border border-white/10 bg-white/5 px-4 py-4">
+          <div className="mb-6 rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-4 py-4">
             <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-3">Prochain objectif</p>
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20">
-                {(() => { const Icon = nextBadge.icon; return <Icon className="h-5 w-5 text-white/70" strokeWidth={1.5} />; })()}
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(157,135,255,0.2)]">
+                {(() => { const Icon = nextBadge.icon; return <Icon className="h-5 w-5 text-[#9D87FF]" strokeWidth={1.5} />; })()}
               </div>
               <div className="flex-1">
                 <p className="text-sm font-medium">{nextBadge.label}</p>
@@ -93,11 +93,11 @@ const Trophies = () => {
                   {daysRemaining === 1 ? "encore 1 jour" : daysRemaining ? `encore ${daysRemaining} jours` : nextBadge.description}
                 </p>
               </div>
-              <p className="text-sm font-semibold text-white/70">{nextProgress}%</p>
+              <p className="text-sm font-semibold text-[#9D87FF]">{nextProgress}%</p>
             </div>
             <div className="mt-3 w-full bg-white/10 rounded-full h-[2px]">
               <div
-                className="bg-white rounded-full h-[2px] transition-all duration-700"
+                className="h-[2px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] transition-all duration-700"
                 style={{ width: `${nextProgress}%` }}
               />
             </div>
@@ -111,7 +111,9 @@ const Trophies = () => {
               <article
                 key={badge.label}
                 className={`rounded-2xl border p-3 text-center transition-all duration-300 ${
-                  badge.unlocked ? "border-white/25 bg-white/10" : "border-white/8 bg-transparent opacity-30"
+                  badge.unlocked
+                    ? "border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.10)]"
+                    : "border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] opacity-25"
                 }`}
               >
                 {badge.unlocked && (
