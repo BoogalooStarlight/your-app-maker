@@ -57,15 +57,21 @@ const Trophies = () => {
 
         <div className="mb-5 grid grid-cols-3 gap-3">
           <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
-            <p className="font-mono text-2xl leading-none text-[#9D87FF]">{unlockedCount}</p>
+            <p className="text-2xl leading-none text-[#9D87FF]" style={{ fontFamily: "DM Mono" }}>
+              {unlockedCount}
+            </p>
             <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">Obtenus</p>
           </div>
           <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
-            <p className="font-mono text-2xl leading-none text-white">{badges.length - unlockedCount}</p>
+            <p className="text-2xl leading-none text-white" style={{ fontFamily: "DM Mono" }}>
+              {badges.length - unlockedCount}
+            </p>
             <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">Restants</p>
           </div>
           <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
-            <p className="font-mono text-2xl leading-none text-white">{progressPct}%</p>
+            <p className="text-2xl leading-none text-white" style={{ fontFamily: "DM Mono" }}>
+              {progressPct}%
+            </p>
             <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">% Complété</p>
           </div>
         </div>
@@ -83,11 +89,13 @@ const Trophies = () => {
                   {daysRemaining === 1 ? "encore 1 jour" : daysRemaining ? `encore ${daysRemaining} jours` : nextBadge.description}
                 </p>
               </div>
-              <p className="font-mono text-sm font-semibold text-[#9D87FF]">{nextProgress}%</p>
+              <p className="text-sm font-semibold text-[#9D87FF]" style={{ fontFamily: "DM Mono" }}>
+                {nextProgress}%
+              </p>
             </div>
             <div className="mt-3 h-[3px] w-full rounded-full bg-white/10">
               <div
-                className="h-[3px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] transition-all duration-700"
+                className="h-[3px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] shadow-[0_0_8px_rgba(123,97,255,0.4)] transition-all duration-700"
                 style={{ width: `${nextProgress}%` }}
               />
             </div>
@@ -100,7 +108,7 @@ const Trophies = () => {
             return (
               <article
                 key={badge.label}
-                className={`rounded-[20px] border p-3 text-center transition-all duration-300 ${
+                className={`rounded-[16px] border p-3 text-center transition-all duration-300 ${
                   badge.unlocked
                     ? "border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.10)]"
                     : "border-white/[0.045] bg-white/[0.028] opacity-30"
