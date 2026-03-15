@@ -102,10 +102,10 @@ const Trophies = () => {
                 style={{ width: `${nextProgress}%` }}
               />
             </div>
-          </div>
+          </section>
         )}
 
-        <div className="grid grid-cols-3 gap-3">
+        <section className="grid grid-cols-3 gap-3">
           {badges.map((badge) => {
             const Icon = badge.icon;
             return (
@@ -114,7 +114,7 @@ const Trophies = () => {
                 className={`rounded-[20px] border p-3 text-center transition-all duration-300 ${
                   badge.unlocked
                     ? "border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.10)]"
-                    : "border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] opacity-25"
+                    : "border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] opacity-30"
                 }`}
               >
                 <Icon
@@ -129,6 +129,7 @@ const Trophies = () => {
           })}
         </div>
       </main>
+
       <AppNavigation />
     </div>
   );
