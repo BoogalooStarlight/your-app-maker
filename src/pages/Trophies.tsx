@@ -34,95 +34,163 @@ const Trophies = () => {
   const daysRemaining = nextDayBadge ? nextDayBadge.days - stats.daysClean : null;
   const nextProgress = nextDayBadge ? Math.round((stats.daysClean / nextDayBadge.days) * 100) : 100;
 
-  if (stats.loading) {
-    return (
-      <div className="min-h-screen bg-[#08080F] font-sans text-white">
-        <div className="mx-auto w-full max-w-[430px] space-y-4 px-4 pb-24 pt-6">
+  return (
+    <div
+      style={{
+        background: "#08080F",
+        minHeight: "100dvh",
+        padding: "20px 18px 100px",
+        fontFamily: "DM Sans, sans-serif",
+        color: "#fff",
+      }}
+    >
+      {stats.loading ? (
+        <div style={{ display: "grid", gap: 12 }}>
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-24 animate-pulse rounded-[20px] border border-white/[0.045] bg-white/[0.028]" />
+            <div
+              key={i}
+              style={{
+                height: 96,
+                borderRadius: 20,
+                border: "1px solid rgba(255,255,255,0.045)",
+                background: "rgba(255,255,255,0.028)",
+                opacity: 0.6,
+              }}
+            />
           ))}
         </div>
-        <AppNavigation />
-      </div>
-    );
-  }
+      ) : (
+        <>
+          <p
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.18)",
+            }}
+          >
+            PROGRESSION
+          </p>
+          <h1 style={{ fontSize: 20, fontWeight: 600, letterSpacing: "-0.02em", marginTop: 2, marginBottom: 18 }}>Trophées</h1>
 
-  return (
-    <div className="min-h-screen bg-[#08080F] font-sans text-white">
-      <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
-        <header className="mb-6">
-          <p className="mb-1 text-[9px] uppercase tracking-widest text-white/20">PROGRESSION</p>
-          <h1 className="text-xl font-semibold">Trophées</h1>
-        </header>
-
-        <div className="mb-5 grid grid-cols-3 gap-3">
-          <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
-            <p className="text-2xl leading-none text-[#9D87FF]" style={{ fontFamily: "DM Mono" }}>
-              {unlockedCount}
-            </p>
-            <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">Obtenus</p>
-          </div>
-          <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
-            <p className="text-2xl leading-none text-white" style={{ fontFamily: "DM Mono" }}>
-              {badges.length - unlockedCount}
-            </p>
-            <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">Restants</p>
-          </div>
-          <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
-            <p className="text-2xl leading-none text-white" style={{ fontFamily: "DM Mono" }}>
-              {progressPct}%
-            </p>
-            <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">% Complété</p>
-          </div>
-        </div>
-
-        {nextBadge && nextDayBadge && (
-          <div className="mb-6 rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-4 py-4">
-            <p className="mb-3 text-[9px] uppercase tracking-widest text-white/25">Prochain objectif</p>
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.12)]">
-                <Trophy className="h-5 w-5 text-[#9D87FF]" strokeWidth={1.7} />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-medium">{nextBadge.label}</p>
-                <p className="text-xs text-white/55">
-                  {daysRemaining === 1 ? "encore 1 jour" : daysRemaining ? `encore ${daysRemaining} jours` : nextBadge.description}
-                </p>
-              </div>
-              <p className="text-sm font-semibold text-[#9D87FF]" style={{ fontFamily: "DM Mono" }}>
-                {nextProgress}%
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginBottom: 14 }}>
+            <div
+              style={{
+                background: "rgba(255,255,255,0.028)",
+                border: "1px solid rgba(255,255,255,0.045)",
+                borderRadius: 20,
+                padding: "12px 8px",
+                textAlign: "center",
+              }}
+            >
+              <p style={{ color: "#9D87FF", fontFamily: "DM Mono", fontSize: 24, lineHeight: 1 }}>{unlockedCount}</p>
+              <p style={{ marginTop: 4, fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>
+                Obtenus
               </p>
             </div>
-            <div className="mt-3 h-[3px] w-full rounded-full bg-white/10">
-              <div
-                className="h-[3px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] shadow-[0_0_8px_rgba(123,97,255,0.4)] transition-all duration-700"
-                style={{ width: `${nextProgress}%` }}
-              />
+            <div
+              style={{
+                background: "rgba(255,255,255,0.028)",
+                border: "1px solid rgba(255,255,255,0.045)",
+                borderRadius: 20,
+                padding: "12px 8px",
+                textAlign: "center",
+              }}
+            >
+              <p style={{ color: "#FFFFFF", fontFamily: "DM Mono", fontSize: 24, lineHeight: 1 }}>{badges.length - unlockedCount}</p>
+              <p style={{ marginTop: 4, fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>
+                Restants
+              </p>
+            </div>
+            <div
+              style={{
+                background: "rgba(255,255,255,0.028)",
+                border: "1px solid rgba(255,255,255,0.045)",
+                borderRadius: 20,
+                padding: "12px 8px",
+                textAlign: "center",
+              }}
+            >
+              <p style={{ color: "#FFFFFF", fontFamily: "DM Mono", fontSize: 24, lineHeight: 1 }}>{progressPct}%</p>
+              <p style={{ marginTop: 4, fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>
+                % Complété
+              </p>
             </div>
           </div>
-        )}
 
-        <section className="grid grid-cols-3 gap-3">
-          {badges.map((badge) => {
-            const Icon = badge.icon;
-            return (
-              <article
-                key={badge.label}
-                className={`rounded-[16px] border p-3 text-center transition-all duration-300 ${
-                  badge.unlocked
-                    ? "border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.10)]"
-                    : "border-white/[0.045] bg-white/[0.028] opacity-30"
-                }`}
-              >
-                <Icon className={`mx-auto h-5 w-5 ${badge.unlocked ? "text-[#9D87FF]" : "text-white/60"}`} strokeWidth={1.5} />
-                <p className={`mt-2 text-[10px] uppercase tracking-[0.12em] ${badge.unlocked ? "font-medium text-[#9D87FF]" : "text-white/60"}`}>
-                  {badge.label}
-                </p>
-              </article>
-            );
-          })}
-        </section>
-      </main>
+          {nextBadge && nextDayBadge && (
+            <div
+              style={{
+                background: "rgba(255,255,255,0.028)",
+                border: "1px solid rgba(255,255,255,0.045)",
+                borderRadius: 20,
+                padding: "12px 12px 13px",
+                marginBottom: 16,
+              }}
+            >
+              <p style={{ marginBottom: 10, fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>
+                Prochain objectif
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <div
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 999,
+                    border: "1px solid rgba(123,97,255,0.25)",
+                    background: "rgba(123,97,255,0.10)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Trophy size={18} color="#9D87FF" strokeWidth={1.7} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: 14, fontWeight: 500 }}>{nextBadge.label}</p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>
+                    {daysRemaining === 1 ? "encore 1 jour" : daysRemaining ? `encore ${daysRemaining} jours` : nextBadge.description}
+                  </p>
+                </div>
+                <p style={{ color: "#9D87FF", fontFamily: "DM Mono", fontSize: 14, fontWeight: 600 }}>{nextProgress}%</p>
+              </div>
+              <div style={{ height: 3, width: "100%", borderRadius: 100, background: "rgba(255,255,255,0.1)", marginTop: 12 }}>
+                <div
+                  style={{
+                    height: 3,
+                    width: `${nextProgress}%`,
+                    borderRadius: 100,
+                    background: "linear-gradient(90deg, #9D87FF 0%, #7B61FF 100%)",
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+            {badges.map((badge) => {
+              const Icon = badge.icon;
+              return (
+                <article
+                  key={badge.label}
+                  style={{
+                    borderRadius: 16,
+                    border: badge.unlocked ? "1px solid rgba(123,97,255,0.25)" : "1px solid rgba(255,255,255,0.045)",
+                    background: badge.unlocked ? "rgba(123,97,255,0.10)" : "rgba(255,255,255,0.028)",
+                    color: badge.unlocked ? "#9D87FF" : "rgba(255,255,255,0.6)",
+                    opacity: badge.unlocked ? 1 : 0.25,
+                    padding: 12,
+                    textAlign: "center",
+                  }}
+                >
+                  <Icon size={20} style={{ margin: "0 auto" }} strokeWidth={1.5} />
+                  <p style={{ marginTop: 8, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase" }}>{badge.label}</p>
+                </article>
+              );
+            })}
+          </section>
+        </>
+      )}
 
       <AppNavigation />
     </div>
