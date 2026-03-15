@@ -1,138 +1,231 @@
-import { Award, Flame, Heart, Moon, Shield, Star, Trophy, Wallet } from "lucide-react";
-import { AppNavigation } from "@/components/AppNavigation";
 import { useStats } from "@/hooks/useStats";
 
-const Trophies = () => {
-  const stats = useStats();
+const T = {
+  bg: "#08080F",
+  surface: "rgba(255,255,255,0.028)",
+  border: "1px solid rgba(255,255,255,0.045)",
+  accent: "#7B61FF",
+  accentMid: "#9D87FF",
+  accentSurface: "rgba(123,97,255,0.10)",
+  accentBorder: "1px solid rgba(123,97,255,0.25)",
+  text: "#FFFFFF",
+  textMuted: "rgba(255,255,255,0.25)",
+  textDim: "rgba(255,255,255,0.18)",
+  mono: "'DM Mono', 'Courier New', monospace",
+  sans: "'DM Sans', sans-serif",
+};
 
-  const badges = [
-    { label: "24h", icon: Star, unlocked: stats.daysClean >= 1, description: "Première journée" },
-    { label: "3 jours", icon: Flame, unlocked: stats.daysClean >= 3, description: "72h de combat" },
-    { label: "7 jours", icon: Award, unlocked: stats.daysClean >= 7, description: "Une semaine entière" },
-    { label: "14 jours", icon: Shield, unlocked: stats.daysClean >= 14, description: "Deux semaines" },
-    { label: "30 jours", icon: Heart, unlocked: stats.daysClean >= 30, description: "Un mois de sevrage" },
-    { label: "100€", icon: Wallet, unlocked: stats.moneySaved >= 100, description: "100€ économisés" },
-    { label: "200 évités", icon: Flame, unlocked: stats.avoided >= 200, description: "200 unités évitées" },
-    { label: "Santé 30%", icon: Heart, unlocked: stats.health >= 30, description: "Santé en hausse" },
-    { label: "Sommeil stable", icon: Moon, unlocked: stats.daysClean >= 10, description: "10 jours de régularité" },
+const card: React.CSSProperties = {
+  background: T.surface,
+  border: T.border,
+  borderRadius: 20,
+  position: "relative",
+  overflow: "hidden",
+};
+
+interface Badge {
+  label: string;
+  icon: React.ComponentType<{ size?: number; className?: string; strokeWidth?: number }>;
+  unlocked: boolean;
+  description: string;
+}
+
+export default function Trophies() {
+  const { daysClean, moneySaved, avoided, health } = useStats();
+
+  const badges: Badge[] = [
+    {
+      label: "24H",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+        </svg>
+      ),
+      unlocked: daysClean >= 1,
+      description: "Première journée clean",
+    },
+    {
+      label: "3 JOURS",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+      ),
+      unlocked: daysClean >= 3,
+      description: "3 jours de résistance",
+    },
+    {
+      label: "7 JOURS",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 3h12v7a6 6 0 01-12 0V3z"/><path d="M6 6H3a1 1 0 000 2c0 2 1.5 3.5 3 4"/><path d="M18 6h3a1 1 0 010 2c0 2-1.5 3.5-3 4"/><path d="M12 16v4"/><path d="M8 20h8"/>
+        </svg>
+      ),
+      unlocked: daysClean >= 7,
+      description: "Une semaine entière",
+    },
+    {
+      label: "14 JOURS",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+        </svg>
+      ),
+      unlocked: daysClean >= 14,
+      description: "Deux semaines clean",
+    },
+    {
+      label: "30 JOURS",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+      ),
+      unlocked: daysClean >= 30,
+      description: "Un mois de liberté",
+    },
+    {
+      label: "100€",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+        </svg>
+      ),
+      unlocked: moneySaved >= 100,
+      description: "100€ économisés",
+    },
+    {
+      label: "200 ÉVITÉS",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M4.93 4.93l14.14 14.14"/>
+        </svg>
+      ),
+      unlocked: avoided >= 200,
+      description: "200 unités évitées",
+    },
+    {
+      label: "SANTÉ 30%",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      ),
+      unlocked: health >= 30,
+      description: "30% de santé récupérée",
+    },
+    {
+      label: "SOMMEIL STABLE",
+      icon: ({ size = 20, strokeWidth = 1.5 }) => (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+        </svg>
+      ),
+      unlocked: daysClean >= 21,
+      description: "21 jours pour un sommeil stable",
+    },
   ];
 
   const unlockedCount = badges.filter((b) => b.unlocked).length;
   const progressPct = Math.round((unlockedCount / badges.length) * 100);
-
   const nextBadge = badges.find((b) => !b.unlocked);
 
-  const nextDayBadge = [
-    { days: 1, label: "24h" },
-    { days: 3, label: "3 jours" },
-    { days: 7, label: "7 jours" },
-    { days: 14, label: "14 jours" },
-    { days: 30, label: "30 jours" },
-    { days: 10, label: "Sommeil stable" },
-  ].find((b) => stats.daysClean < b.days);
+  const daysRemaining = nextBadge?.label.includes("JOURS")
+    ? parseInt(nextBadge.label) - daysClean
+    : nextBadge?.label === "24H"
+    ? 1 - daysClean
+    : null;
 
-  const daysRemaining = nextDayBadge ? nextDayBadge.days - stats.daysClean : null;
-  const nextProgress = nextDayBadge ? Math.round((stats.daysClean / nextDayBadge.days) * 100) : 100;
-
-  if (stats.loading) {
-    return (
-      <div className="min-h-screen bg-[#08080F] text-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-        <div className="mx-auto w-full max-w-[430px] space-y-4 px-4 pb-24 pt-6">
-          {[...Array(3)].map((_, i) => (
-            <div
-              key={i}
-              className="h-24 animate-pulse rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)]"
-            />
-          ))}
-        </div>
-        <AppNavigation />
-      </div>
-    );
-  }
+  const nextProgress = nextBadge?.label.includes("JOURS")
+    ? Math.min((daysClean / parseInt(nextBadge.label)) * 100, 100)
+    : nextBadge?.label === "24H"
+    ? Math.min(daysClean * 100, 100)
+    : 0;
 
   return (
-    <div className="min-h-screen bg-[#08080F] text-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-      <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
-        <div className="mb-6">
-          <p className="mb-1 text-[9px] uppercase tracking-[0.22em] text-[rgba(255,255,255,0.18)]">PROGRESSION</p>
-          <h1 className="text-[20px] font-semibold">Trophées</h1>
+    <div style={{ background: T.bg, minHeight: "100dvh", padding: "20px 18px 100px", fontFamily: T.sans, color: T.text }}>
+
+      {/* Ambient glow */}
+      <div style={{ position: "fixed", top: -120, left: "50%", transform: "translateX(-50%)", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(123,97,255,0.08) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
+
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 430, margin: "0 auto" }}>
+
+        {/* Header */}
+        <div style={{ paddingTop: 12, marginBottom: 20 }}>
+          <p style={{ fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: T.textDim }}>PROGRESSION</p>
+          <h1 style={{ fontSize: 20, fontWeight: 600, letterSpacing: "-0.02em", marginTop: 2 }}>Trophées</h1>
         </div>
 
-        <div className="mb-5 grid grid-cols-3 gap-3">
-          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
-            <p className="text-2xl font-semibold leading-none text-[#9D87FF]" style={{ fontFamily: "'DM Mono', monospace" }}>
-              {unlockedCount}
-            </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Obtenus</p>
+        {/* Stats 3 colonnes */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 14 }}>
+          <div style={{ ...card, padding: "12px 8px", textAlign: "center" }}>
+            <p style={{ fontFamily: T.mono, fontSize: 22, color: T.accentMid, lineHeight: 1 }}>{unlockedCount}</p>
+            <p style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: T.textMuted, marginTop: 4 }}>Obtenus</p>
           </div>
-          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
-            <p className="text-2xl font-semibold leading-none" style={{ fontFamily: "'DM Mono', monospace" }}>
-              {badges.length - unlockedCount}
-            </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Restants</p>
+          <div style={{ ...card, padding: "12px 8px", textAlign: "center" }}>
+            <p style={{ fontFamily: T.mono, fontSize: 22, color: T.text, lineHeight: 1 }}>{badges.length - unlockedCount}</p>
+            <p style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: T.textMuted, marginTop: 4 }}>Restants</p>
           </div>
-          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
-            <p className="text-2xl font-semibold leading-none" style={{ fontFamily: "'DM Mono', monospace" }}>
-              {progressPct}%
-            </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">% Complété</p>
+          <div style={{ ...card, padding: "12px 8px", textAlign: "center" }}>
+            <p style={{ fontFamily: T.mono, fontSize: 22, color: T.text, lineHeight: 1 }}>{progressPct}%</p>
+            <p style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: T.textMuted, marginTop: 4 }}>Complété</p>
           </div>
         </div>
 
-        {nextBadge && nextDayBadge && (
-          <div className="mb-6 rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-4 py-4">
-            <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-white/50">Prochain objectif</p>
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.12)]">
-                <Trophy className="h-5 w-5 text-[#9D87FF]" strokeWidth={1.7} />
+        {/* Prochain objectif */}
+        {nextBadge && (
+          <div style={{ ...card, padding: "16px 18px", marginBottom: 14 }}>
+            <p style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: T.textMuted, marginBottom: 12 }}>Prochain objectif</p>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 34, height: 34, borderRadius: "50%", background: T.accentSurface, border: T.accentBorder, display: "flex", alignItems: "center", justifyContent: "center", color: T.accentMid }}>
+                  <nextBadge.icon size={16} strokeWidth={1.5} />
+                </div>
+                <div>
+                  <p style={{ fontSize: 14, fontWeight: 500 }}>{nextBadge.label}</p>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.32)" }}>
+                    {daysRemaining != null && daysRemaining > 0
+                      ? `encore ${daysRemaining} jour${daysRemaining > 1 ? "s" : ""}`
+                      : nextBadge.description}
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <p className="text-sm font-medium">{nextBadge.label}</p>
-                <p className="text-xs text-white/55">
-                  {daysRemaining === 1 ? "encore 1 jour" : daysRemaining ? `encore ${daysRemaining} jours` : nextBadge.description}
-                </p>
-              </div>
-              <p className="text-sm font-semibold text-[#9D87FF]" style={{ fontFamily: "'DM Mono', monospace" }}>
-                {nextProgress}%
-              </p>
+              <span style={{ fontFamily: T.mono, fontSize: 13, color: T.accentMid }}>{Math.round(nextProgress)}%</span>
             </div>
-            <div className="mt-3 h-[4px] w-full rounded-full bg-white/10">
-              <div
-                className="h-[4px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] shadow-[0_0_14px_rgba(123,97,255,0.4)] transition-all duration-700"
-                style={{ width: `${nextProgress}%` }}
-              />
+            <div style={{ height: 3, background: "rgba(255,255,255,0.06)", borderRadius: 100, overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${nextProgress}%`, background: `linear-gradient(90deg, ${T.accentMid} 0%, ${T.accent} 100%)`, borderRadius: 100, boxShadow: "0 0 8px rgba(123,97,255,0.4)", transition: "width 1s ease" }} />
             </div>
-          </section>
+          </div>
         )}
 
-        <section className="grid grid-cols-3 gap-3">
+        {/* Grille badges */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
           {badges.map((badge) => {
             const Icon = badge.icon;
             return (
-              <article
+              <div
                 key={badge.label}
-                className={`rounded-[20px] border p-3 text-center transition-all duration-300 ${
-                  badge.unlocked
-                    ? "border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.10)]"
-                    : "border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] opacity-30"
-                }`}
+                style={{
+                  borderRadius: 16,
+                  border: badge.unlocked ? T.accentBorder : T.border,
+                  background: badge.unlocked ? T.accentSurface : T.surface,
+                  padding: "14px 8px",
+                  textAlign: "center",
+                  opacity: badge.unlocked ? 1 : 0.3,
+                  transition: "all 0.2s",
+                }}
               >
-                <Icon
-                  className={`mx-auto h-5 w-5 ${badge.unlocked ? "text-[#9D87FF]" : "text-white/60"}`}
-                  strokeWidth={1.5}
-                />
-                <p className={`mt-2 text-[10px] uppercase tracking-[0.12em] ${badge.unlocked ? "font-medium text-[#9D87FF]" : "text-white/60"}`}>
+                <div style={{ marginBottom: 6, color: badge.unlocked ? T.accentMid : T.text, display: "flex", justifyContent: "center" }}>
+                  <Icon size={20} strokeWidth={1.5} />
+                </div>
+                <p style={{ fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: badge.unlocked ? T.accentMid : "rgba(255,255,255,0.22)" }}>
                   {badge.label}
                 </p>
-              </article>
+              </div>
             );
           })}
         </div>
-      </main>
-
-      <AppNavigation />
+      </div>
     </div>
   );
-};
-
-export default Trophies;
+}
