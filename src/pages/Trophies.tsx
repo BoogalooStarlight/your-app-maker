@@ -36,13 +36,10 @@ const Trophies = () => {
 
   if (stats.loading) {
     return (
-      <div className="min-h-screen bg-[#08080F] text-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+      <div className="min-h-screen bg-[#08080F] font-sans text-white">
         <div className="mx-auto w-full max-w-[430px] space-y-4 px-4 pb-24 pt-6">
           {[...Array(3)].map((_, i) => (
-            <div
-              key={i}
-              className="h-24 animate-pulse rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)]"
-            />
+            <div key={i} className="h-24 animate-pulse rounded-[20px] border border-white/[0.045] bg-white/[0.028]" />
           ))}
         </div>
         <AppNavigation />
@@ -51,37 +48,31 @@ const Trophies = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#08080F] text-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen bg-[#08080F] font-sans text-white">
       <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
-        <div className="mb-6">
-          <p className="mb-1 text-[9px] uppercase tracking-[0.22em] text-[rgba(255,255,255,0.18)]">PROGRESSION</p>
-          <h1 className="text-[20px] font-semibold">Trophées</h1>
-        </div>
+        <header className="mb-6">
+          <p className="mb-1 text-[9px] uppercase tracking-widest text-white/20">PROGRESSION</p>
+          <h1 className="text-xl font-semibold">Trophées</h1>
+        </header>
 
         <div className="mb-5 grid grid-cols-3 gap-3">
-          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
-            <p className="text-2xl font-semibold leading-none text-[#9D87FF]" style={{ fontFamily: "'DM Mono', monospace" }}>
-              {unlockedCount}
-            </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Obtenus</p>
+          <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
+            <p className="font-mono text-2xl leading-none text-[#9D87FF]">{unlockedCount}</p>
+            <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">Obtenus</p>
           </div>
-          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
-            <p className="text-2xl font-semibold leading-none" style={{ fontFamily: "'DM Mono', monospace" }}>
-              {badges.length - unlockedCount}
-            </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Restants</p>
+          <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
+            <p className="font-mono text-2xl leading-none text-white">{badges.length - unlockedCount}</p>
+            <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">Restants</p>
           </div>
-          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
-            <p className="text-2xl font-semibold leading-none" style={{ fontFamily: "'DM Mono', monospace" }}>
-              {progressPct}%
-            </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">% Complété</p>
+          <div className="rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-3 py-4 text-center">
+            <p className="font-mono text-2xl leading-none text-white">{progressPct}%</p>
+            <p className="mt-1 text-[9px] uppercase tracking-widest text-white/25">% Complété</p>
           </div>
         </div>
 
         {nextBadge && nextDayBadge && (
-          <div className="mb-6 rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-4 py-4">
-            <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-white/50">Prochain objectif</p>
+          <div className="mb-6 rounded-[20px] border border-white/[0.045] bg-white/[0.028] px-4 py-4">
+            <p className="mb-3 text-[9px] uppercase tracking-widest text-white/25">Prochain objectif</p>
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.12)]">
                 <Trophy className="h-5 w-5 text-[#9D87FF]" strokeWidth={1.7} />
@@ -92,17 +83,15 @@ const Trophies = () => {
                   {daysRemaining === 1 ? "encore 1 jour" : daysRemaining ? `encore ${daysRemaining} jours` : nextBadge.description}
                 </p>
               </div>
-              <p className="text-sm font-semibold text-[#9D87FF]" style={{ fontFamily: "'DM Mono', monospace" }}>
-                {nextProgress}%
-              </p>
+              <p className="font-mono text-sm font-semibold text-[#9D87FF]">{nextProgress}%</p>
             </div>
-            <div className="mt-3 h-[4px] w-full rounded-full bg-white/10">
+            <div className="mt-3 h-[3px] w-full rounded-full bg-white/10">
               <div
-                className="h-[4px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] shadow-[0_0_14px_rgba(123,97,255,0.4)] transition-all duration-700"
+                className="h-[3px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] transition-all duration-700"
                 style={{ width: `${nextProgress}%` }}
               />
             </div>
-          </section>
+          </div>
         )}
 
         <section className="grid grid-cols-3 gap-3">
@@ -114,20 +103,17 @@ const Trophies = () => {
                 className={`rounded-[20px] border p-3 text-center transition-all duration-300 ${
                   badge.unlocked
                     ? "border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.10)]"
-                    : "border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] opacity-30"
+                    : "border-white/[0.045] bg-white/[0.028] opacity-30"
                 }`}
               >
-                <Icon
-                  className={`mx-auto h-5 w-5 ${badge.unlocked ? "text-[#9D87FF]" : "text-white/60"}`}
-                  strokeWidth={1.5}
-                />
+                <Icon className={`mx-auto h-5 w-5 ${badge.unlocked ? "text-[#9D87FF]" : "text-white/60"}`} strokeWidth={1.5} />
                 <p className={`mt-2 text-[10px] uppercase tracking-[0.12em] ${badge.unlocked ? "font-medium text-[#9D87FF]" : "text-white/60"}`}>
                   {badge.label}
                 </p>
               </article>
             );
           })}
-        </div>
+        </section>
       </main>
 
       <AppNavigation />
