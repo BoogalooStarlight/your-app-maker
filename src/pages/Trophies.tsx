@@ -37,16 +37,14 @@ const Trophies = () => {
   if (stats.loading) {
     return (
       <div className="min-h-screen bg-[#08080F] text-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-        <main className="mx-auto w-full max-w-[430px] px-[18px] pb-24 pt-[20px]">
-          <div className="space-y-3">
-            {[...Array(4)].map((_, i) => (
-              <div
-                key={i}
-                className="h-20 animate-pulse rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)]"
-              />
-            ))}
-          </div>
-        </main>
+        <div className="mx-auto w-full max-w-[430px] space-y-4 px-4 pb-24 pt-6">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="h-24 animate-pulse rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)]"
+            />
+          ))}
+        </div>
         <AppNavigation />
       </div>
     );
@@ -54,59 +52,53 @@ const Trophies = () => {
 
   return (
     <div className="min-h-screen bg-[#08080F] text-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-      <main className="mx-auto w-full max-w-[430px] px-[18px] pb-24 pt-[20px]">
-        <header className="mb-5">
-          <p className="text-[9px] uppercase tracking-[0.18em] text-[rgba(255,255,255,0.18)]">PROGRESSION</p>
-          <h1 className="mt-1 text-[20px] font-semibold tracking-[-0.02em] text-white">Trophées</h1>
-        </header>
+      <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
+        <div className="mb-6">
+          <p className="mb-1 text-[9px] uppercase tracking-[0.22em] text-[rgba(255,255,255,0.18)]">PROGRESSION</p>
+          <h1 className="text-[20px] font-semibold">Trophées</h1>
+        </div>
 
-        <section className="mb-4 grid grid-cols-3 gap-3">
-          <article className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-[8px] py-[12px] text-center">
-            <p className="text-[22px] leading-none text-[#9D87FF]" style={{ fontFamily: "'DM Mono', monospace" }}>
+        <div className="mb-5 grid grid-cols-3 gap-3">
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
+            <p className="text-2xl font-semibold leading-none text-[#9D87FF]" style={{ fontFamily: "'DM Mono', monospace" }}>
               {unlockedCount}
             </p>
-            <p className="mt-1 text-[9px] uppercase tracking-[0.1em] text-[rgba(255,255,255,0.25)]">Obtenus</p>
-          </article>
-
-          <article className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-[8px] py-[12px] text-center">
-            <p className="text-[22px] leading-none text-white" style={{ fontFamily: "'DM Mono', monospace" }}>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Obtenus</p>
+          </div>
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
+            <p className="text-2xl font-semibold leading-none" style={{ fontFamily: "'DM Mono', monospace" }}>
               {badges.length - unlockedCount}
             </p>
-            <p className="mt-1 text-[9px] uppercase tracking-[0.1em] text-[rgba(255,255,255,0.25)]">Restants</p>
-          </article>
-
-          <article className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-[8px] py-[12px] text-center">
-            <p className="text-[22px] leading-none text-white" style={{ fontFamily: "'DM Mono', monospace" }}>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">Restants</p>
+          </div>
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-3 py-4 text-center">
+            <p className="text-2xl font-semibold leading-none" style={{ fontFamily: "'DM Mono', monospace" }}>
               {progressPct}%
             </p>
-            <p className="mt-1 text-[9px] uppercase tracking-[0.1em] text-[rgba(255,255,255,0.25)]">% Complété</p>
-          </article>
-        </section>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-white/50">% Complété</p>
+          </div>
+        </div>
 
         {nextBadge && nextDayBadge && (
-          <section className="mb-5 rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-[18px] py-[16px]">
-            <p className="mb-3 text-[9px] uppercase tracking-[0.1em] text-[rgba(255,255,255,0.25)]">Prochain objectif</p>
-
+          <div className="mb-6 rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-4 py-4">
+            <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-white/50">Prochain objectif</p>
             <div className="flex items-center gap-3">
-              <div className="flex h-[34px] w-[34px] items-center justify-center rounded-full border border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.12)]">
-                <Trophy className="h-4 w-4 text-[#9D87FF]" strokeWidth={1.7} />
+              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.12)]">
+                <Trophy className="h-5 w-5 text-[#9D87FF]" strokeWidth={1.7} />
               </div>
-
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-white">{nextBadge.label}</p>
-                <p className="text-xs text-[rgba(255,255,255,0.55)]">
+              <div className="flex-1">
+                <p className="text-sm font-medium">{nextBadge.label}</p>
+                <p className="text-xs text-white/55">
                   {daysRemaining === 1 ? "encore 1 jour" : daysRemaining ? `encore ${daysRemaining} jours` : nextBadge.description}
                 </p>
               </div>
-
-              <p className="text-sm text-[#9D87FF]" style={{ fontFamily: "'DM Mono', monospace" }}>
+              <p className="text-sm font-semibold text-[#9D87FF]" style={{ fontFamily: "'DM Mono', monospace" }}>
                 {nextProgress}%
               </p>
             </div>
-
-            <div className="mt-3 h-[3px] w-full rounded-full bg-[rgba(255,255,255,0.06)]">
+            <div className="mt-3 h-[4px] w-full rounded-full bg-white/10">
               <div
-                className="h-[3px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] shadow-[0_0_8px_rgba(123,97,255,0.4)] transition-all duration-700"
+                className="h-[4px] rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] shadow-[0_0_14px_rgba(123,97,255,0.4)] transition-all duration-700"
                 style={{ width: `${nextProgress}%` }}
               />
             </div>
@@ -119,20 +111,23 @@ const Trophies = () => {
             return (
               <article
                 key={badge.label}
-                className={`rounded-[20px] border px-[8px] py-[12px] text-center transition-all duration-300 ${
+                className={`rounded-[20px] border p-3 text-center transition-all duration-300 ${
                   badge.unlocked
                     ? "border-[rgba(123,97,255,0.25)] bg-[rgba(123,97,255,0.10)]"
                     : "border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] opacity-30"
                 }`}
               >
-                <Icon className={`mx-auto h-5 w-5 ${badge.unlocked ? "text-[#9D87FF]" : "text-white/60"}`} strokeWidth={1.5} />
-                <p className={`mt-2 text-[10px] uppercase tracking-[0.1em] ${badge.unlocked ? "text-[#9D87FF]" : "text-white/60"}`}>
+                <Icon
+                  className={`mx-auto h-5 w-5 ${badge.unlocked ? "text-[#9D87FF]" : "text-white/60"}`}
+                  strokeWidth={1.5}
+                />
+                <p className={`mt-2 text-[10px] uppercase tracking-[0.12em] ${badge.unlocked ? "font-medium text-[#9D87FF]" : "text-white/60"}`}>
                   {badge.label}
                 </p>
               </article>
             );
           })}
-        </section>
+        </div>
       </main>
 
       <AppNavigation />
