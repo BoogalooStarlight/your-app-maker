@@ -7,6 +7,7 @@ const Auth = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -29,10 +30,36 @@ const Auth = () => {
 
         navigate("/");
       } else {
-        const { error: signUpError } = await supabase.auth.signUp({ email, password });
+        const trimmedUsername = username.trim();
+
+        if (trimmedUsername.length < 3 || trimmedUsername.length > 20) {
+          setError("Pseudo invalide (3–20 caractères).");
+          return;
+        }
+
+        const { data, error: signUpError } = await supabase.auth.signUp({ email, password });
 
         if (signUpError) {
           throw signUpError;
+        }
+
+        const user = data.user;
+
+        if (!user) {
+          throw new Error("Impossible de finaliser l'inscription.");
+        }
+
+        const { error: upsertError } = await supabase
+          .from("users")
+          .upsert({ id: user.id, username: trimmedUsername });
+
+        if (upsertError) {
+          if (upsertError.code === "23505") {
+            setError("Ce pseudo est déjà pris.");
+            return;
+          }
+
+          throw upsertError;
         }
 
         setMessage("Inscription réussie. Vérifie ton email.");
@@ -94,6 +121,19 @@ const Auth = () => {
                 className="w-full rounded-[12px] border border-white/[0.08] bg-white/[0.04] px-4 py-[13px] text-white outline-none transition focus:border-[#7B61FF]/50"
               />
             </div>
+
+            {mode === "signup" && (
+              <div>
+                <label className="mb-2 block text-[10px] uppercase tracking-[0.12em] text-white/[0.32]">Pseudo</label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Ton pseudo"
+                  className="w-full rounded-[12px] border border-white/[0.08] bg-white/[0.04] px-4 py-[13px] text-white outline-none transition placeholder:text-white/[0.2] focus:border-[#7B61FF]/50"
+                />
+              </div>
+            )}
 
             <div>
               <label className="mb-2 block text-[10px] uppercase tracking-[0.12em] text-white/[0.32]">Mot de passe</label>
