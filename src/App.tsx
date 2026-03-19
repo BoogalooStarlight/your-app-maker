@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import ComingSoon from "./pages/ComingSoon";
 import Trophies from "./pages/Trophies";
+import Ranking from "./pages/Ranking";
 import SmokingChoice from "./pages/SmokingChoice";
 import Alcohol from "./pages/Alcohol";
 import Drugs from "./pages/Drugs";
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/smoking" element={<Smoking />} />
             <Route path="/alcohol" element={<ComingSoon />} />
             <Route path="/modules" element={<Modules />} />
+            <Route path="/ranking" element={<Ranking />} />
             <Route path="/trophees" element={<Trophies />} />
             <Route path="/app/smoking-choice" element={<SmokingChoice />} />
             <Route path="/app/alcohol" element={<Alcohol />} />
