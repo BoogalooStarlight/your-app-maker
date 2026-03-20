@@ -62,6 +62,8 @@ type LeaderboardRow = {
   active_modules_count: number;
   days_clean_this_week: number;
   consistency_bonus: number;
+  total_days_clean: number;
+  milestone_bonus: number;
   score: number;
   rank: number;
 };
@@ -114,7 +116,8 @@ const getTopThreeStyles = (rank: number) => {
 
 const Ranking = () => {
   const { user } = useAuth();
-  const [leaderboard, setLeaderboard] = useState<LeaderboardRow[]>([]);
+  const [mode, setMode] = useState<"weekly" | "alltime">("weekly");
+  const [rawModules, setRawModules] = useState<UserModuleRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -128,61 +131,98 @@ const Ranking = () => {
 
       if (error) {
         console.error("Erreur lors du chargement du classement:", error.message);
-        setLeaderboard([]);
+        setRawModules([]);
         setLoading(false);
         return;
       }
 
-      const byUser = new Map<string, Omit<LeaderboardRow, "rank">>();
-      const now = Date.now();
-
-      (data as UserModuleRow[] | null)?.forEach((entry) => {
-        const existing = byUser.get(entry.user_id);
-        const diff = Math.max(0, Math.floor((now - new Date(entry.started_at).getTime()) / 86400000));
-        const daysCleanThisWeek = Math.min(7, diff);
-
-        if (!existing) {
-          byUser.set(entry.user_id, {
-            user_id: entry.user_id,
-            username: entry.users?.username?.trim() || "Anonyme",
-            active_modules_count: 1,
-            // Deliberate choice: we keep the MAX active streak capped at 7 days instead of summing
-            // per module, so users are ranked on weekly consistency rather than module stacking.
-            days_clean_this_week: daysCleanThisWeek,
-            consistency_bonus: diff >= 7 ? 20 : 0,
-            score: 0,
-          });
-          return;
-        }
-
-        existing.active_modules_count += 1;
-        existing.days_clean_this_week = Math.max(existing.days_clean_this_week, daysCleanThisWeek);
-        if (diff >= 7) {
-          existing.consistency_bonus = 20;
-        }
-      });
-
-      const ranked = Array.from(byUser.values())
-        .map((entry) => ({
-          ...entry,
-          score: entry.days_clean_this_week * 10 + entry.active_modules_count * 5 + entry.consistency_bonus,
-        }))
-        .sort((a, b) => {
-          if (b.score !== a.score) return b.score - a.score;
-          return a.username.localeCompare(b.username, "fr");
-        })
-        .map((entry, index) => ({
-          ...entry,
-          rank: index + 1,
-        }));
-
-      setLeaderboard(ranked);
+      setRawModules((data as UserModuleRow[] | null) ?? []);
       setLoading(false);
     };
 
     void fetchLeaderboard();
   }, []);
 
+  const { weeklyLeaderboard, allTimeLeaderboard } = useMemo(() => {
+    const weeklyByUser = new Map<string, Omit<LeaderboardRow, "rank" | "score">>();
+    const allTimeByUser = new Map<string, Omit<LeaderboardRow, "rank" | "score">>();
+    const now = Date.now();
+
+    rawModules.forEach((entry) => {
+      const diff = Math.max(0, Math.floor((now - new Date(entry.started_at).getTime()) / 86400000));
+      const daysCleanThisWeek = Math.min(7, diff);
+
+      const weeklyExisting = weeklyByUser.get(entry.user_id);
+      if (!weeklyExisting) {
+        weeklyByUser.set(entry.user_id, {
+          user_id: entry.user_id,
+          username: entry.users?.username?.trim() || "Anonyme",
+          active_modules_count: 1,
+          // Deliberate choice: we keep the MAX active streak capped at 7 days instead of summing
+          // per module, so users are ranked on weekly consistency rather than module stacking.
+          days_clean_this_week: daysCleanThisWeek,
+          consistency_bonus: diff >= 7 ? 20 : 0,
+          total_days_clean: diff,
+          milestone_bonus: 0,
+        });
+      } else {
+        weeklyExisting.active_modules_count += 1;
+        weeklyExisting.days_clean_this_week = Math.max(weeklyExisting.days_clean_this_week, daysCleanThisWeek);
+        weeklyExisting.total_days_clean = Math.max(weeklyExisting.total_days_clean, diff);
+        if (diff >= 7) {
+          weeklyExisting.consistency_bonus = 20;
+        }
+      }
+
+      const allTimeExisting = allTimeByUser.get(entry.user_id);
+      if (!allTimeExisting) {
+        allTimeByUser.set(entry.user_id, {
+          user_id: entry.user_id,
+          username: entry.users?.username?.trim() || "Anonyme",
+          active_modules_count: 1,
+          days_clean_this_week: daysCleanThisWeek,
+          consistency_bonus: diff >= 7 ? 20 : 0,
+          total_days_clean: diff,
+          milestone_bonus: 0,
+        });
+      } else {
+        allTimeExisting.active_modules_count += 1;
+        allTimeExisting.days_clean_this_week = Math.max(allTimeExisting.days_clean_this_week, daysCleanThisWeek);
+        allTimeExisting.total_days_clean = Math.max(allTimeExisting.total_days_clean, diff);
+        if (diff >= 7) {
+          allTimeExisting.consistency_bonus = 20;
+        }
+      }
+    });
+
+    const rankRows = (rows: Omit<LeaderboardRow, "rank" | "score">[], scoreFor: (entry: Omit<LeaderboardRow, "rank" | "score">) => number) => rows
+      .map((entry) => ({
+        ...entry,
+        score: scoreFor(entry),
+      }))
+      .sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return a.username.localeCompare(b.username, "fr");
+      })
+      .map((entry, index) => ({
+        ...entry,
+        rank: index + 1,
+      }));
+
+    const weeklyLeaderboard = rankRows(Array.from(weeklyByUser.values()), (entry) => entry.days_clean_this_week * 10 + entry.active_modules_count * 5 + entry.consistency_bonus);
+
+    const allTimeLeaderboard = rankRows(Array.from(allTimeByUser.values()), (entry) => {
+      const milestoneBonus = (entry.total_days_clean >= 50 ? 50 : 0) + (entry.total_days_clean >= 100 ? 150 : 0) + (entry.total_days_clean >= 365 ? 500 : 0);
+      return entry.total_days_clean * 2 + entry.active_modules_count * 10 + milestoneBonus;
+    }).map((entry) => ({
+      ...entry,
+      milestone_bonus: (entry.total_days_clean >= 50 ? 50 : 0) + (entry.total_days_clean >= 100 ? 150 : 0) + (entry.total_days_clean >= 365 ? 500 : 0),
+    }));
+
+    return { weeklyLeaderboard, allTimeLeaderboard };
+  }, [rawModules]);
+
+  const leaderboard = mode === "weekly" ? weeklyLeaderboard : allTimeLeaderboard;
   const currentUserRow = useMemo(() => leaderboard.find((entry) => entry.user_id === user?.id) ?? null, [leaderboard, user?.id]);
   const topFifty = useMemo(() => leaderboard.slice(0, 50), [leaderboard]);
   const daysUntilNextMonday = useMemo(() => getDaysUntilNextMonday(), []);
@@ -193,17 +233,40 @@ const Ranking = () => {
         <header className="mb-5 flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-white/95">Classement</h1>
-            <p className="mt-1 text-sm text-white/45">Semaine en cours</p>
+            <p className="mt-1 text-sm text-white/45">{mode === "weekly" ? "Semaine en cours" : "Depuis le début"}</p>
           </div>
 
-          <div className={`rounded-[18px] px-4 py-3 text-right ${CARD}`}>
-            <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">Reset</p>
-            <p className="mt-1 text-sm font-semibold text-white/88">
-              {daysUntilNextMonday} {daysUntilNextMonday > 1 ? "jours" : "jour"}
-            </p>
-            <p className="mt-0.5 text-[11px] text-white/40">avant lundi</p>
-          </div>
+          {mode === "weekly" ? (
+            <div className={`rounded-[18px] px-4 py-3 text-right ${CARD}`}>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">Reset</p>
+              <p className="mt-1 text-sm font-semibold text-white/88">
+                {daysUntilNextMonday} {daysUntilNextMonday > 1 ? "jours" : "jour"}
+              </p>
+              <p className="mt-0.5 text-[11px] text-white/40">avant lundi</p>
+            </div>
+          ) : null}
         </header>
+
+        <div className="mb-5 grid grid-cols-2 gap-1 rounded-[14px] bg-[rgba(255,255,255,0.05)] p-1">
+          <button
+            type="button"
+            onClick={() => setMode("weekly")}
+            className={`rounded-[10px] px-4 py-2.5 text-sm font-medium transition ${
+              mode === "weekly" ? "bg-[#7B61FF] text-white shadow-[0_10px_24px_rgba(123,97,255,0.35)]" : "bg-transparent text-[rgba(255,255,255,0.4)]"
+            }`}
+          >
+            Cette semaine
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("alltime")}
+            className={`rounded-[10px] px-4 py-2.5 text-sm font-medium transition ${
+              mode === "alltime" ? "bg-[#7B61FF] text-white shadow-[0_10px_24px_rgba(123,97,255,0.35)]" : "bg-transparent text-[rgba(255,255,255,0.4)]"
+            }`}
+          >
+            All time
+          </button>
+        </div>
 
         <section className={`sticky top-4 z-20 mb-5 rounded-[24px] px-5 py-4 ${CARD}`} style={{ borderColor: "rgba(123,97,255,0.55)", boxShadow: "0 18px 50px rgba(123,97,255,0.12)" }}>
           <div className="flex items-center justify-between gap-3">
@@ -228,7 +291,7 @@ const Ranking = () => {
 
         <section className={`overflow-hidden rounded-[24px] ${CARD}`}>
           <div className="border-b border-white/[0.045] px-4 py-3">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-white/38">Top 50 hebdomadaire</p>
+            <p className="text-[10px] uppercase tracking-[0.18em] text-white/38">{mode === "weekly" ? "Top 50 hebdomadaire" : "Top 50 all time"}</p>
           </div>
 
           {loading ? (
@@ -242,7 +305,7 @@ const Ranking = () => {
               ))}
             </div>
           ) : topFifty.length === 0 ? (
-            <div className="px-6 py-16 text-center text-sm text-white/40">Aucun combattant cette semaine.</div>
+            <div className="px-6 py-16 text-center text-sm text-white/40">{mode === "weekly" ? "Aucun combattant cette semaine." : "Aucun combattant pour le moment."}</div>
           ) : (
             <div className="px-3 py-2">
               {topFifty.map((entry, index) => {
