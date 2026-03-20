@@ -58,6 +58,7 @@ const App = () => (
             <Route path="/modules" element={<Modules />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/trophees" element={<Trophies />} />
+            <Route path="/app/smoking" element={<Smoking />} />
             <Route path="/app/smoking-choice" element={<SmokingChoice />} />
             <Route path="/app/alcohol" element={<Alcohol />} />
             <Route path="/app/food" element={<Food />} />
