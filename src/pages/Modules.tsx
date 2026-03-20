@@ -9,6 +9,7 @@ type ModuleDefinition = {
   label: string;
   description: string;
   to: string;
+  directTo: string;
 };
 
 type UserModule = {
@@ -33,6 +34,7 @@ const modules: ModuleDefinition[] = [
     label: "Tabac",
     description: "Réduire puis arrêter la cigarette.",
     to: "/app/smoking-choice",
+    directTo: "/app/smoking",
   },
   {
     slug: "alcohol",
@@ -40,6 +42,7 @@ const modules: ModuleDefinition[] = [
     label: "Alcool",
     description: "Stabiliser votre consommation d'alcool.",
     to: "/app/alcohol",
+    directTo: "/app/alcohol",
   },
   {
     slug: "food",
@@ -47,6 +50,7 @@ const modules: ModuleDefinition[] = [
     label: "Nourriture",
     description: "Limiter les compulsions alimentaires.",
     to: "/app/food",
+    directTo: "/app/food",
   },
   {
     slug: "substances",
@@ -54,6 +58,7 @@ const modules: ModuleDefinition[] = [
     label: "Substances",
     description: "Sortir de la dépendance aux substances.",
     to: "/app/substances",
+    directTo: "/app/substances",
   },
   {
     slug: "gambling",
@@ -61,6 +66,7 @@ const modules: ModuleDefinition[] = [
     label: "Jeux d'argent",
     description: "Reprendre le contrôle de vos mises.",
     to: "/app/gambling",
+    directTo: "/app/gambling",
   },
   {
     slug: "pornography",
@@ -68,6 +74,7 @@ const modules: ModuleDefinition[] = [
     label: "Pornographie",
     description: "Retrouver une consommation saine.",
     to: "/app/pornography",
+    directTo: "/app/pornography",
   },
   {
     slug: "fornication",
@@ -75,6 +82,7 @@ const modules: ModuleDefinition[] = [
     label: "Fornication",
     description: "Canaliser les impulsions sexuelles.",
     to: "/app/fornication",
+    directTo: "/app/fornication",
   },
   {
     slug: "screentime",
@@ -82,6 +90,7 @@ const modules: ModuleDefinition[] = [
     label: "Temps d'écran",
     description: "Réduire les heures passées sur écran.",
     to: "/app/screentime",
+    directTo: "/app/screentime",
   },
 ];
 
@@ -147,7 +156,7 @@ export default function Modules() {
         <h1 className="text-xl font-semibold text-white/95">Modules addictions</h1>
 
         <section className="mt-4 space-y-3">
-          {modulesWithStats.map(({ slug, emoji, label, description, to, entry, stats }) => {
+          {modulesWithStats.map(({ slug, emoji, label, description, to, directTo, entry, stats }) => {
             const isExpanded = expandedSlug === slug;
             const isActive = Boolean(entry?.is_active);
 
@@ -209,7 +218,7 @@ export default function Modules() {
 
                     <div className="mt-3 flex justify-end">
                       <Link
-                        to={to}
+                        to={isActive ? directTo : to}
                         className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/85 transition hover:bg-white/10"
                       >
                         Ouvrir le module
