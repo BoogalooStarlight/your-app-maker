@@ -71,8 +71,8 @@ type LeaderboardRow = {
 type UserModuleRow = {
   user_id: string;
   started_at: string;
-  users: {
-    username: string | null;
+  profiles: {
+    pseudo: string | null;
   } | null;
 };
 
@@ -126,7 +126,7 @@ const Ranking = () => {
 
       const { data, error } = await supabase
         .from("user_modules")
-        .select("user_id,started_at,users(username)")
+        .select("user_id,started_at,profiles(pseudo)")
         .eq("is_active", true);
 
       if (error) {
@@ -156,7 +156,7 @@ const Ranking = () => {
       if (!weeklyExisting) {
         weeklyByUser.set(entry.user_id, {
           user_id: entry.user_id,
-          username: entry.users?.username?.trim() || "Anonyme",
+          username: entry.profiles?.pseudo?.trim() || "Anonyme",
           active_modules_count: 1,
           // Deliberate choice: we keep the MAX active streak capped at 7 days instead of summing
           // per module, so users are ranked on weekly consistency rather than module stacking.
@@ -178,7 +178,7 @@ const Ranking = () => {
       if (!allTimeExisting) {
         allTimeByUser.set(entry.user_id, {
           user_id: entry.user_id,
-          username: entry.users?.username?.trim() || "Anonyme",
+          username: entry.profiles?.pseudo?.trim() || "Anonyme",
           active_modules_count: 1,
           days_clean_this_week: daysCleanThisWeek,
           consistency_bonus: diff >= 7 ? 20 : 0,
