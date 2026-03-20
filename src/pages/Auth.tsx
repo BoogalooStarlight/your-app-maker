@@ -28,9 +28,9 @@ const Auth = () => {
 
         if (!identifier.includes("@")) {
           const { data, error: lookupError } = await supabase
-            .from("users")
+            .from("profiles")
             .select("email")
-            .eq("username", identifier)
+            .eq("pseudo", identifier)
             .single();
 
           if (lookupError || !data?.email) {
@@ -70,8 +70,8 @@ const Auth = () => {
         }
 
         const { error: upsertError } = await supabase
-          .from("users")
-          .upsert({ id: user.id, username: trimmedUsername });
+          .from("profiles")
+          .upsert({ id: user.id, pseudo: trimmedUsername });
 
         if (upsertError) {
           if (upsertError.code === "23505") {
