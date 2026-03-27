@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import supabase from "@/lib/supabaseClient";
 
 const fornicationChoices = [
   { icon: "👁️", label: "Regard", to: "/app/fornication/regard" },
@@ -9,6 +11,66 @@ const fornicationChoices = [
 ] as const;
 
 const FornicationChoice = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkFornicationSubtype = async () => {
+      const { data: authData } = await supabase.auth.getUser();
+      const user = authData.user;
+
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("user_modules")
+        .select("module_slug")
+        .eq("user_id", user.id)
+        .in("module_slug", [
+          "fornication-regard",
+          "fornication-interactions",
+          "fornication-contact",
+          "fornication-acte",
+        ])
+        .eq("is_active", true)
+        .single();
+
+      if (data?.module_slug === "fornication-regard") {
+        navigate("/app/fornication/regard", { replace: true });
+        return;
+      }
+
+      if (data?.module_slug === "fornication-interactions") {
+        navigate("/app/fornication/interactions", { replace: true });
+        return;
+      }
+
+      if (data?.module_slug === "fornication-contact") {
+        navigate("/app/fornication/contact", { replace: true });
+        return;
+      }
+
+      if (data?.module_slug === "fornication-acte") {
+        navigate("/app/fornication/acte", { replace: true });
+        return;
+      }
+
+      if (error && error.code !== "PGRST116") {
+        console.error("Failed to fetch fornication module", error);
+      }
+
+      setIsLoading(false);
+    };
+
+    void checkFornicationSubtype();
+  }, [navigate]);
+
+  if (isLoading) {
+    return <div className="min-h-screen bg-black" />;
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
       <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">

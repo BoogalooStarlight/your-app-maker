@@ -1,7 +1,69 @@
+import { useEffect, useState } from "react";
 import { ArrowLeft, Pill } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import supabase from "@/lib/supabaseClient";
 
 const SubstancesChoice = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkSubstancesSubtype = async () => {
+      const { data: authData } = await supabase.auth.getUser();
+      const user = authData.user;
+
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("user_modules")
+        .select("module_slug")
+        .eq("user_id", user.id)
+        .in("module_slug", ["cannabis", "herbe", "ballons", "autre", "cafeine"])
+        .eq("is_active", true)
+        .single();
+
+      if (data?.module_slug === "cannabis") {
+        navigate("/app/substances/cannabis", { replace: true });
+        return;
+      }
+
+      if (data?.module_slug === "herbe") {
+        navigate("/app/substances/herbe", { replace: true });
+        return;
+      }
+
+      if (data?.module_slug === "ballons") {
+        navigate("/app/substances/ballons", { replace: true });
+        return;
+      }
+
+      if (data?.module_slug === "autre") {
+        navigate("/app/substances/autre", { replace: true });
+        return;
+      }
+
+      if (data?.module_slug === "cafeine") {
+        navigate("/app/substances/cafeine", { replace: true });
+        return;
+      }
+
+      if (error && error.code !== "PGRST116") {
+        console.error("Failed to fetch substances module", error);
+      }
+
+      setIsLoading(false);
+    };
+
+    void checkSubstancesSubtype();
+  }, [navigate]);
+
+  if (isLoading) {
+    return <div className="min-h-screen bg-black" />;
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
       <main className="mx-auto w-full max-w-[430px] px-4 pb-24 pt-6">
