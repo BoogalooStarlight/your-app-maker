@@ -11,7 +11,6 @@ export interface Stats {
 }
 
 interface UserModule {
-  started_at: string;
   daily_cost_euros: number | null;
   daily_quantity: number | null;
 }
@@ -37,17 +36,14 @@ function computeStats(modules: UserModule[], daysCleanCount = 0): Stats {
     };
   }
 
-  const now = Date.now();
   const daysClean = daysCleanCount;
 
   const moneySaved = modules.reduce((sum, module) => {
-    const daysSinceModule = Math.floor((now - new Date(module.started_at).getTime()) / 86400000);
-    return sum + (module.daily_cost_euros ?? 0) * daysSinceModule;
+    return sum + (module.daily_cost_euros ?? 0) * daysClean;
   }, 0);
 
   const avoided = modules.reduce((sum, module) => {
-    const daysSinceModule = Math.floor((now - new Date(module.started_at).getTime()) / 86400000);
-    return sum + (module.daily_quantity ?? 0) * daysSinceModule;
+    return sum + (module.daily_quantity ?? 0) * daysClean;
   }, 0);
 
   const health = Math.min(100, Math.round((daysClean / 365) * 100));
@@ -75,7 +71,7 @@ export function useStats(): Stats {
         return;
       }
 
-      const { count } = await supabase
+      const { count: cleanDaysCount } = await supabase
         .from("daily_checkins")
         .select("*", { count: "exact", head: true })
         .eq("user_id", user.id)
@@ -83,11 +79,13 @@ export function useStats(): Stats {
 
       const { data: modulesData } = await supabase
         .from("user_modules")
-        .select("started_at,daily_cost_euros,daily_quantity")
+        .select("daily_cost_euros,daily_quantity")
         .eq("user_id", user.id)
         .eq("is_active", true);
 
-      setStats(computeStats((modulesData ?? []) as UserModule[], count ?? 0));
+      const daysClean = cleanDaysCount ?? 0;
+
+      setStats(computeStats((modulesData ?? []) as UserModule[], daysClean));
     };
 
     loadStats();
