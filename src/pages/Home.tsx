@@ -3,6 +3,7 @@ import { animate, useMotionValue } from "@/lib/motionValue";
 import { Activity, Coins, LogOut, Sparkles } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppNavigation } from "@/components/AppNavigation";
+import CheckIn from "@/components/CheckIn";
 import supabase from "@/lib/supabaseClient";
 import { useStats } from "@/hooks/useStats";
 
@@ -21,6 +22,7 @@ const Home = () => {
   const [animatedMoney, setAnimatedMoney] = useState(0);
   const [animatedAvoided, setAnimatedAvoided] = useState(0);
   const [animatedGoal, setAnimatedGoal] = useState(0);
+  const [showCheckIn, setShowCheckIn] = useState(false);
 
   const stats = useStats();
 
@@ -37,6 +39,22 @@ const Home = () => {
       const user = data.user;
       const value = (user as { user_metadata?: { pseudo?: string } } | null)?.user_metadata?.pseudo;
       setPseudo(value ?? "");
+
+      if (!user?.id) {
+        return;
+      }
+
+      const today = new Date().toISOString().split("T")[0];
+      const { data: checkIn } = await supabase
+        .from("daily_checkins")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .eq("checked_at", today)
+        .maybeSingle();
+
+      if (!checkIn) {
+        setShowCheckIn(true);
+      }
     };
 
     loadData();
@@ -207,6 +225,12 @@ const Home = () => {
       </main>
 
       <AppNavigation />
+
+      {showCheckIn && (
+        <div className="fixed inset-0 z-50">
+          <CheckIn onComplete={() => setShowCheckIn(false)} />
+        </div>
+      )}
     </div>
   );
 };
