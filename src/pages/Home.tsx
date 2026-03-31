@@ -37,12 +37,19 @@ const Home = () => {
     const loadData = async () => {
       const { data } = await supabase.auth.getUser();
       const user = data.user;
-      const value = (user as { user_metadata?: { pseudo?: string } } | null)?.user_metadata?.pseudo;
-      setPseudo(value ?? "");
 
       if (!user?.id) {
+        setPseudo("");
         return;
       }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("pseudo")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      setPseudo(profile?.pseudo ?? "");
 
       const today = new Date().toISOString().split("T")[0];
       const { data: checkIn } = await supabase
