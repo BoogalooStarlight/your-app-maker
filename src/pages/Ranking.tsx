@@ -70,10 +70,15 @@ type LeaderboardRow = {
 
 type UserModuleRow = {
   user_id: string;
-  started_at: string;
   profiles: {
     pseudo: string | null;
   } | null;
+};
+
+type DailyCheckinRow = {
+  user_id: string;
+  checked_at: string;
+  cracked: boolean;
 };
 
 const ACCENT_SOFT = "#9D87FF";
@@ -118,25 +123,40 @@ const Ranking = () => {
   const { user } = useAuth();
   const [mode, setMode] = useState<"weekly" | "alltime">("weekly");
   const [rawModules, setRawModules] = useState<UserModuleRow[]>([]);
+  const [rawCheckins, setRawCheckins] = useState<DailyCheckinRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       setLoading(true);
 
-      const { data, error } = await supabase
+      const { data: modulesData, error: modulesError } = await supabase
         .from("user_modules")
-        .select("user_id,started_at,profiles(pseudo)")
+        .select("user_id, profiles(pseudo)")
         .eq("is_active", true);
 
-      if (error) {
-        console.error("Erreur lors du chargement du classement:", error.message);
+      if (modulesError) {
+        console.error("Erreur lors du chargement du classement:", modulesError.message);
         setRawModules([]);
+        setRawCheckins([]);
         setLoading(false);
         return;
       }
 
-      setRawModules((data as UserModuleRow[] | null) ?? []);
+      const { data: checkinsData, error: checkinsError } = await supabase
+        .from("daily_checkins")
+        .select("user_id, checked_at, cracked");
+
+      if (checkinsError) {
+        console.error("Erreur lors du chargement des check-ins:", checkinsError.message);
+        setRawModules([]);
+        setRawCheckins([]);
+        setLoading(false);
+        return;
+      }
+
+      setRawModules((modulesData as UserModuleRow[] | null) ?? []);
+      setRawCheckins((checkinsData as DailyCheckinRow[] | null) ?? []);
       setLoading(false);
     };
 
@@ -146,11 +166,29 @@ const Ranking = () => {
   const { weeklyLeaderboard, allTimeLeaderboard } = useMemo(() => {
     const weeklyByUser = new Map<string, Omit<LeaderboardRow, "rank" | "score">>();
     const allTimeByUser = new Map<string, Omit<LeaderboardRow, "rank" | "score">>();
-    const now = Date.now();
+
+    const mondayStart = new Date();
+    mondayStart.setHours(0, 0, 0, 0);
+    const day = mondayStart.getDay();
+    const daysSinceMonday = (day + 6) % 7;
+    mondayStart.setDate(mondayStart.getDate() - daysSinceMonday);
+
+    const checkinsByUser = new Map<string, DailyCheckinRow[]>();
+    rawCheckins.forEach((checkin) => {
+      const existing = checkinsByUser.get(checkin.user_id);
+      if (existing) {
+        existing.push(checkin);
+      } else {
+        checkinsByUser.set(checkin.user_id, [checkin]);
+      }
+    });
 
     rawModules.forEach((entry) => {
-      const diff = Math.max(0, Math.floor((now - new Date(entry.started_at).getTime()) / 86400000));
-      const daysCleanThisWeek = Math.min(7, diff);
+      const userCheckins = checkinsByUser.get(entry.user_id) ?? [];
+      const cleanCheckins = userCheckins.filter((checkin) => !checkin.cracked);
+      const daysCleanThisWeek = cleanCheckins.filter((checkin) => new Date(checkin.checked_at) >= mondayStart).length;
+      const totalDaysClean = cleanCheckins.length;
+      const consistencyBonus = daysCleanThisWeek >= 7 ? 20 : 0;
 
       const weeklyExisting = weeklyByUser.get(entry.user_id);
       if (!weeklyExisting) {
@@ -158,20 +196,16 @@ const Ranking = () => {
           user_id: entry.user_id,
           username: entry.profiles?.pseudo?.trim() || "Anonyme",
           active_modules_count: 1,
-          // Deliberate choice: we keep the MAX active streak capped at 7 days instead of summing
-          // per module, so users are ranked on weekly consistency rather than module stacking.
           days_clean_this_week: daysCleanThisWeek,
-          consistency_bonus: diff >= 7 ? 20 : 0,
-          total_days_clean: diff,
+          consistency_bonus: consistencyBonus,
+          total_days_clean: totalDaysClean,
           milestone_bonus: 0,
         });
       } else {
         weeklyExisting.active_modules_count += 1;
-        weeklyExisting.days_clean_this_week = Math.max(weeklyExisting.days_clean_this_week, daysCleanThisWeek);
-        weeklyExisting.total_days_clean = Math.max(weeklyExisting.total_days_clean, diff);
-        if (diff >= 7) {
-          weeklyExisting.consistency_bonus = 20;
-        }
+        weeklyExisting.days_clean_this_week = daysCleanThisWeek;
+        weeklyExisting.total_days_clean = totalDaysClean;
+        weeklyExisting.consistency_bonus = consistencyBonus;
       }
 
       const allTimeExisting = allTimeByUser.get(entry.user_id);
@@ -181,17 +215,15 @@ const Ranking = () => {
           username: entry.profiles?.pseudo?.trim() || "Anonyme",
           active_modules_count: 1,
           days_clean_this_week: daysCleanThisWeek,
-          consistency_bonus: diff >= 7 ? 20 : 0,
-          total_days_clean: diff,
+          consistency_bonus: consistencyBonus,
+          total_days_clean: totalDaysClean,
           milestone_bonus: 0,
         });
       } else {
         allTimeExisting.active_modules_count += 1;
-        allTimeExisting.days_clean_this_week = Math.max(allTimeExisting.days_clean_this_week, daysCleanThisWeek);
-        allTimeExisting.total_days_clean = Math.max(allTimeExisting.total_days_clean, diff);
-        if (diff >= 7) {
-          allTimeExisting.consistency_bonus = 20;
-        }
+        allTimeExisting.days_clean_this_week = daysCleanThisWeek;
+        allTimeExisting.total_days_clean = totalDaysClean;
+        allTimeExisting.consistency_bonus = consistencyBonus;
       }
     });
 
@@ -212,15 +244,15 @@ const Ranking = () => {
     const weeklyLeaderboard = rankRows(Array.from(weeklyByUser.values()), (entry) => entry.days_clean_this_week * 10 + entry.active_modules_count * 5 + entry.consistency_bonus);
 
     const allTimeLeaderboard = rankRows(Array.from(allTimeByUser.values()), (entry) => {
-      const milestoneBonus = (entry.total_days_clean >= 50 ? 50 : 0) + (entry.total_days_clean >= 100 ? 150 : 0) + (entry.total_days_clean >= 365 ? 500 : 0);
+      const milestoneBonus = entry.total_days_clean >= 365 ? 500 : entry.total_days_clean >= 100 ? 150 : entry.total_days_clean >= 50 ? 50 : 0;
       return entry.total_days_clean * 2 + entry.active_modules_count * 10 + milestoneBonus;
     }).map((entry) => ({
       ...entry,
-      milestone_bonus: (entry.total_days_clean >= 50 ? 50 : 0) + (entry.total_days_clean >= 100 ? 150 : 0) + (entry.total_days_clean >= 365 ? 500 : 0),
+      milestone_bonus: entry.total_days_clean >= 365 ? 500 : entry.total_days_clean >= 100 ? 150 : entry.total_days_clean >= 50 ? 50 : 0,
     }));
 
     return { weeklyLeaderboard, allTimeLeaderboard };
-  }, [rawModules]);
+  }, [rawCheckins, rawModules]);
 
   const leaderboard = mode === "weekly" ? weeklyLeaderboard : allTimeLeaderboard;
   const currentUserRow = useMemo(() => leaderboard.find((entry) => entry.user_id === user?.id) ?? null, [leaderboard, user?.id]);
