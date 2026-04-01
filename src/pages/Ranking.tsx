@@ -64,12 +64,14 @@ type LeaderboardRow = {
   consistency_bonus: number;
   total_days_clean: number;
   milestone_bonus: number;
+  current_streak: number;
   score: number;
   rank: number;
 };
 
 type UserModuleRow = {
   user_id: string;
+  module_slug: string | null;
   profiles: {
     pseudo: string | null;
   } | null;
@@ -79,10 +81,21 @@ type DailyCheckinRow = {
   user_id: string;
   checked_at: string;
   cracked: boolean;
+  module_slug: string | null;
 };
 
 const ACCENT_SOFT = "#9D87FF";
 const CARD = "border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] backdrop-blur-[24px]";
+const MODULE_META: Record<string, string> = {
+  tabac: "🚬 Tabac",
+  alcool: "🍷 Alcool",
+  substances: "💊 Substances",
+  "jeux-argent": "🎰 Jeux",
+  pornographie: "📵 Porno",
+  "temps-ecran": "📱 Écran",
+  nourriture: "🍫 Nourriture",
+  fornication: "🔥 Fornication",
+};
 
 const getDaysUntilNextMonday = () => {
   const now = new Date();
@@ -122,6 +135,7 @@ const getTopThreeStyles = (rank: number) => {
 const Ranking = () => {
   const { user } = useAuth();
   const [mode, setMode] = useState<"weekly" | "alltime">("weekly");
+  const [activeFilter, setActiveFilter] = useState<string>("global");
   const [rawModules, setRawModules] = useState<UserModuleRow[]>([]);
   const [rawCheckins, setRawCheckins] = useState<DailyCheckinRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -132,7 +146,7 @@ const Ranking = () => {
 
       const { data: modulesData, error: modulesError } = await supabase
         .from("user_modules")
-        .select("user_id, profiles(pseudo)")
+        .select("user_id, module_slug, profiles(pseudo)")
         .eq("is_active", true);
 
       if (modulesError) {
@@ -145,7 +159,7 @@ const Ranking = () => {
 
       const { data: checkinsData, error: checkinsError } = await supabase
         .from("daily_checkins")
-        .select("user_id, checked_at, cracked");
+        .select("user_id, checked_at, cracked, module_slug");
 
       if (checkinsError) {
         console.error("Erreur lors du chargement des check-ins:", checkinsError.message);
@@ -162,6 +176,14 @@ const Ranking = () => {
 
     void fetchLeaderboard();
   }, []);
+
+  const moduleFilters = useMemo(() => {
+    const slugs = new Set<string>();
+    rawModules.forEach((entry) => {
+      if (entry.module_slug) slugs.add(entry.module_slug);
+    });
+    return Array.from(slugs);
+  }, [rawModules]);
 
   const { weeklyLeaderboard, allTimeLeaderboard } = useMemo(() => {
     const weeklyByUser = new Map<string, Omit<LeaderboardRow, "rank" | "score">>();
@@ -183,12 +205,58 @@ const Ranking = () => {
       }
     });
 
+    const userActiveModules = new Map<string, Set<string>>();
     rawModules.forEach((entry) => {
-      const userCheckins = checkinsByUser.get(entry.user_id) ?? [];
+      if (entry.module_slug) {
+        const modules = userActiveModules.get(entry.user_id) ?? new Set<string>();
+        modules.add(entry.module_slug);
+        userActiveModules.set(entry.user_id, modules);
+      }
+    });
+
+    const computeCurrentStreak = (checkins: DailyCheckinRow[]) => {
+      if (checkins.length === 0) return 0;
+
+      const crackedByDay = new Map<string, boolean>();
+      checkins.forEach((checkin) => {
+        const dayKey = new Date(checkin.checked_at).toISOString().slice(0, 10);
+        if (checkin.cracked) {
+          crackedByDay.set(dayKey, true);
+        } else if (!crackedByDay.has(dayKey)) {
+          crackedByDay.set(dayKey, false);
+        }
+      });
+
+      let streak = 0;
+      const cursor = new Date();
+      cursor.setHours(0, 0, 0, 0);
+
+      while (true) {
+        const dayKey = cursor.toISOString().slice(0, 10);
+        if (crackedByDay.get(dayKey) === false) {
+          streak += 1;
+          cursor.setDate(cursor.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+
+      return streak;
+    };
+
+    rawModules.forEach((entry) => {
+      const hasActiveModule = activeFilter === "global" || userActiveModules.get(entry.user_id)?.has(activeFilter);
+      if (!hasActiveModule) return;
+
+      const userCheckins = (checkinsByUser.get(entry.user_id) ?? []).filter((checkin) => {
+        if (activeFilter === "global") return true;
+        return checkin.module_slug === activeFilter || checkin.module_slug === null;
+      });
       const cleanCheckins = userCheckins.filter((checkin) => !checkin.cracked);
       const daysCleanThisWeek = cleanCheckins.filter((checkin) => new Date(checkin.checked_at) >= mondayStart).length;
       const totalDaysClean = cleanCheckins.length;
       const consistencyBonus = daysCleanThisWeek >= 7 ? 20 : 0;
+      const currentStreak = computeCurrentStreak(userCheckins);
 
       const weeklyExisting = weeklyByUser.get(entry.user_id);
       if (!weeklyExisting) {
@@ -200,12 +268,14 @@ const Ranking = () => {
           consistency_bonus: consistencyBonus,
           total_days_clean: totalDaysClean,
           milestone_bonus: 0,
+          current_streak: currentStreak,
         });
       } else {
         weeklyExisting.active_modules_count += 1;
         weeklyExisting.days_clean_this_week = daysCleanThisWeek;
         weeklyExisting.total_days_clean = totalDaysClean;
         weeklyExisting.consistency_bonus = consistencyBonus;
+        weeklyExisting.current_streak = currentStreak;
       }
 
       const allTimeExisting = allTimeByUser.get(entry.user_id);
@@ -218,12 +288,14 @@ const Ranking = () => {
           consistency_bonus: consistencyBonus,
           total_days_clean: totalDaysClean,
           milestone_bonus: 0,
+          current_streak: currentStreak,
         });
       } else {
         allTimeExisting.active_modules_count += 1;
         allTimeExisting.days_clean_this_week = daysCleanThisWeek;
         allTimeExisting.total_days_clean = totalDaysClean;
         allTimeExisting.consistency_bonus = consistencyBonus;
+        allTimeExisting.current_streak = currentStreak;
       }
     });
 
@@ -252,7 +324,7 @@ const Ranking = () => {
     }));
 
     return { weeklyLeaderboard, allTimeLeaderboard };
-  }, [rawCheckins, rawModules]);
+  }, [activeFilter, rawCheckins, rawModules]);
 
   const leaderboard = mode === "weekly" ? weeklyLeaderboard : allTimeLeaderboard;
   const currentUserRow = useMemo(() => leaderboard.find((entry) => entry.user_id === user?.id) ?? null, [leaderboard, user?.id]);
@@ -298,6 +370,32 @@ const Ranking = () => {
           >
             All time
           </button>
+        </div>
+
+        <div className="mb-5 flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <button
+            type="button"
+            onClick={() => setActiveFilter("global")}
+            className="shrink-0 rounded-full border px-4 py-2 text-sm transition"
+            style={activeFilter === "global"
+              ? { background: "#7B61FF", color: "#FFFFFF", borderColor: "#7B61FF" }
+              : { background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", borderColor: "rgba(255,255,255,0.1)" }}
+          >
+            🌍 Global
+          </button>
+          {moduleFilters.map((slug) => (
+            <button
+              key={slug}
+              type="button"
+              onClick={() => setActiveFilter(slug)}
+              className="shrink-0 rounded-full border px-4 py-2 text-sm transition"
+              style={activeFilter === slug
+                ? { background: "#7B61FF", color: "#FFFFFF", borderColor: "#7B61FF" }
+                : { background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", borderColor: "rgba(255,255,255,0.1)" }}
+            >
+              {MODULE_META[slug] ?? slug}
+            </button>
+          ))}
         </div>
 
         <section className={`sticky top-4 z-20 mb-5 rounded-[24px] px-5 py-4 ${CARD}`} style={{ borderColor: "rgba(123,97,255,0.55)", boxShadow: "0 18px 50px rgba(123,97,255,0.12)" }}>
@@ -363,6 +461,7 @@ const Ranking = () => {
 
                     <div className="min-w-0 flex-1">
                       <p className={`truncate text-[15px] ${entry.rank <= 3 ? "font-semibold text-white/96" : "font-medium text-white/88"}`}>{entry.username}</p>
+                      {entry.current_streak > 0 ? <p className="mt-0.5 text-xs text-[#FF9F43]">🔥 {entry.current_streak}j</p> : null}
                     </div>
 
                     <div className="text-right" style={{ fontFamily: "'DM Mono', monospace" }}>
