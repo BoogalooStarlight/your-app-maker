@@ -86,8 +86,9 @@ type DailyCheckinRow = {
 
 const ACCENT_SOFT = "#9D87FF";
 const CARD = "border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] backdrop-blur-[24px]";
-const MODULE_META: Record<string, string> = {
+const MODULE_META: Record<string, string | { emoji: string; label: string }> = {
   tabac: "🚬 Tabac",
+  smoking: { emoji: "🚬", label: "Tabac" },
   alcool: "🍷 Alcool",
   substances: "💊 Substances",
   "jeux-argent": "🎰 Jeux",
@@ -393,7 +394,7 @@ const Ranking = () => {
                 ? { background: "#7B61FF", color: "#FFFFFF", borderColor: "#7B61FF" }
                 : { background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", borderColor: "rgba(255,255,255,0.1)" }}
             >
-              {MODULE_META[slug] ?? slug}
+              {typeof MODULE_META[slug] === "string" ? MODULE_META[slug] : MODULE_META[slug] ? `${MODULE_META[slug].emoji} ${MODULE_META[slug].label}` : slug}
             </button>
           ))}
         </div>
