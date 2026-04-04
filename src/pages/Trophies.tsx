@@ -252,8 +252,13 @@ export default function Trophies() {
       <div className="min-h-screen bg-[#08080F] flex items-center justify-center">
         <p className="text-white/30 text-sm">Chargement...</p>
       </div>
-    );
-  }
+      <div className="flex justify-between mt-[7px]">
+        <span className="text-[10px] font-mono text-[rgba(123,97,255,0.8)]">{currentDays} jours</span>
+        <span className="text-[10px] font-mono text-white/25">{milestone.days} jours</span>
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-[#08080F] text-white">
