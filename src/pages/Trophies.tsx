@@ -104,8 +104,8 @@ function Badge({ milestone, emoji, unlocked, featured }: { milestone: Milestone;
         unlocked && !featured
           ? "border-[rgba(123,97,255,0.28)] bg-[rgba(123,97,255,0.06)] hover:-translate-y-0.5"
           : unlocked && featured
-            ? "border-[rgba(123,97,255,0.55)] bg-[rgba(123,97,255,0.10)] shadow-[0_0_24px_rgba(123,97,255,0.10)]"
-            : "border-[rgba(255,255,255,0.05)] bg-[rgba(255,255,255,0.02)] opacity-25",
+          ? "border-[rgba(123,97,255,0.55)] bg-[rgba(123,97,255,0.10)] shadow-[0_0_24px_rgba(123,97,255,0.10)]"
+          : "border-[rgba(255,255,255,0.05)] bg-[rgba(255,255,255,0.02)] opacity-25",
       ].join(" ")}
     >
       <div className="relative w-16 h-16 flex items-center justify-center">
@@ -124,7 +124,9 @@ function Badge({ milestone, emoji, unlocked, featured }: { milestone: Milestone;
           {milestone.roman}
         </span>
       </div>
-      <p className={`text-[10.5px] font-semibold text-center ${unlocked ? "text-white/95" : "text-white/70"}`}>{milestone.name}</p>
+      <p className={`text-[10.5px] font-semibold text-center ${unlocked ? "text-white/95" : "text-white/70"}`}>
+        {milestone.name}
+      </p>
     </div>
   );
 }
@@ -136,7 +138,9 @@ function NextObjective({ milestone, emoji, currentDays }: { milestone: Milestone
     <div className="bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
       <div className="flex items-center justify-between mb-3">
         <p className="text-sm font-semibold text-white/95">{milestone.name}</p>
-        <p className="text-xs text-[rgba(123,97,255,0.85)] font-medium">{daysLeft === 1 ? "1 jour restant" : `${daysLeft} jours restants`}</p>
+        <p className="text-xs text-[rgba(123,97,255,0.85)] font-medium">
+          {daysLeft === 1 ? "1 jour restant" : `${daysLeft} jours restants`}
+        </p>
       </div>
       <div className="flex items-center gap-4 mb-4">
         <div className="relative w-[52px] h-[52px] shrink-0 flex items-center justify-center">
@@ -148,17 +152,28 @@ function NextObjective({ milestone, emoji, currentDays }: { milestone: Milestone
             {milestone.shape === "hexagon" && <polygon points="32,4 56,17 56,47 32,60 8,47 8,17" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2" />}
             {milestone.shape === "star8" && <polygon points="32,4 37,27 60,32 37,37 32,60 27,37 4,32 27,27" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2" />}
           </svg>
-          <span className="absolute text-[17px] leading-none" style={{ top: "50%", left: "50%", transform: "translate(-50%, -58%)", opacity: 0.35 }}>
+          <span
+            className="absolute text-[17px] leading-none"
+            style={{ top: "50%", left: "50%", transform: "translate(-50%, -58%)", opacity: 0.35 }}
+          >
             {emoji}
           </span>
-          <span className="absolute bottom-[5px] left-0 right-0 text-center font-mono text-[9px] font-bold tracking-[1px]" style={{ color: "rgba(123,97,255,0.7)" }}>
+          <span
+            className="absolute bottom-[5px] left-0 right-0 text-center font-mono text-[9px] font-bold tracking-[1px]"
+            style={{ color: "rgba(123,97,255,0.7)" }}
+          >
             {milestone.roman}
           </span>
         </div>
-        <p className="text-xs text-white/35 leading-relaxed">{milestone.days} jours sans rechute. La résistance devient une habitude.</p>
+        <p className="text-xs text-white/35 leading-relaxed">
+          {milestone.days} jours sans rechute. La résistance devient une habitude.
+        </p>
       </div>
       <div className="h-[3px] w-full rounded-full bg-white/5 overflow-hidden">
-        <div className="h-full rounded-full bg-gradient-to-r from-[#7B61FF] to-[#A590FF]" style={{ width: `${progress}%` }} />
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-[#7B61FF] to-[#A590FF]"
+          style={{ width: `${progress}%` }}
+        />
       </div>
       <div className="flex justify-between mt-[7px]">
         <span className="text-[10px] font-mono text-[rgba(123,97,255,0.8)]">{currentDays} jours</span>
@@ -180,9 +195,7 @@ function ModuleTab({ slug, emoji, label, active, onClick }: { slug: string; emoj
           : "border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] text-white/45 hover:text-white/70",
       ].join(" ")}
     >
-      <span className="text-sm" aria-hidden="true">
-        {emoji}
-      </span>
+      <span className="text-sm" aria-hidden="true">{emoji}</span>
       {label}
     </button>
   );
@@ -195,27 +208,17 @@ export default function Trophies() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        setLoading(false);
-        return;
-      }
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { setLoading(false); return; }
 
-      // Récupère tous les modules actifs
       const { data: userModules } = await supabase
         .from("user_modules")
         .select("module_slug, started_at")
         .eq("user_id", user.id)
         .eq("is_active", true);
 
-      if (!userModules || userModules.length === 0) {
-        setLoading(false);
-        return;
-      }
+      if (!userModules || userModules.length === 0) { setLoading(false); return; }
 
-      // Pour chaque module, compte les checkins non crackés
       const results: ModuleProgress[] = await Promise.all(
         userModules.map(async (mod) => {
           const { count } = await supabase
@@ -224,12 +227,8 @@ export default function Trophies() {
             .eq("user_id", user.id)
             .eq("module_slug", mod.module_slug)
             .eq("cracked", false);
-
-          return {
-            slug: mod.module_slug,
-            daysClean: count ?? 0,
-          };
-        }),
+          return { slug: mod.module_slug, daysClean: count ?? 0 };
+        })
       );
 
       setModules(results);
@@ -260,16 +259,15 @@ export default function Trophies() {
   );
 }
 
+function ModuleTab({ slug, emoji, label, active, onClick }: { slug: string; emoji: string; label: string; active: boolean; onClick: () => void }) {
   return (
     <div className="min-h-screen bg-[#08080F] text-white">
       <main className="mx-auto w-full max-w-[980px] px-4 pb-24 pt-6">
-        {/* Header */}
         <div className="mb-6">
           <h1 className="text-xl font-semibold text-white/95 tracking-[-0.4px] mb-1">Trophées</h1>
           <p className="text-[13px] text-white/30">Chaque médaille est une bataille gagnée.</p>
         </div>
 
-        {/* Stats globales */}
         <div className="grid grid-cols-3 gap-2 mb-6">
           {[
             { val: totalUnlocked, label: "Total débloqués" },
@@ -283,7 +281,6 @@ export default function Trophies() {
           ))}
         </div>
 
-        {/* Tabs modules */}
         {modules.length > 1 && (
           <div className="flex gap-2 overflow-x-auto pb-1 mb-6 scrollbar-none">
             {modules.map((mod) => (
@@ -307,18 +304,18 @@ export default function Trophies() {
           </div>
         ) : (
           <>
-            {/* Header module actif */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className="text-xl">{emoji}</span>
-                <p className="text-sm font-semibold text-white/90">{activeSlug ? MODULE_LABEL[activeSlug] : ""}</p>
+                <p className="text-sm font-semibold text-white/90">
+                  {activeSlug ? MODULE_LABEL[activeSlug] : ""}
+                </p>
               </div>
               <span className="bg-[rgba(123,97,255,0.15)] border border-[rgba(123,97,255,0.3)] rounded-full px-3 py-1 text-xs text-[#9B85FF] font-medium">
                 {daysClean} jour{daysClean > 1 ? "s" : ""}
               </span>
             </div>
 
-            {/* Grille badges */}
             <p className="text-[10px] font-semibold text-white/25 uppercase tracking-[1.4px] mb-[14px]">Médailles</p>
             <div className="grid grid-cols-3 gap-[10px] mb-6">
               {MILESTONES.map((milestone, i) => (
@@ -332,7 +329,6 @@ export default function Trophies() {
               ))}
             </div>
 
-            {/* Prochain objectif */}
             {nextMilestone && (
               <>
                 <p className="text-[10px] font-semibold text-white/25 uppercase tracking-[1.4px] mb-[14px]">Prochain objectif</p>
@@ -340,7 +336,6 @@ export default function Trophies() {
               </>
             )}
 
-            {/* Tous débloqués */}
             {!nextMilestone && (
               <div className="text-center py-8">
                 <p className="text-2xl mb-2">👑</p>
