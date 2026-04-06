@@ -34,12 +34,12 @@ type Milestone = {
 };
 
 const MILESTONES: Milestone[] = [
-  { days: 1, roman: "I", name: "Premier souffle", shape: "circle" },
-  { days: 7, roman: "VII", name: "Sept nuits", shape: "heptagon" },
-  { days: 30, roman: "XXX", name: "Un mois tenu", shape: "diamond" },
-  { days: 50, roman: "L", name: "Demi-centurie", shape: "pentagon" },
-  { days: 100, roman: "C", name: "Centurion", shape: "hexagon" },
-  { days: 365, roman: "CCCLXV", name: "Un an de combat", shape: "star8" },
+  { days: 1,   roman: "I",      name: "Premier souffle", shape: "circle"   },
+  { days: 7,   roman: "VII",    name: "Sept nuits",      shape: "heptagon" },
+  { days: 30,  roman: "XXX",    name: "Un mois tenu",    shape: "diamond"  },
+  { days: 50,  roman: "L",      name: "Demi-centurie",   shape: "pentagon" },
+  { days: 100, roman: "C",      name: "Centurion",       shape: "hexagon"  },
+  { days: 365, roman: "CCCLXV", name: "Un an de combat", shape: "star8"    },
 ];
 
 type ModuleProgress = {
@@ -48,49 +48,18 @@ type ModuleProgress = {
 };
 
 function BadgeShape({ shape, unlocked, featured }: { shape: Shape; unlocked: boolean; featured: boolean }) {
-  const fill = unlocked ? (featured ? "rgba(123,97,255,0.18)" : "rgba(123,97,255,0.12)") : "rgba(255,255,255,0.03)";
+  const fill   = unlocked ? (featured ? "rgba(123,97,255,0.18)" : "rgba(123,97,255,0.12)") : "rgba(255,255,255,0.03)";
   const stroke = unlocked ? (featured ? "#7B61FF" : "rgba(123,97,255,0.5)") : "rgba(255,255,255,0.18)";
-  const sw = featured ? 1.8 : 1.4;
-  const inner = unlocked ? "rgba(123,97,255,0.18)" : "rgba(255,255,255,0.07)";
+  const sw     = featured ? 1.8 : 1.4;
+  const inner  = unlocked ? "rgba(123,97,255,0.18)" : "rgba(255,255,255,0.07)";
   return (
     <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-      {shape === "circle" && (
-        <>
-          <circle cx="32" cy="32" r="28" fill={fill} stroke={stroke} strokeWidth={sw} />
-          <circle cx="32" cy="32" r="22" fill="none" stroke={inner} strokeWidth="0.7" />
-        </>
-      )}
-      {shape === "heptagon" && (
-        <>
-          <polygon points="32,4 51,15 58,36 48,56 16,56 6,36 13,15" fill={fill} stroke={stroke} strokeWidth={sw} />
-          <polygon points="32,11 47,20 53,36 45,51 19,51 11,36 17,20" fill="none" stroke={inner} strokeWidth="0.7" />
-        </>
-      )}
-      {shape === "diamond" && (
-        <>
-          <polygon points="32,3 61,32 32,61 3,32" fill={fill} stroke={stroke} strokeWidth={sw} />
-          <polygon points="32,11 53,32 32,53 11,32" fill="none" stroke={inner} strokeWidth="0.7" />
-          <line x1="11" y1="32" x2="53" y2="32" stroke={inner} strokeWidth="0.6" />
-        </>
-      )}
-      {shape === "pentagon" && (
-        <>
-          <polygon points="32,4 59,22 49,54 15,54 5,22" fill={fill} stroke={stroke} strokeWidth={sw} />
-          <polygon points="32,12 52,27 44,49 20,49 12,27" fill="none" stroke={inner} strokeWidth="0.7" />
-        </>
-      )}
-      {shape === "hexagon" && (
-        <>
-          <polygon points="32,4 56,17 56,47 32,60 8,47 8,17" fill={fill} stroke={stroke} strokeWidth={sw} />
-          <polygon points="32,12 50,22 50,42 32,52 14,42 14,22" fill="none" stroke={inner} strokeWidth="0.7" />
-        </>
-      )}
-      {shape === "star8" && (
-        <>
-          <polygon points="32,4 37,27 60,32 37,37 32,60 27,37 4,32 27,27" fill={fill} stroke={stroke} strokeWidth={sw} />
-          <polygon points="32,13 36,29 51,32 36,35 32,51 28,35 13,32 28,29" fill="none" stroke={inner} strokeWidth="0.7" />
-        </>
-      )}
+      {shape === "circle"   && <><circle cx="32" cy="32" r="28" fill={fill} stroke={stroke} strokeWidth={sw}/><circle cx="32" cy="32" r="22" fill="none" stroke={inner} strokeWidth="0.7"/></>}
+      {shape === "heptagon" && <><polygon points="32,4 51,15 58,36 48,56 16,56 6,36 13,15" fill={fill} stroke={stroke} strokeWidth={sw}/><polygon points="32,11 47,20 53,36 45,51 19,51 11,36 17,20" fill="none" stroke={inner} strokeWidth="0.7"/></>}
+      {shape === "diamond"  && <><polygon points="32,3 61,32 32,61 3,32" fill={fill} stroke={stroke} strokeWidth={sw}/><polygon points="32,11 53,32 32,53 11,32" fill="none" stroke={inner} strokeWidth="0.7"/><line x1="11" y1="32" x2="53" y2="32" stroke={inner} strokeWidth="0.6"/></>}
+      {shape === "pentagon" && <><polygon points="32,4 59,22 49,54 15,54 5,22" fill={fill} stroke={stroke} strokeWidth={sw}/><polygon points="32,12 52,27 44,49 20,49 12,27" fill="none" stroke={inner} strokeWidth="0.7"/></>}
+      {shape === "hexagon"  && <><polygon points="32,4 56,17 56,47 32,60 8,47 8,17" fill={fill} stroke={stroke} strokeWidth={sw}/><polygon points="32,12 50,22 50,42 32,52 14,42 14,22" fill="none" stroke={inner} strokeWidth="0.7"/></>}
+      {shape === "star8"    && <><polygon points="32,4 37,27 60,32 37,37 32,60 27,37 4,32 27,27" fill={fill} stroke={stroke} strokeWidth={sw}/><polygon points="32,13 36,29 51,32 36,35 32,51 28,35 13,32 28,29" fill="none" stroke={inner} strokeWidth="0.7"/></>}
     </svg>
   );
 }
@@ -145,12 +114,12 @@ function NextObjective({ milestone, emoji, currentDays }: { milestone: Milestone
       <div className="flex items-center gap-4 mb-4">
         <div className="relative w-[52px] h-[52px] shrink-0 flex items-center justify-center">
           <svg width="52" height="52" viewBox="0 0 64 64" fill="none">
-            {milestone.shape === "circle" && <circle cx="32" cy="32" r="28" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2" />}
-            {milestone.shape === "heptagon" && <polygon points="32,4 51,15 58,36 48,56 16,56 6,36 13,15" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2" />}
-            {milestone.shape === "diamond" && <polygon points="32,3 61,32 32,61 3,32" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2" />}
-            {milestone.shape === "pentagon" && <polygon points="32,4 59,22 49,54 15,54 5,22" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2" />}
-            {milestone.shape === "hexagon" && <polygon points="32,4 56,17 56,47 32,60 8,47 8,17" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2" />}
-            {milestone.shape === "star8" && <polygon points="32,4 37,27 60,32 37,37 32,60 27,37 4,32 27,27" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2" />}
+            {milestone.shape === "circle"   && <circle cx="32" cy="32" r="28" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2"/>}
+            {milestone.shape === "heptagon" && <polygon points="32,4 51,15 58,36 48,56 16,56 6,36 13,15" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2"/>}
+            {milestone.shape === "diamond"  && <polygon points="32,3 61,32 32,61 3,32" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2"/>}
+            {milestone.shape === "pentagon" && <polygon points="32,4 59,22 49,54 15,54 5,22" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2"/>}
+            {milestone.shape === "hexagon"  && <polygon points="32,4 56,17 56,47 32,60 8,47 8,17" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2"/>}
+            {milestone.shape === "star8"    && <polygon points="32,4 37,27 60,32 37,37 32,60 27,37 4,32 27,27" fill="rgba(123,97,255,0.10)" stroke="rgba(123,97,255,0.45)" strokeWidth="1.5" strokeDasharray="4 2"/>}
           </svg>
           <span
             className="absolute text-[17px] leading-none"
@@ -251,15 +220,9 @@ export default function Trophies() {
       <div className="min-h-screen bg-[#08080F] flex items-center justify-center">
         <p className="text-white/30 text-sm">Chargement...</p>
       </div>
-      <div className="flex justify-between mt-[7px]">
-        <span className="text-[10px] font-mono text-[rgba(123,97,255,0.8)]">{currentDays} jours</span>
-        <span className="text-[10px] font-mono text-white/25">{milestone.days} jours</span>
-      </div>
-    </div>
-  );
-}
+    );
+  }
 
-function ModuleTab({ slug, emoji, label, active, onClick }: { slug: string; emoji: string; label: string; active: boolean; onClick: () => void }) {
   return (
     <div className="min-h-screen bg-[#08080F] text-white">
       <main className="mx-auto w-full max-w-[980px] px-4 pb-24 pt-6">
@@ -270,9 +233,9 @@ function ModuleTab({ slug, emoji, label, active, onClick }: { slug: string; emoj
 
         <div className="grid grid-cols-3 gap-2 mb-6">
           {[
-            { val: totalUnlocked, label: "Total débloqués" },
-            { val: modules.length, label: "Modules actifs" },
-            { val: daysClean, label: "Jours (actif)" },
+            { val: totalUnlocked,  label: "Total débloqués" },
+            { val: modules.length, label: "Modules actifs"  },
+            { val: daysClean,      label: "Jours (actif)"   },
           ].map(({ val, label }) => (
             <div key={label} className="bg-[rgba(255,255,255,0.028)] border border-[rgba(255,255,255,0.07)] rounded-xl p-3 text-center">
               <p className="text-xl font-semibold text-white/95">{val}</p>
