@@ -92,6 +92,14 @@ const modules: ModuleDefinition[] = [
     to: "/app/screentime",
     directTo: "/app/screentime",
   },
+  {
+    slug: "music",
+    emoji: "🎵",
+    label: "Musique",
+    description: "Diminuer le temps d'écoute quotidienne.",
+    to: "/app/music",
+    directTo: "/app/music",
+  },
 ];
 
 const computeModuleStats = (module?: UserModule): ModuleStats => {

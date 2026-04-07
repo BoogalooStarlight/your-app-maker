@@ -25,6 +25,7 @@ import Fornication from "./pages/Fornication";
 import FornicationChoice from "./pages/FornicationChoice";
 import Screentime from "./pages/Screentime";
 import Food from "./pages/Food";
+import Music from "./pages/Music";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,7 @@ const App = () => (
             <Route path="/app/fornication/contact" element={<Fornication slug="fornication-contact" />} />
             <Route path="/app/fornication/acte" element={<Fornication slug="fornication-acte" />} />
             <Route path="/app/screentime" element={<Screentime />} />
+            <Route path="/app/music" element={<Music />} />
             <Route path="/mental" element={<ComingSoon />} />
             <Route path="/energy" element={<ComingSoon />} />
           </Route>
