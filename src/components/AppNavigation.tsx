@@ -11,8 +11,8 @@ const items = [
 
 export const AppNavigation = () => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-black/95 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 w-full max-w-[430px] items-center justify-center gap-8 px-6">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t-[2.5px] border-[#1a1a1a] bg-[#f5f0e8]">
+      <div className="mx-auto flex h-20 w-full max-w-[430px] items-center justify-center gap-4 px-4">
         {items.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
@@ -21,13 +21,15 @@ export const AppNavigation = () => {
             aria-label={label}
             className={({ isActive }) =>
               cn(
-                "flex h-10 w-10 items-center justify-center rounded-lg text-white/55 transition-colors hover:text-white",
-                isActive && "text-white",
+                "flex min-w-16 flex-col items-center justify-center gap-1 rounded-[14px] px-2 py-2 font-['Nunito'] text-[10px] font-bold leading-none text-[#1a1a1a] transition-all",
+                isActive
+                  ? "bg-[#1a1a1a] text-[#f5f0e8] shadow-[3px_3px_0_#7B61FF]"
+                  : "opacity-30",
               )
             }
           >
-            <Icon className="h-5 w-5" strokeWidth={1.9} />
-            <span className="sr-only">{label}</span>
+            <Icon className="h-5 w-5" strokeWidth={2.5} />
+            <span>{label}</span>
           </NavLink>
         ))}
       </div>
