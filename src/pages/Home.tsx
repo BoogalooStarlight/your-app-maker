@@ -120,41 +120,34 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#08080F] text-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen bg-[#f5f0e8] text-[#1a1a1a]" style={{ fontFamily: "'Nunito', sans-serif" }}>
       <main className="mx-auto w-full max-w-[430px] px-4 pb-28 pt-6">
         <section className="mb-5 flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-white/55">Dashboard personnel</p>
-            <p className="mt-1 text-2xl font-semibold text-white/95">Bonjour {pseudo || "vous"} ✨</p>
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#5a564d]">Dashboard personnel</p>
+            <p className="mt-1 text-2xl font-black text-[#1a1a1a]">Bonjour {pseudo || "vous"} ✨</p>
           </div>
           <button
             type="button"
             onClick={handleSignOut}
-            className="inline-flex items-center gap-2 rounded-2xl border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.03)] px-3 py-2 text-sm text-white/80 transition hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-full border-[2.5px] border-[#1a1a1a] bg-[#1a1a1a] px-4 py-2 text-sm font-black text-[#f5f0e8] shadow-[3px_3px_0_#7B61FF] transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0_#7B61FF]"
           >
             <LogOut className="h-4 w-4" />
             Quitter
           </button>
         </section>
 
-        <section className="rounded-[28px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-5 py-6 backdrop-blur-[24px]">
-          <p className="text-center text-[11px] uppercase tracking-[0.25em] text-white/65">Temps de sevrage total</p>
+        <section className="rounded-[20px] border-[2.5px] border-[#1a1a1a] bg-[#ffffff] px-5 py-6 shadow-[4px_4px_0_#1a1a1a]">
+          <p className="text-center text-[11px] font-black uppercase tracking-[0.25em] text-[#5a564d]">Temps de sevrage total</p>
 
           <div className="relative mx-auto mt-5 flex h-[240px] w-[240px] items-center justify-center">
             <svg className="absolute h-full w-full" viewBox="0 0 240 240" fill="none" aria-hidden>
-              <defs>
-                <linearGradient id="recoveryArc" x1="20" y1="120" x2="220" y2="120" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#9D87FF" />
-                  <stop offset="1" stopColor={ACCENT} />
-                </linearGradient>
-              </defs>
-
-              <circle cx="120" cy="120" r={ARC_RADIUS} stroke="rgba(255,255,255,0.1)" strokeWidth="12" fill="none" strokeDasharray={`${ARC_LENGTH} ${ARC_GAP}`} transform="rotate(-60 120 120)" />
+              <circle cx="120" cy="120" r={ARC_RADIUS} stroke="#e8e3d8" strokeWidth="12" fill="none" strokeDasharray={`${ARC_LENGTH} ${ARC_GAP}`} transform="rotate(-60 120 120)" />
               <circle
                 cx="120"
                 cy="120"
                 r={ARC_RADIUS}
-                stroke="url(#recoveryArc)"
+                stroke={ACCENT}
                 strokeWidth="12"
                 strokeLinecap="round"
                 fill="none"
@@ -165,17 +158,17 @@ const Home = () => {
             </svg>
 
             <div className="relative text-center">
-              <p className="text-6xl font-semibold leading-none">{animatedDays}</p>
-              <p className="mt-2 text-xs uppercase tracking-[0.2em] text-white/60">jours clean</p>
+              <p className="text-6xl font-black leading-none text-[#1a1a1a]">{animatedDays}</p>
+              <p className="mt-2 text-xs font-black uppercase tracking-[0.2em] text-[#5a564d]">jours clean</p>
             </div>
           </div>
 
           {!stats.hasModules && (
             <div className="mt-2 text-center">
-              <p className="text-lg text-white/85">Aucune addiction suivie pour l'instant.</p>
+              <p className="text-lg font-extrabold text-[#2f2f2f]">Aucune addiction suivie pour l'instant.</p>
               <Link
                 to="/modules"
-                className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#9D87FF] to-[#7B61FF] px-6 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-[0_14px_36px_rgba(123,97,255,0.28)] transition hover:brightness-110"
+                className="mt-4 inline-flex items-center justify-center rounded-full border-[2.5px] border-[#1a1a1a] bg-[#1a1a1a] px-6 py-2 text-xs font-black uppercase tracking-[0.18em] text-[#f5f0e8] shadow-[4px_4px_0_#7B61FF] transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0_#7B61FF]"
               >
                 Ajouter un module
               </Link>
@@ -184,50 +177,46 @@ const Home = () => {
         </section>
 
         <section className="mt-5 grid gap-4">
-          <article className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-5 py-5 backdrop-blur-[24px]">
-            <div className="flex items-center justify-between text-white/65">
-              <p className="text-[11px] uppercase tracking-[0.18em]">Argent économisé</p>
-              <Coins className="h-4 w-4" style={{ color: ACCENT }} />
+          <article className="rounded-[20px] border-[2.5px] border-[#1a1a1a] bg-[#d4f5e2] px-5 py-5 shadow-[3px_3px_0_#1a1a1a]">
+            <div className="flex items-center justify-between text-[#1a5c33]">
+              <p className="text-[11px] font-black uppercase tracking-[0.18em]">Argent économisé</p>
+              <Coins className="h-4 w-4" style={{ color: "#1a5c33" }} />
             </div>
-            <p className="mt-3 text-4xl font-semibold leading-none" style={{ fontFamily: "'DM Mono', monospace" }}>
+            <p className="mt-3 text-4xl font-black leading-none text-[#1a5c33]">
               {animatedMoney % 1 === 0 ? `${animatedMoney.toFixed(0)}€` : `${animatedMoney.toFixed(2)}€`}
             </p>
           </article>
 
-          <article className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-5 py-5 backdrop-blur-[24px]">
-            <div className="flex items-center justify-between text-white/65">
-              <p className="text-[11px] uppercase tracking-[0.18em]">Évités</p>
-              <Activity className="h-4 w-4" style={{ color: ACCENT }} />
+          <article className="rounded-[20px] border-[2.5px] border-[#1a1a1a] bg-[#ffd6d6] px-5 py-5 shadow-[3px_3px_0_#1a1a1a]">
+            <div className="flex items-center justify-between text-[#7a1a1a]">
+              <p className="text-[11px] font-black uppercase tracking-[0.18em]">Évités</p>
+              <Activity className="h-4 w-4" style={{ color: "#7a1a1a" }} />
             </div>
-            <p className="mt-3 text-4xl font-semibold leading-none" style={{ fontFamily: "'DM Mono', monospace" }}>
-              {animatedAvoided}
-            </p>
+            <p className="mt-3 text-4xl font-black leading-none text-[#7a1a1a]">{animatedAvoided}</p>
           </article>
 
-          <article className="rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-5 py-5 backdrop-blur-[24px]">
+          <article className="rounded-[20px] border-[2.5px] border-[#1a1a1a] bg-[#ede8ff] px-5 py-5 shadow-[3px_3px_0_#1a1a1a]">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[11px] uppercase tracking-[0.18em] text-white/65">Objectif annuel</p>
-                <p className="mt-2 text-lg text-white/85">{Math.round(animatedGoal)}% complété</p>
+                <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#3d2a8a]">Objectif annuel</p>
+                <p className="mt-2 text-lg font-black text-[#3d2a8a]">{Math.round(animatedGoal)}% complété</p>
               </div>
-              <Sparkles className="h-5 w-5" style={{ color: ACCENT }} />
+              <Sparkles className="h-5 w-5" style={{ color: "#3d2a8a" }} />
             </div>
 
-            <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-white/10">
+            <div className="mt-4 h-[10px] overflow-hidden rounded-[100px] border-2 border-[#1a1a1a] bg-[#e8e3d8]">
               <div
-                className="h-full rounded-full"
+                className="h-full rounded-[100px] bg-[#1a1a1a]"
                 style={{
                   width: `${Math.max(0, Math.min(animatedGoal, 100))}%`,
-                  background: "linear-gradient(90deg, #9D87FF 0%, #7B61FF 100%)",
-                  boxShadow: "0 0 16px rgba(123,97,255,0.45)",
                 }}
               />
             </div>
           </article>
         </section>
 
-        <section className="mt-6 rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] px-5 py-4 text-center backdrop-blur-[24px]">
-          <p className="text-sm italic text-white/72">“Chaque jour sans rechute est une victoire silencieuse qui change tout.”</p>
+        <section className="mt-6 rounded-[20px] border-[2.5px] border-[#1a1a1a] bg-[#fdf9c4] px-5 py-4 text-center shadow-[4px_4px_0_#1a1a1a]">
+          <p className="text-sm font-extrabold italic text-[#1a1a1a]">“Chaque jour sans rechute est une victoire silencieuse qui change tout.”</p>
         </section>
       </main>
 
