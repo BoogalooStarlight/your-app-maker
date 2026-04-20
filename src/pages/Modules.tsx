@@ -102,6 +102,18 @@ const modules: ModuleDefinition[] = [
   },
 ];
 
+const modulePastelBySlug: Record<string, string> = {
+  smoking: "#ffd6d6",
+  alcohol: "#ffe4b5",
+  food: "#d4f5e2",
+  substances: "#ede8ff",
+  gambling: "#ffd6d6",
+  pornography: "#ffd6d6",
+  fornication: "#ffd6d6",
+  screentime: "#e8f4ff",
+  music: "#e8f4ff",
+};
+
 const computeModuleStats = (module?: UserModule): ModuleStats => {
   if (!module?.is_active) {
     return { days: 0, moneySaved: 0, avoided: 0, health: 0 };
@@ -159,9 +171,9 @@ export default function Modules() {
   );
 
   return (
-    <div className="min-h-screen bg-[#08080F] text-white">
+    <div className="min-h-screen bg-[#f5f0e8] text-[#1a1a1a]">
       <main className="mx-auto w-full max-w-[980px] px-4 pb-24 pt-6">
-        <h1 className="text-xl font-semibold text-white/95">Modules addictions</h1>
+        <h1 className="[font-family:'Nunito',sans-serif] text-2xl font-black text-[#1a1a1a]">Modules addictions</h1>
 
         <section className="mt-4 space-y-3">
           {modulesWithStats.map(({ slug, emoji, label, description, to, directTo, entry, stats }) => {
@@ -171,7 +183,7 @@ export default function Modules() {
             return (
               <article
                 key={slug}
-                className="overflow-hidden rounded-[20px] border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)]"
+                className="overflow-hidden rounded-[20px] border-[2.5px] border-[#1a1a1a] bg-white shadow-[4px_4px_0_#1a1a1a]"
               >
                 <button
                   type="button"
@@ -180,20 +192,24 @@ export default function Modules() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-3">
-                      <span className="mt-[1px] text-2xl" aria-hidden="true">
+                      <span
+                        className="mt-[1px] flex h-[36px] w-[36px] items-center justify-center rounded-[10px] border-2 border-[#1a1a1a] text-xl"
+                        style={{ backgroundColor: modulePastelBySlug[slug] ?? "#e8f4ff" }}
+                        aria-hidden="true"
+                      >
                         {emoji}
                       </span>
                       <div>
-                        <p className="text-base font-medium text-white/95">{label}</p>
-                        <p className="mt-1 text-sm text-white/55">{description}</p>
+                        <p className="[font-family:'Nunito',sans-serif] text-base font-black text-[#1a1a1a]">{label}</p>
+                        <p className="mt-1 text-sm text-[#1a1a1a]/70">{description}</p>
                       </div>
                     </div>
 
                     <span
                       className={
                         isActive
-                          ? "rounded-full border border-[rgba(123,97,255,0.35)] bg-[rgba(123,97,255,0.15)] px-2.5 py-1 text-xs font-medium text-[#9D87FF]"
-                          : "rounded-full border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] px-2.5 py-1 text-xs font-medium text-white/65"
+                          ? "rounded-[100px] bg-[#1a1a1a] px-3 py-1 text-xs font-black text-[#f5f0e8]"
+                          : "rounded-[100px] border-[1.5px] border-[#1a1a1a] bg-transparent px-3 py-1 text-xs font-black text-[#1a1a1a] opacity-40"
                       }
                     >
                       {isActive ? "En cours" : "Inactif"}
@@ -202,32 +218,32 @@ export default function Modules() {
                 </button>
 
                 {isExpanded && (
-                  <div className="border-t border-[rgba(255,255,255,0.05)] px-4 pb-4 pt-3">
+                  <div className="border-t-[2.5px] border-[#1a1a1a] px-4 pb-4 pt-3">
                     <div className="grid grid-cols-3 gap-3 text-sm">
-                      <div>
-                        <p className="text-[11px] uppercase tracking-[0.16em] text-white/50">Jours</p>
-                        <p className="mt-1 text-xl font-semibold text-[#9D87FF]">{stats.days}</p>
+                      <div className="rounded-[10px] border-2 border-[#1a1a1a] bg-[#ede8ff] p-2.5">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-[#1a1a1a]/65">Jours</p>
+                        <p className="mt-1 text-xl font-black text-[#1a1a1a]">{stats.days}</p>
                       </div>
-                      <div>
-                        <p className="text-[11px] uppercase tracking-[0.16em] text-white/50">Économisé</p>
-                        <p className="mt-1 text-xl font-semibold text-white/90">
+                      <div className="rounded-[10px] border-2 border-[#1a1a1a] bg-[#d4f5e2] p-2.5">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-[#1a1a1a]/65">Économisé</p>
+                        <p className="mt-1 text-xl font-black text-[#1a1a1a]">
                           {stats.moneySaved % 1 === 0 ? `${stats.moneySaved}€` : `${stats.moneySaved.toFixed(2)}€`}
                         </p>
                       </div>
-                      <div>
-                        <p className="text-[11px] uppercase tracking-[0.16em] text-white/50">Évités</p>
-                        <p className="mt-1 text-xl font-semibold text-white/90">{stats.avoided}</p>
+                      <div className="rounded-[10px] border-2 border-[#1a1a1a] bg-[#ffd6d6] p-2.5">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-[#1a1a1a]/65">Évités</p>
+                        <p className="mt-1 text-xl font-black text-[#1a1a1a]">{stats.avoided}</p>
                       </div>
                     </div>
 
-                    <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full rounded-full bg-[#9D87FF] transition-all" style={{ width: `${stats.health}%` }} />
+                    <div className="mt-4 h-[10px] w-full overflow-hidden rounded-full border-2 border-[#1a1a1a] bg-[#e8e3d8]">
+                      <div className="h-full rounded-full bg-[#1a1a1a] transition-all" style={{ width: `${stats.health}%` }} />
                     </div>
 
                     <div className="mt-3 flex justify-end">
                       <Link
                         to={isActive ? directTo : to}
-                        className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/85 transition hover:bg-white/10"
+                        className="rounded-full border-2 border-[#1a1a1a] bg-[#fff7df] px-4 py-1.5 text-xs font-black text-[#1a1a1a] transition hover:bg-[#ffefc6]"
                       >
                         Ouvrir le module
                       </Link>
