@@ -93,33 +93,25 @@ const Auth = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#08080F] px-4 py-10 text-white [font-family:'DM_Sans',sans-serif]">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{
-          background: "radial-gradient(circle, rgba(123,97,255,0.08) 0%, rgba(123,97,255,0.03) 30%, transparent 70%)",
-        }}
-      />
-
-      <div className="relative z-10 mx-auto w-full max-w-[360px]">
+    <div className="flex min-h-screen items-center justify-center bg-[#f5f0e8] px-4 py-10 text-[#1a1a1a] [font-family:'Nunito',sans-serif]">
+      <div className="mx-auto w-full max-w-[380px]">
         <header className="mb-8 text-center">
-          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-[rgba(255,255,255,0.3)] [font-family:'DM_Mono',monospace]">
+          <p className="mb-3 text-[13px] font-black uppercase tracking-[0.18em] text-[#7B61FF]">
             RIVE
           </p>
-          <h1 className="text-[26px] font-bold leading-tight tracking-[-0.03em] text-[rgba(255,255,255,0.95)]">
+          <h1 className="text-[26px] font-black leading-tight text-[#1a1a1a]">
             Combattre son âme.
           </h1>
-          <p className="mt-2 text-[13px] text-[rgba(255,255,255,0.35)]">Ton espace d&apos;accès sécurisé.</p>
+          <p className="mt-2 text-[13px] text-[rgba(26,26,26,0.5)]">Ton espace d&apos;accès sécurisé.</p>
         </header>
 
-        <div className="rounded-[28px] border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.028)] px-6 py-7 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl">
-          <div className="mb-6 grid grid-cols-2 gap-1 rounded-[14px] bg-[rgba(255,255,255,0.05)] p-1">
+        <div className="rounded-[24px] border-[2.5px] border-[#1a1a1a] bg-white px-6 py-7 shadow-[5px_5px_0_#1a1a1a]">
+          <div className="mb-6 grid grid-cols-2 gap-1 rounded-[100px] border-[2.5px] border-[#1a1a1a] bg-[#f5f0e8] p-1">
             <button
               type="button"
               onClick={() => setMode("signin")}
-              className={`rounded-[10px] px-4 py-2.5 text-sm font-medium transition ${
-                mode === "signin" ? "bg-[#7B61FF] text-white shadow-[0_10px_24px_rgba(123,97,255,0.35)]" : "text-white/[0.5]"
+              className={`rounded-[100px] px-4 py-2.5 text-sm font-bold transition ${
+                mode === "signin" ? "bg-[#1a1a1a] text-[#f5f0e8]" : "text-[rgba(26,26,26,0.4)]"
               }`}
             >
               Connexion
@@ -127,8 +119,8 @@ const Auth = () => {
             <button
               type="button"
               onClick={() => setMode("signup")}
-              className={`rounded-[10px] px-4 py-2.5 text-sm font-medium transition ${
-                mode === "signup" ? "bg-[#7B61FF] text-white shadow-[0_10px_24px_rgba(123,97,255,0.35)]" : "text-white/[0.5]"
+              className={`rounded-[100px] px-4 py-2.5 text-sm font-bold transition ${
+                mode === "signup" ? "bg-[#1a1a1a] text-[#f5f0e8]" : "text-[rgba(26,26,26,0.4)]"
               }`}
             >
               Inscription
@@ -138,44 +130,44 @@ const Auth = () => {
           <form onSubmit={onSubmit} className="space-y-4">
             {mode === "signup" && (
               <div>
-                <label className="mb-2 block text-[10px] uppercase tracking-[0.16em] text-[rgba(255,255,255,0.35)]">Pseudo</label>
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.12em] text-[rgba(26,26,26,0.5)]">Pseudo</label>
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Ton pseudo"
-                  className="w-full rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] px-4 py-[13px] text-[14px] text-white outline-none transition placeholder:text-white/[0.22] focus:border-[rgba(123,97,255,0.5)]"
+                  className="w-full rounded-[12px] border-[2.5px] border-[#1a1a1a] bg-[#f5f0e8] px-4 py-[13px] text-[14px] text-[#1a1a1a] outline-none transition placeholder:text-[rgba(26,26,26,0.45)] focus:border-[#7B61FF] focus:shadow-[3px_3px_0_#7B61FF]"
                 />
               </div>
             )}
 
             <div>
-              <label className="mb-2 block text-[10px] uppercase tracking-[0.16em] text-[rgba(255,255,255,0.35)]">{identifierLabel}</label>
+              <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.12em] text-[rgba(26,26,26,0.5)]">{identifierLabel}</label>
               <input
                 type={mode === "signin" ? "text" : "email"}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] px-4 py-[13px] text-[14px] text-white outline-none transition focus:border-[rgba(123,97,255,0.5)]"
+                className="w-full rounded-[12px] border-[2.5px] border-[#1a1a1a] bg-[#f5f0e8] px-4 py-[13px] text-[14px] text-[#1a1a1a] outline-none transition focus:border-[#7B61FF] focus:shadow-[3px_3px_0_#7B61FF]"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-[10px] uppercase tracking-[0.16em] text-[rgba(255,255,255,0.35)]">Mot de passe</label>
+              <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.12em] text-[rgba(26,26,26,0.5)]">Mot de passe</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full rounded-[14px] border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.04)] px-4 py-[13px] text-[14px] text-white outline-none transition focus:border-[rgba(123,97,255,0.5)]"
+                className="w-full rounded-[12px] border-[2.5px] border-[#1a1a1a] bg-[#f5f0e8] px-4 py-[13px] text-[14px] text-[#1a1a1a] outline-none transition focus:border-[#7B61FF] focus:shadow-[3px_3px_0_#7B61FF]"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-[14px] bg-[#7B61FF] py-[13px] text-[15px] font-semibold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-[16px] bg-[#1a1a1a] py-[13px] text-[15px] font-black text-[#f5f0e8] shadow-[4px_4px_0_#7B61FF] transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0_#7B61FF] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Chargement..." : title}
             </button>
@@ -184,14 +176,14 @@ const Auth = () => {
           {mode === "signin" && (
             <button
               type="button"
-              className="mx-auto mt-4 block text-center text-[12px] text-[rgba(255,255,255,0.28)] transition hover:text-[rgba(255,255,255,0.5)]"
+              className="mx-auto mt-4 block text-center text-[11px] text-[rgba(26,26,26,0.35)] transition hover:text-[rgba(26,26,26,0.55)]"
             >
               Mot de passe oublié ?
             </button>
           )}
 
-          {message && <p className="mt-4 text-sm text-white/80">{message}</p>}
-          {error && <p className="mt-4 text-sm text-red-300">{error}</p>}
+          {message && <p className="mt-4 text-sm text-[#1a1a1a]">{message}</p>}
+          {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
         </div>
       </div>
     </div>
