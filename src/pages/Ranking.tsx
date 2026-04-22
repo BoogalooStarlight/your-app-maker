@@ -84,8 +84,9 @@ type DailyCheckinRow = {
   module_slug: string | null;
 };
 
-const ACCENT_SOFT = "#9D87FF";
-const CARD = "border border-[rgba(255,255,255,0.045)] bg-[rgba(255,255,255,0.028)] backdrop-blur-[24px]";
+const CARTOON_BG = "#f5f0e8";
+const CARTOON_BLACK = "#1a1a1a";
+const CARTOON_PURPLE = "#7B61FF";
 const MODULE_META: Record<string, string | { emoji: string; label: string }> = {
   tabac: "🚬 Tabac",
   smoking: { emoji: "🚬", label: "Tabac" },
@@ -103,34 +104,6 @@ const getDaysUntilNextMonday = () => {
   const day = now.getDay();
   const daysUntil = day === 0 ? 1 : 8 - day;
   return daysUntil;
-};
-
-const getTopThreeStyles = (rank: number) => {
-  if (rank === 1) {
-    return {
-      position: "text-[#F5D06F]",
-      row: "border-[#F5D06F]/20 bg-[#F5D06F]/[0.05] shadow-[0_0_24px_rgba(245,208,111,0.08)]",
-    };
-  }
-
-  if (rank === 2) {
-    return {
-      position: "text-[#C9D4E6]",
-      row: "border-[#C9D4E6]/15 bg-[#C9D4E6]/[0.04] shadow-[0_0_20px_rgba(201,212,230,0.06)]",
-    };
-  }
-
-  if (rank === 3) {
-    return {
-      position: "text-[#D8A47F]",
-      row: "border-[#D8A47F]/15 bg-[#D8A47F]/[0.04] shadow-[0_0_20px_rgba(216,164,127,0.06)]",
-    };
-  }
-
-  return {
-    position: "text-white/42",
-    row: "border-white/[0.045] bg-transparent shadow-none",
-  };
 };
 
 const Ranking = () => {
@@ -333,41 +306,46 @@ const Ranking = () => {
   const daysUntilNextMonday = useMemo(() => getDaysUntilNextMonday(), []);
 
   return (
-    <div className="min-h-screen bg-[#08080F] text-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen text-[#1a1a1a]" style={{ background: CARTOON_BG, fontFamily: "'Nunito', sans-serif" }}>
       <main className="mx-auto w-full max-w-[430px] px-4 pb-28 pt-6">
         <header className="mb-5 flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white/95">Classement</h1>
-            <p className="mt-1 text-sm text-white/45">{mode === "weekly" ? "Semaine en cours" : "Depuis le début"}</p>
+            <h1 className="text-3xl font-black text-[#1a1a1a]" style={{ fontFamily: "'Nunito', sans-serif" }}>Classement</h1>
+            <p className="mt-1 text-sm font-bold text-[#1a1a1a]/70">{mode === "weekly" ? "Semaine en cours" : "Depuis le début"}</p>
           </div>
 
           {mode === "weekly" ? (
-            <div className={`rounded-[18px] px-4 py-3 text-right ${CARD}`}>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">Reset</p>
-              <p className="mt-1 text-sm font-semibold text-white/88">
+            <div
+              className="rounded-[12px] px-4 py-3 text-right"
+              style={{ background: CARTOON_BLACK, color: CARTOON_BG, fontFamily: "'Nunito', sans-serif" }}
+            >
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em]">Reset</p>
+              <p className="mt-1 text-sm font-bold">
                 {daysUntilNextMonday} {daysUntilNextMonday > 1 ? "jours" : "jour"}
               </p>
-              <p className="mt-0.5 text-[11px] text-white/40">avant lundi</p>
+              <p className="mt-0.5 text-[11px] font-bold opacity-80">avant lundi</p>
             </div>
           ) : null}
         </header>
 
-        <div className="mb-5 grid grid-cols-2 gap-1 rounded-[14px] bg-[rgba(255,255,255,0.05)] p-1">
+        <div className="mb-5 grid grid-cols-2 gap-2 rounded-full border-[2.5px] p-1.5" style={{ background: "#ffffff", borderColor: CARTOON_BLACK }}>
           <button
             type="button"
             onClick={() => setMode("weekly")}
-            className={`rounded-[10px] px-4 py-2.5 text-sm font-medium transition ${
-              mode === "weekly" ? "bg-[#7B61FF] text-white shadow-[0_10px_24px_rgba(123,97,255,0.35)]" : "bg-transparent text-[rgba(255,255,255,0.4)]"
+            className={`rounded-full px-4 py-2.5 text-sm font-extrabold transition ${
+              mode === "weekly" ? "" : "bg-transparent text-[#1a1a1a]/65"
             }`}
+            style={mode === "weekly" ? { background: CARTOON_BLACK, color: CARTOON_BG } : undefined}
           >
             Cette semaine
           </button>
           <button
             type="button"
             onClick={() => setMode("alltime")}
-            className={`rounded-[10px] px-4 py-2.5 text-sm font-medium transition ${
-              mode === "alltime" ? "bg-[#7B61FF] text-white shadow-[0_10px_24px_rgba(123,97,255,0.35)]" : "bg-transparent text-[rgba(255,255,255,0.4)]"
+            className={`rounded-full px-4 py-2.5 text-sm font-extrabold transition ${
+              mode === "alltime" ? "" : "bg-transparent text-[#1a1a1a]/65"
             }`}
+            style={mode === "alltime" ? { background: CARTOON_BLACK, color: CARTOON_BG } : undefined}
           >
             All time
           </button>
@@ -377,10 +355,10 @@ const Ranking = () => {
           <button
             type="button"
             onClick={() => setActiveFilter("global")}
-            className="shrink-0 rounded-full border px-4 py-2 text-sm transition"
+            className="shrink-0 rounded-full border-[2.5px] px-4 py-2 text-sm font-extrabold transition"
             style={activeFilter === "global"
-              ? { background: "#7B61FF", color: "#FFFFFF", borderColor: "#7B61FF" }
-              : { background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", borderColor: "rgba(255,255,255,0.1)" }}
+              ? { background: CARTOON_PURPLE, color: "#FFFFFF", borderColor: CARTOON_PURPLE, boxShadow: "3px 3px 0 #1a1a1a" }
+              : { background: "#ffffff", color: CARTOON_BLACK, borderColor: CARTOON_BLACK }}
           >
             🌍 Global
           </button>
@@ -389,30 +367,33 @@ const Ranking = () => {
               key={slug}
               type="button"
               onClick={() => setActiveFilter(slug)}
-              className="shrink-0 rounded-full border px-4 py-2 text-sm transition"
+              className="shrink-0 rounded-full border-[2.5px] px-4 py-2 text-sm font-extrabold transition"
               style={activeFilter === slug
-                ? { background: "#7B61FF", color: "#FFFFFF", borderColor: "#7B61FF" }
-                : { background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", borderColor: "rgba(255,255,255,0.1)" }}
+                ? { background: CARTOON_PURPLE, color: "#FFFFFF", borderColor: CARTOON_PURPLE, boxShadow: "3px 3px 0 #1a1a1a" }
+                : { background: "#ffffff", color: CARTOON_BLACK, borderColor: CARTOON_BLACK }}
             >
               {typeof MODULE_META[slug] === "string" ? MODULE_META[slug] : MODULE_META[slug] ? `${MODULE_META[slug].emoji} ${MODULE_META[slug].label}` : slug}
             </button>
           ))}
         </div>
 
-        <section className={`sticky top-4 z-20 mb-5 rounded-[24px] px-5 py-4 ${CARD}`} style={{ borderColor: "rgba(123,97,255,0.55)", boxShadow: "0 18px 50px rgba(123,97,255,0.12)" }}>
+        <section
+          className="sticky top-4 z-20 mb-5 rounded-[20px] border-[2.5px] px-5 py-4"
+          style={{ background: "#ede8ff", borderColor: CARTOON_BLACK, boxShadow: "4px 4px 0 #7B61FF" }}
+        >
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">Votre rang</p>
-              <p className="mt-2 text-xl font-semibold text-white/95">{currentUserRow ? `#${currentUserRow.rank}` : "Non classé"}</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#1a1a1a]/70">Votre rang</p>
+              <p className="mt-2 text-3xl font-black text-[#7B61FF]">{currentUserRow ? `#${currentUserRow.rank}` : "Non classé"}</p>
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-                <Trophy className="h-5 w-5" style={{ color: ACCENT_SOFT }} />
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-[2.5px] bg-white" style={{ borderColor: CARTOON_BLACK, boxShadow: "3px 3px 0 #1a1a1a" }}>
+                <Trophy className="h-5 w-5" style={{ color: CARTOON_PURPLE }} />
               </div>
               <div className="text-right">
-                <p className="text-sm font-semibold text-white/92">{currentUserRow?.username ?? "Vous"}</p>
-                <p className="mt-1 text-lg font-semibold" style={{ color: ACCENT_SOFT, fontFamily: "'DM Mono', monospace" }}>
+                <p className="text-sm font-extrabold text-[#1a1a1a]">{currentUserRow?.username ?? "Vous"}</p>
+                <p className="mt-1 text-lg font-black text-[#1a1a1a]">
                   {currentUserRow?.score ?? 0} pts
                 </p>
               </div>
@@ -420,54 +401,55 @@ const Ranking = () => {
           </div>
         </section>
 
-        <section className={`overflow-hidden rounded-[24px] ${CARD}`}>
-          <div className="border-b border-white/[0.045] px-4 py-3">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-white/38">{mode === "weekly" ? "Top 50 hebdomadaire" : "Top 50 all time"}</p>
+        <section
+          className="overflow-hidden rounded-[20px] border-[2.5px] bg-white"
+          style={{ borderColor: CARTOON_BLACK, boxShadow: "4px 4px 0 #1a1a1a" }}
+        >
+          <div className="border-b-[2.5px] px-4 py-3" style={{ borderColor: CARTOON_BLACK }}>
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#1a1a1a]/70">{mode === "weekly" ? "Top 50 hebdomadaire" : "Top 50 all time"}</p>
           </div>
 
           {loading ? (
             <div className="px-4 py-2">
               {Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className="flex animate-pulse items-center gap-3 border-b border-white/[0.04] py-4 last:border-b-0">
-                  <div className="h-5 w-8 rounded bg-white/10" />
-                  <div className="h-4 flex-1 rounded bg-white/10" />
-                  <div className="h-5 w-16 rounded bg-white/10" />
+                <div key={index} className="flex animate-pulse items-center gap-3 border-b-[2px] py-4 last:border-b-0" style={{ borderColor: "#d7d0c4" }}>
+                  <div className="h-5 w-8 rounded bg-[#ece5d8]" />
+                  <div className="h-4 flex-1 rounded bg-[#ece5d8]" />
+                  <div className="h-5 w-16 rounded bg-[#ece5d8]" />
                 </div>
               ))}
             </div>
           ) : topFifty.length === 0 ? (
-            <div className="px-6 py-16 text-center text-sm text-white/40">{mode === "weekly" ? "Aucun combattant cette semaine." : "Aucun combattant pour le moment."}</div>
+            <div className="px-6 py-16 text-center text-sm font-bold text-[#1a1a1a]/60">{mode === "weekly" ? "Aucun combattant cette semaine." : "Aucun combattant pour le moment."}</div>
           ) : (
             <div className="px-3 py-2">
               {topFifty.map((entry, index) => {
                 const isCurrentUser = entry.user_id === user?.id;
-                const topThreeStyles = getTopThreeStyles(entry.rank);
 
                 return (
                   <div
                     key={entry.user_id}
-                    className={`mb-1 flex items-center gap-3 rounded-[18px] border px-3 py-3 transition-all last:mb-0 ${topThreeStyles.row} ${
-                      isCurrentUser ? "bg-[rgba(123,97,255,0.12)]" : ""
-                    }`}
+                    className="mb-2 flex items-center gap-3 rounded-[16px] border-[2.5px] bg-white px-3 py-3 transition-all last:mb-0"
                     style={{
-                      borderColor: isCurrentUser ? "rgba(123,97,255,0.48)" : undefined,
+                      borderColor: CARTOON_BLACK,
+                      boxShadow: isCurrentUser ? "3px 3px 0 #7B61FF" : "3px 3px 0 #1a1a1a",
                       opacity: 1,
                       transform: "translateY(0)",
                       animation: `ranking-fade 0.45s ease-out ${index * 0.05}s both`,
                     }}
                   >
-                    <div className={`w-9 text-sm font-semibold ${topThreeStyles.position}`} style={{ fontFamily: "'DM Mono', monospace" }}>
+                    <div className={`w-9 text-base font-black ${entry.rank === 1 ? "text-[#7B61FF]" : "text-[#1a1a1a]"}`}>
                       #{entry.rank}
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <p className={`truncate text-[15px] ${entry.rank <= 3 ? "font-semibold text-white/96" : "font-medium text-white/88"}`}>{entry.username}</p>
-                      {entry.current_streak > 0 ? <p className="mt-0.5 text-xs text-[#FF9F43]">🔥 {entry.current_streak}j</p> : null}
+                      <p className="truncate text-[15px] font-extrabold text-[#1a1a1a]">{entry.username}</p>
+                      {entry.current_streak > 0 ? <p className="mt-0.5 text-xs font-extrabold text-[#FF8A00]">🔥 {entry.current_streak}j</p> : null}
                     </div>
 
-                    <div className="text-right" style={{ fontFamily: "'DM Mono', monospace" }}>
-                      <p className="text-base font-semibold" style={{ color: ACCENT_SOFT }}>{entry.score}</p>
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-white/30">pts</p>
+                    <div className="text-right">
+                      <p className="text-base font-black text-[#1a1a1a]">{entry.score}</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#1a1a1a]/55">pts</p>
                     </div>
                   </div>
                 );
