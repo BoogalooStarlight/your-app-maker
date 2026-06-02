@@ -16,6 +16,8 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@RIVE" />
     <meta name="twitter:image" content="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#7B61FF" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -25,5 +27,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js');
+        });
+      }
+    </script>
   </body>
 </html>
